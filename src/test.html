@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/node_modules/@fortawesome/fontawesome-free/css/all.css">
+  <title>Document</title>
+  <style>
+    body{
+      background-color: wheat;
+    }
+  </style>
+</head>
+<body>
+  <x-input-icon placeholder="Meu placeholder">
+    <i slot=icon class="fas fa-key"></i>
+  </x-input-icon>
+  <x-input-server>
+    <i slot=icon class="fas fa-network-wired"></i>
+  </x-input-server>
+  <script type=module src=js/components/x-input-icon.js></script>
+  <script type=module src=js/components/x-input-server.js></script>
+</body>
+</html>

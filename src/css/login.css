@@ -1,0 +1,118 @@
+#login{
+  width: 100%;
+  height: 100%;
+  background-color: var(--primary-color);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-areas:
+    ". . . . ."
+    ". . . . ."
+    ". . container . ."
+    ". session session session ."
+    ". session session session ."
+}
+
+#login #container
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--secondary-color);
+  border-radius: 10px;
+  padding: 20px;
+  border: 2px solid black;
+  grid-area: container;
+}
+
+#login h1{
+  font-size: 4ch;
+  margin: 15px;
+  color: var(--text-color);
+}
+
+#login #container #input-container
+{
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 65ch;
+}
+
+#login .login-input{
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  --close-font-size: 35px;
+  --color-placeholder: rgba(200, 200, 200, 0.9);
+  --inner-padding: 3px;
+  font-size: 20px;
+  margin-bottom: 1px;
+}
+
+#login button{
+  padding: 5px;
+  border-radius: 5px;
+  outline: none;
+  margin: 1px;
+  background-color: var(--primary-color-dark);
+  color: var(--text-color);
+  text-align: center;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 20px;
+}
+
+#login button:hover,
+#login label:hover,
+#login button:focus{
+  filter: brightness(90%);
+}
+
+#login label{
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+#login #spinner{
+  display: none;
+  margin-left: 5px;
+}
+
+#login #error{
+  display: none;
+  color: white;
+  background-color: red;
+  border-radius: 5px;
+  padding: 5px;
+  box-sizing: border-box;
+  margin-top: 5px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 600px) {
+  #login{
+    width: 100%;
+    grid-template-areas:
+    "container container container container container"
+    "container container container container container"
+    "container container container container container"
+    "session session session session session"
+    "session session session session session"
+  }
+  #login #container
+  {
+    width: 98%;
+    margin: 1%;
+    align-self: end;
+  }
+
+  #login #container div{
+    width: 100%;
+  }
+
+  #login #container #input-container
+  {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

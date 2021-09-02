@@ -1,0 +1,8 @@
+.project
+.settings/
+.cproject
+dist/
+node_modules/
+old/
+package-lock.json
+.atom-live-server.json

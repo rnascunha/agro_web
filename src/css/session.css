@@ -1,0 +1,63 @@
+#sessions{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  align-items: flex-start;
+  grid-area: session;
+  overflow: auto;
+}
+
+#sessions .login-session{
+  background-color: var(--secondary-color);
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  cursor: pointer;
+  border-radius: 8px;
+  box-shadow: 1px 1px 0px #999;
+}
+
+#sessions .login-session:hover{
+  transform: translateY(-2px);
+  box-shadow: 1px 1px 0px #999,
+                2px 2px 0px #999,
+                3px 3px 0px #999,
+                4px 4px 0px #999;
+}
+
+#sessions .login-session:active{
+  transform: translateY(-5px);
+}
+
+#sessions .session-data{
+  padding: 5px;
+  color: white;
+  font-size: 20px;
+}
+
+#sessions .session-data:hover{
+
+}
+
+#sessions .session-erase{
+  padding: 5px 2px;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+#sessions .session-last-login{
+  font-size: 15px;
+}
+
+#sessions .session-erase:hover{
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+  #sessions{
+    width: 100%;
+  }
+}

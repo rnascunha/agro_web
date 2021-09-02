@@ -1,0 +1,46 @@
+{
+  "name": "agro_web",
+  "version": "1.0.0",
+  "description": "Agro Project Interface",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --config build-utils/webpack.config.js --env env=dev",
+    "build": "webpack --config build-utils/webpack.config.js --env env=prod",
+    "build:analyze": "npm run build -- --env addon=bundleanalyze",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rnascunha/agro_web.git"
+  },
+  "author": "Rafael Cunha",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rnascunha/agro_web/issues"
+  },
+  "homepage": "https://github.com/rnascunha/agro_web#readme",
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/plugin-transform-runtime": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "http-server": "^13.0.1",
+    "mini-css-extract-plugin": "^2.2.0",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.51.1",
+    "webpack-bundle-analyzer": "^4.4.2",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.0.0",
+    "webpack-merge": "^5.8.0",
+    "workbox-webpack-plugin": "^6.2.4"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "d3": "^7.0.1"
+  }
+}
