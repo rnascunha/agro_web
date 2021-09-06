@@ -1,0 +1,23 @@
+<template id=template-login>
+  <load-screen id=login-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
+  <main id=login>
+    <section id=container>
+      <h1>Agro Telemetry</h1>
+      <div id=input-container>
+        <x-input-icon class=login-input id=username placeholder=Username title=Username>
+          <i slot=icon class="fas fa-user"></i>
+        </x-input-icon>
+        <x-input-icon class=login-input id=password placeholder=Password title=password type=password>
+          <i slot=icon class="fas fa-key"></i>
+        </x-input-icon>
+        <x-input-server class=login-input id=server-addr>
+          <i slot=icon class="fas fa-network-wired"></i>
+        </x-input-server>
+        <label><input id=autoconnect type=checkbox> keep connected</label>
+        <button id=connect><span id=connect-label>Connect</span><span id=spinner><i class="fas fa-spinner fa-pulse"></span></i></button>
+        <div id=error></div>
+      </div>
+    </section>
+    <section id=sessions></section>
+  </main>
+</template>

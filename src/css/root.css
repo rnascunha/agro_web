@@ -18,6 +18,7 @@ html, body{
   margin: 0;
   background-color:  var(--primary-color);
   font-family: 'Indie Flower', cursive;
+  /* font-family: 'Jura', sans-serif; */
 }
 
 /**

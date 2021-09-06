@@ -5,6 +5,10 @@
   color: var(--text-color);
 }
 
+#main-load-screen{
+  display: none;
+}
+
 #main #header{
   background-color: var(--primary-color-dark);
   padding: 3px 5px;
@@ -41,6 +45,10 @@
   justify-self: end;
 }
 
+#main #header #options *{
+  vertical-align: middle;
+}
+
 #main #search-bar{
   background-color: var(--primary-color-dark);
   color: var(--text-color);
@@ -49,7 +57,8 @@
   --color-placeholder: rgba(200, 200, 200, 0.9);
   --inner-padding: 0px 2px;
   font-size: inherit;
-  max-height: 32px;
+  /* max-height: 32px; */
+  height: 25px;
   width: 3ch;
   transition: width 0.5s ease-out;
   border: none;
@@ -66,8 +75,23 @@
   cursor: pointer;
 }
 
+#main #header #options{
+  border: 1px solid white;
+  border-radius: 16px;
+  padding: 2px 7px 2px 1px;
+}
+
+#main #header svg
+{
+  transition: all 0.1s ease-out;
+}
+
 #main #header svg:hover{
-  transform: translateY(4px);
+  /* transform: translateY(4px); */
+  background-color: var(--text-color);
+  color: var(--primary-color-dark);
+  border-radius: 10px;
+  padding: 1px;
 }
 
 #main #search-bar svg:hover{

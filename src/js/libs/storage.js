@@ -60,6 +60,24 @@ export class Storage
         }
     }
 
+    save_key(object_store, data, key, success = null, error = null)
+    {
+        if(!this._db) return;
+
+        let request = this._db.
+                          transaction(object_store, 'readwrite')
+                            .objectStore(object_store)
+                              .put(data, key);
+
+        request.onsuccess = ev => {
+            if(success !== null) success(ev);
+        }
+
+        request.onerror = ev => {
+            if(error !== null) error(ev);
+        }
+    }
+
     load(object_store, key, callback, error = null)
     {
         if(!this._db) return;
@@ -70,11 +88,11 @@ export class Storage
                                 .get(key);
 
         request.onsuccess = ev => {
-            if(ev.target.result)
-                callback(ev.target.result);
+            callback(ev.target.result);
         }
 
-        if(error){
+        if(error)
+        {
             request.onerror = ev => {
                 error(ev);
             }

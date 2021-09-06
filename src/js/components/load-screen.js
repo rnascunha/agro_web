@@ -42,9 +42,16 @@ customElements.define('load-screen', class extends HTMLElement {
         shadowRoot.appendChild(template.content.cloneNode(true));
     }
 
-    connectedCallback()
-    {
+    connectedCallback(){}
 
+    show()
+    {
+      this.style.display = 'flex';
+    }
+
+    hide()
+    {
+      this.style.display = 'none';
     }
 });
 

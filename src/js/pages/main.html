@@ -1,0 +1,24 @@
+<template id=template-main>
+  <main id=main>
+    <load-screen id=main-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
+    <section id=header>
+      <div id=menu>
+        <span id=main-menu><i class="fas fa-bars"></i></span>
+        <x-input-icon id=search-bar placeholder=search title=Username>
+        <i slot=icon class="fas fa-search"></i>
+        </x-input-icon>
+      </div>
+      <div id=title></div>
+      <div id=options>
+        <span id=notify-switch-container title='Notify not supported' disabled>
+          <span id=notify-label><i class="fas fa-bell"></i></span>
+          <check-switch id=notify-switch disabled></check-switch>
+        </span>
+        <span id=notify-disabled disabled><i class="fas fa-bell-slash"></i></span>
+        <span id=notify-enable disabled><i class="fas fa-bell"></i></span>
+        <i class="fas fa-cog"></i>
+        <span id=main-disconnect><i class="fas fa-user"></i></span>
+      </div>
+    </section>
+  </main>
+</template>

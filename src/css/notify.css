@@ -1,0 +1,83 @@
+#main #notify-switch-container
+{
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 4px;
+  padding: 0px 3px;
+  transition: all 0.1s ease-out;
+}
+
+#main #notify-switch-container:hover
+{
+  background-color: var(--text-color);
+  color: var(--primary-color-dark);
+  border-radius: 10px;
+}
+
+#main #notify-switch-container:hover svg
+{
+  color: var(--primary-color-dark);
+}
+
+#main #notify-switch-container[checked] #notify-label
+{
+  color: white;
+}
+
+#main #notify-switch-container[disabled] #notify-label
+{
+  color: grey;
+}
+
+#main #notify-switch
+{
+  --height-switch: 21px;
+  --width-switch: 31px;
+  --bg-checked: var(--primary-color);
+  --bg-unchecked: grey;
+  --color-ball: white;
+}
+
+#main #notify-switch[disabled]
+{
+  --color-ball: lightgrey;
+}
+
+#main #notify-enable
+{
+  padding: 0px 3px;  /* this padding is to make the enable width equal to disabled */
+  display: none;
+}
+
+#main #notify-disabled
+{
+  display: inline-block;
+}
+
+#main #notify-enable[disabled]
+{
+  display: none;
+}
+
+#main #notify-enable[checked]
+{
+  display: inline-block;
+}
+
+#main #notify-disabled[disabled]
+{
+  display: inline-block;
+  color: grey;
+}
+
+#main #notify-disabled[disabled] svg
+{
+  transform: none;
+}
+
+#main #notify-disabled[checked]
+{
+  display: none;
+}

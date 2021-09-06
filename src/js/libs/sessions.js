@@ -1,4 +1,4 @@
-import {run_page} from '../libs/page.js'
+import {page_manager} from '../libs/page.js'
 import {get_user_device} from './user_info.js'
 
 const template_session = document.querySelector('#template-login-session'),
@@ -55,31 +55,43 @@ function promise_sessions(storage, container, fields)
     }, () => {
       sessions.sort((a,b) => a.date.getTime() < b.date.getTime() ? 1 : -1);
       sessions.forEach(v => {
-        if(!autoconnect && v.autoconnect)
-          autoconnect = {
-            username: v.username,
-            server_addr: v.server_addr,
-            sessionid: v.sessionid
-          }
         make_session(storage, container, fields, v);
       })
-      resolve(autoconnect);
+      resolve();
     });
   });
 
   return promise;
 }
 
-export function init_sessions(ws, storage, auto_connect, container, fields)
+export function try_auto_connect(ws, {storage, registration}, auto_connect)
 {
   const load_screen = document.querySelector('#login-load-screen');
 
-  promise_sessions(storage, container, fields)
-    .then(auto => {
-      if(!auto_connect || !auto) {
-        load_screen.style.display = 'none';
-        return
-      };
+  if(!storage)
+  {
+    load_screen.hide();
+  }
+
+  if(!auto_connect)
+  {
+    load_screen.hide()
+    storage.erase('instance', 'autoconnect');
+    return;
+  }
+
+  storage.load('instance', 'autoconnect', auto => {
+    if(!auto)
+    {
+      load_screen.hide();
+      return;
+    }
+
+    if(!auto.autoconnect)
+    {
+      load_screen.hide();
+      return;
+    }
 
     ws = new WebSocket(auto.server_addr);
     ws.onopen = ev => {
@@ -101,7 +113,7 @@ export function init_sessions(ws, storage, auto_connect, container, fields)
       {
         if(message.data.authenticated)
         {
-          run_page('main', {
+          page_manager.run('main', {
             ws: ws,
             username: auto.username,
             server_addr: auto.server_addr,
@@ -109,16 +121,22 @@ export function init_sessions(ws, storage, auto_connect, container, fields)
             sessionid: auto.sessionid,
             storage: storage,
             autoconnect: true,
+            registration: registration
           });
         }
       }
     };
     ws.onclose = ev => {
-      load_screen.style.display = 'none';
+      load_screen.hide()
       ws = null;
     };
     ws.onerror = ev => {};
-  }).catch(e => {
-    load_screen.style.display = 'none';
+  }, error => {
+    load_screen.hide()
   });
+}
+
+export function init_sessions(storage, container, fields)
+{
+  promise_sessions(storage, container, fields);
 }

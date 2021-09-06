@@ -109,6 +109,8 @@ customElements.define('x-input-icon', class extends HTMLElement {
             return;
           }
         });
+
+        this.addEventListener = this._input.addEventListener;
     }
 
     set value(val){ this._input.value = val; }

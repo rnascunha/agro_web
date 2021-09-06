@@ -8,6 +8,8 @@
   align-items: flex-start;
   grid-area: session;
   overflow: auto;
+  align-content: flex-start;
+  padding-top: 4px;
 }
 
 #sessions .login-session{
@@ -18,6 +20,7 @@
   cursor: pointer;
   border-radius: 8px;
   box-shadow: 1px 1px 0px #999;
+  transition: all 0.1s ease-out;
 }
 
 #sessions .login-session:hover{

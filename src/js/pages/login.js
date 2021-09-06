@@ -1,10 +1,11 @@
 import {input_key_only_integer} from '../libs/input_helper.js'
-import {Page, add_page_list, run_page} from '../libs/page.js'
+import {Page, page_manager} from '../libs/page.js'
 import {get_user_device} from '../libs/user_info.js'
-import {init_sessions} from '../libs/sessions.js'
+import {init_sessions, try_auto_connect} from '../libs/sessions.js'
 import {Websocket_Close_Reason} from '../libs/ws_close_reason.js'
+import login_html from './login.html'
 
-function run_login(storage, auto_connect = true)
+function run_login({storage, registration}, auto_connect = true)
 {
   let ws = null;
   const username = document.querySelector("#username"),
@@ -16,13 +17,14 @@ function run_login(storage, auto_connect = true)
         error = document.querySelector("#error"),
         spinner = document.querySelector('#spinner');
 
-  init_sessions(ws, storage, auto_connect, document.querySelector('#sessions'),
+  init_sessions(storage, document.querySelector('#sessions'),
   {
     username: username,
     password: password,
     autoconnect: autoconnect,
     server: server
   });
+  try_auto_connect(ws, {storage: storage, registration: registration}, auto_connect);
 
   function send_login_request(sock)
   {
@@ -61,7 +63,7 @@ function run_login(storage, auto_connect = true)
   show_error();
   username.focus();
 
-  connect.addEventListener('click', ev => {
+  const login = ev => {
     show_error();
 
     if(!username.value.length)
@@ -110,7 +112,7 @@ function run_login(storage, auto_connect = true)
           {
             if(message.data.authenticated)
             {
-              run_page('main', {
+              page_manager.run('main', {
                 ws: ws,
                 username: username.value,
                 server_addr: full_addr,
@@ -118,6 +120,7 @@ function run_login(storage, auto_connect = true)
                 sessionid: message.data.sessionid,
                 storage: storage,
                 autoconnect: autoconnect.checked,
+                registration: registration
               });
             }
           }
@@ -138,7 +141,25 @@ function run_login(storage, auto_connect = true)
         show_error(e);
         ws = null;
     }
+  };
+
+  username.addEventListener('keydown', ev => {
+    if(ev.key == 'Enter') login(ev);
   });
+  password.addEventListener('keydown',  ev => {
+    if(ev.key == 'Enter') login(ev);
+  });
+
+  connect.addEventListener('click', login);
 }
 
-add_page_list('login', new Page('Agro Telemetry - Login', '#template-login', run_login));
+const div = document.createElement('div');
+div.innerHTML = login_html;
+page_manager.add('login',
+  new Page(div.firstChild, run_login,
+            {
+              title: 'Agro Telemetry - Login',
+              'theme-color': '#0064c8'
+            }
+          )
+        );

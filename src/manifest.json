@@ -1,6 +1,6 @@
 {
-    "theme_color": "##0064c8",
-    "background_color": "#0064c8",
+    "theme_color": "#0a1496",
+    "background_color": "#0a1496",
     "display": "standalone",
     "scope": "./",
     "start_url": "./",
@@ -15,7 +15,7 @@
         },
         {
             "src": "./icon-192x192.png",
-            "sizes": "192x192.png",
+            "sizes": "192x192",
             "type": "image/png"
         },
         {

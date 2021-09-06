@@ -24,6 +24,11 @@ module.exports = (public_path) => {
                         path.resolve(__dirname, '..', './src/css'),
                     ],
                     use: ['css-loader']
+                },
+                {
+                  test: /\.(html)$/,
+                  exclude: /node_modules/,
+                  use: {loader: 'raw-loader'}
                 }
             ]
         },

@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#0a1496">
+  <link rel="manifest" href="/manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css2?family=Jura&display=swap" rel="stylesheet"> -->
   <template id=template-login-session>
     <div class=login-session>
       <div class=session-data>
@@ -17,50 +20,6 @@
     <div>
   </template>
   <title>Agro Telemetry</title>
-  <template id=template-login>
-    <load-screen id=login-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
-    <main id=login>
-      <section id=container>
-        <h1>Agro Telemetry</h1>
-        <div id=input-container>
-          <x-input-icon class=login-input id=username placeholder=Username title=Username>
-            <i slot=icon class="fas fa-user"></i>
-          </x-input-icon>
-          <x-input-icon class=login-input id=password placeholder=Password title=password type=password>
-            <i slot=icon class="fas fa-key"></i>
-          </x-input-icon>
-          <x-input-server class=login-input id=server-addr>
-            <i slot=icon class="fas fa-network-wired"></i>
-          </x-input-server>
-          <label><input id=autoconnect type=checkbox> keep connected</label>
-          <button id=connect><span id=connect-label>Connect</span><span id=spinner><i class="fas fa-spinner fa-pulse"></span></i></button>
-          <div id=error></div>
-        </div>
-      </section>
-      <section id=sessions></section>
-    </main>
-  </template>
-  <template id=template-main>
-    <main id=main>
-      <section id=header>
-        <div id=menu>
-          <i class="fas fa-bars"></i>
-          <x-input-icon id=search-bar placeholder=search title=Username>
-            <i slot=icon class="fas fa-search"></i>
-          </x-input-icon>
-        </div>
-        <div id=title></div>
-        <div id=options>
-          <i class="fas fa-cog"></i>
-          <drop-menu>
-            <i slot=drop-button class="fas fa-user"></i>
-            <option>Disconnect</option>
-            <option>Log off</option>
-          </drop-menu>
-        </div>
-      </section>
-    </main>
-  </template>
 </head>
 <body>
 </body>
