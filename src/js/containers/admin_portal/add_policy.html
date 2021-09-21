@@ -1,0 +1,36 @@
+<div class=popup-container>
+  <h1 class=popup-header>
+    <i class="fas fa-user-lock"></i>
+    <span class=popup-title>Add Policy</span>
+  </h1>
+  <div class=popup-content>
+    <span class=popup-content-text>
+      <x-input-icon class=add-input id=policy-name placeholder=Name title=Name>
+        <i slot=icon class="fas fa-user-lock"></i>
+      </x-input-icon>
+      <div id=input-policy-options>
+        <div class=policy-input>
+          <label for=policy-type>Type</label>
+          <div id=policy-type></div>
+          <label for=policy-effect>Effect</label>
+          <div id=policy-effect></div>
+          <label for=policy-ref-type>Reference type</label>
+          <div id=policy-ref-type></div>
+          <label for=policy-ref>Reference</label>
+          <div id=policy-ref></div>
+        </div>
+        <fieldset>
+          <legend>Action</legend>
+          <div id=policy-action></div>
+        </fieldset>
+      </div>
+    </span>
+    <div>
+      <div class=popup-error></div>
+      <div class=popup-option-container>
+        <span class=popup-option>Add</span>
+        <span class=popup-option>Cancel</span>
+      </div>
+    </div>
+  </div>
+</div>

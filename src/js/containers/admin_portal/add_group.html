@@ -1,0 +1,29 @@
+<div class=popup-container>
+  <h1 class=popup-header>
+    <i class="fas fa-users"></i>
+    <span class=popup-title>Add Group</span>
+  </h1>
+  <div class=popup-content>
+    <span class=popup-content-text>
+      <x-input-icon class=add-input id=group-name placeholder='Group Name' title='Group Name'>
+        <i slot=icon class="fas fa-users"></i>
+      </x-input-icon>
+      <x-input-icon class=add-input id=group-description placeholder=Description title=Description>
+        <i slot=icon class="fas fa-file-alt"></i>
+      </x-input-icon>
+      <fieldset id=group-user-fieldset>
+        <legend>Users</legend>
+        <div id=group-user-list>
+          <span><em>No users avaiable</em></span>
+        </div>
+      </fieldset>
+    </span>
+    <div>
+      <div class=popup-error></div>
+      <div class=popup-option-container>
+        <span class=popup-option id=option-yes>Add</span>
+        <span class=popup-option id=option-no>Cancel</span>
+      </div>
+  </div>
+  </div>
+</div>

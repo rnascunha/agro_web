@@ -5,6 +5,9 @@ import './css/login.css'
 import './css/session.css'
 import './css/main.css'
 import './css/notify.css'
+import './css/dropmenu.css'
+import './css/admin_portal.css'
+import './css/popup.css'
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 // import '@fortawesome/fontawesome-free/js/regular'
@@ -16,6 +19,7 @@ import "./js/components/x-input-server.js"
 import "./js/components/check-switch.js"
 import "./js/components/load-screen.js"
 import "./js/components/drop-menu.js"
+import "./js/components/pop-modal.js"
 
 //js
 import './js/pages/login.js'

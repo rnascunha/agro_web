@@ -1,5 +1,5 @@
 import {page_manager} from '../libs/page.js'
-import {get_user_device} from './user_info.js'
+import {get_user_device} from '../helper/user_info.js'
 
 const template_session = document.querySelector('#template-login-session'),
       options = { weekday: 'short',

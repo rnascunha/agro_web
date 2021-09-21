@@ -3,22 +3,51 @@
     <load-screen id=main-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
     <section id=header>
       <div id=menu>
-        <span id=main-menu><i class="fas fa-bars"></i></span>
+        <span id=main-menu class=icon-menu><i class="fas fa-bars"></i></span>
         <x-input-icon id=search-bar placeholder=search title=Username>
         <i slot=icon class="fas fa-search"></i>
         </x-input-icon>
       </div>
       <div id=title></div>
       <div id=options>
-        <span id=notify-switch-container title='Notify not supported' disabled>
+        <!-- <span id=notify-switch-container title='Notify not supported' disabled>
           <span id=notify-label><i class="fas fa-bell"></i></span>
           <check-switch id=notify-switch disabled></check-switch>
+        </span> -->
+        <span class=icon-menu id=notify-disabled disabled><i class="fas fa-bell-slash"></i></span>
+        <span class=icon-menu id=notify-enable disabled><i class="fas fa-bell"></i></span>
+        <span class=drop-menu tabindex=0>
+          <span class=icon-menu><i class="fas fa-cog"></i></span>
+          <div class=drop-menu-content>
+            <p>option1</p>
+            <p>option2</p>
+            <p>option3</p>
+            <p>option3</p>
+            <p>option3</p>
+            <p>option3</p>
+          </div>
         </span>
-        <span id=notify-disabled disabled><i class="fas fa-bell-slash"></i></span>
-        <span id=notify-enable disabled><i class="fas fa-bell"></i></span>
-        <i class="fas fa-cog"></i>
-        <span id=main-disconnect><i class="fas fa-user"></i></span>
+        <span class=drop-menu tabindex=0>
+          <span class=icon-menu><i class="fas fa-user"></i></span>
+          <div class=drop-menu-content>
+            <p>
+              <i class="fas fa-signature"></i>
+              <span id=menu-username title='User menu'>my name</span>
+              <span id=main-disconnect title='Logout' class=icon-hover><i class="fas fa-power-off"></i></span>
+            </p>
+            <p id=admin-portal class=is-admin>
+              <i class="fas fa-users-cog"></i>
+              <span id=admin-portal-label>Admin portal</span>
+            </p>
+          </div>
+        </span>
       </div>
+    </section>
+    <section id=main-content>
+      <!-- <button id=ac1-on-btn>AC1-ON</button>
+      <button id=ac1-off-btn>AC1-OFF</button>
+      <button id=sensor-btn>SENSOR</button>
+      <div id=device-data></div> -->
     </section>
   </main>
 </template>

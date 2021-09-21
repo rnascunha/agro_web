@@ -1,6 +1,6 @@
 import {input_key_only_integer} from '../libs/input_helper.js'
 import {Page, page_manager} from '../libs/page.js'
-import {get_user_device} from '../libs/user_info.js'
+import {get_user_device} from '../helper/user_info.js'
 import {init_sessions, try_auto_connect} from '../libs/sessions.js'
 import {Websocket_Close_Reason} from '../libs/ws_close_reason.js'
 import login_html from './login.html'
@@ -89,7 +89,6 @@ function run_login({storage, registration}, auto_connect = true)
     }
 
     const full_addr = server.scheme + '://' + server.address + ':' + server.port;
-    console.log('connecting ' + username.value + ' to ' + full_addr);
 
     try{
         if(!ws)
@@ -120,19 +119,20 @@ function run_login({storage, registration}, auto_connect = true)
                 sessionid: message.data.sessionid,
                 storage: storage,
                 autoconnect: autoconnect.checked,
-                registration: registration
+                registration: registration,
+                policy: message.data.policy
               });
             }
           }
         }
         ws.onclose = ev => {
-          console.log('close', ev);
+          // console.log('close', ev);
           not_connecting();
           show_error(`${ev.code != 1006 && ev.code in Websocket_Close_Reason ? Websocket_Close_Reason[ev.code] : 'Error connecting'}`)
           ws = null;
         }
         ws.onerror = ev => {
-          console.log('error', ev);
+          // console.log('error', ev);
         }
     }
     catch(e)

@@ -11,9 +11,11 @@ template.innerHTML =`
     border: 1px solid black;
     border-radius: 5px;
     font-size: 20px;
+    --close-font-size: 35px;
     --inner-padding: 5px;
     --icon-color: black;
     overflow: hidden;
+    --color-placeholder: rgba(200, 200, 200, 0.9);
   }
 
   .icon{

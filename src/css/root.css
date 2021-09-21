@@ -4,6 +4,7 @@
   --primary-color-light: rgb(30, 50, 200);
   --secondary-color: rgb(0, 50, 150);
   --text-color: white;
+  --font-family: 'Indie Flower', cursive;
 }
 
 * {
@@ -17,8 +18,7 @@ html, body{
   padding: 0;
   margin: 0;
   background-color:  var(--primary-color);
-  font-family: 'Indie Flower', cursive;
-  /* font-family: 'Jura', sans-serif; */
+  font-family: var(--font-family);
 }
 
 /**
@@ -31,16 +31,28 @@ html, body{
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--primary-color-light);
+  background: var(--secondary-color);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--secondary-color);
+  background: var(--primary-color-dark);
+  /* background: green; */
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color);
+  background: var(--primary-color-light);
+  /* background: red; */
 }
+
+/* test */
+/* #device-data{
+  font-family: monospace;
+}
+
+#device-data p{
+  background-color: red;
+  margin-bottom: 5px;
+} */
