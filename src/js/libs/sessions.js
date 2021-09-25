@@ -121,7 +121,8 @@ export function try_auto_connect(ws, {storage, registration}, auto_connect)
             sessionid: auto.sessionid,
             storage: storage,
             autoconnect: true,
-            registration: registration
+            registration: registration,
+            policy: message.data.policy
           });
         }
       }

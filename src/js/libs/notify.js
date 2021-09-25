@@ -16,33 +16,19 @@ function urlB64ToUint8Array(base64String) {
   }
   return outputArray;
 }
-// const applicationServerPublicKey = 'BAffSuWmvVXgwT1ZvqHy6P2Y7N9-MFP3ulJXufUeIIez2qzxjjp_bnf4IV6oqPYgRN9SMUMs5UDiXKt95zgkXo0';
 
-export class Notify_Container{
+export class Notify_View_Icon{
   constructor()
   {
-    const //notify_switch = document.querySelector('#main #notify-switch'),
-          // notify_container = document.querySelector('#main #notify-switch-container'),
-          // notify_label = document.querySelector('#main #notify-label'),
-          notify_disabled = document.querySelector('#main #notify-disabled'),
+    const notify_disabled = document.querySelector('#main #notify-disabled'),
           notify_enable = document.querySelector('#main #notify-enable');
 
-    // this._container = notify_container;
-    // this._label = notify_label;
-    // this._switch = notify_switch;
     this._notify_disabled = notify_disabled;
     this._notify_enable = notify_enable;
   }
 
   addEventListener(type, callback)
   {
-    // this._container.addEventListener(type, ev => {
-    //   let path = ev.composedPath()[0];
-    //   if(path != this._switch)
-    //     this._switch.dispatchEvent(new Event('click'));
-    //   callback(ev);
-    // });
-
     this._notify_disabled.addEventListener(type, ev => {
       callback(ev);
     });
@@ -54,46 +40,89 @@ export class Notify_Container{
 
   enable()
   {
-      // this._container.removeAttribute('disabled');
-      // this._switch.disabled = false;
       this._notify_enable.removeAttribute('disabled');
       this._notify_disabled.removeAttribute('disabled', 'true');
 
-      // this._container.title = 'Notify is supported';
       this._notify_enable.title = 'Notify is supported';
   }
 
   disable(denied = false)
   {
-      // this._container.setAttribute('disabled', '');
-      // this._switch.disabled = true;
       this._notify_enable.setAttribute('disabled', '');
       this._notify_disabled.setAttribute('disabled', '');
 
-      // this._container.title = denied ? 'Notify was denied' : 'Notify isn\'t supported';
       this._notify_disabled.title = denied ? 'Notify was denied' : 'Notify isn\'t supported';
   }
 
   check()
   {
-    // this._container.setAttribute('checked', '');
-    // this._switch.checked = true;
     this._notify_enable.setAttribute('checked','');
     this._notify_disabled.setAttribute('checked','');
 
-    // this._container.title = 'Notify is enabled';
     this._notify_enable.title = 'Notify is enabled';
   }
 
   uncheck()
   {
-    // this._container.removeAttribute('checked');
-    // this._switch.checked = false;
     this._notify_enable.removeAttribute('checked');
     this._notify_disabled.removeAttribute('checked');
 
-    // this._container.title = 'Notify is disabled';
     this._notify_disabled.title = 'Notify is disabled';
+  }
+}
+
+export class Notify_View_Switch{
+  constructor()
+  {
+    const notify_switch = document.querySelector('#main #notify-switch'),
+          notify_container = document.querySelector('#main #notify-switch-container'),
+          notify_label = document.querySelector('#main #notify-label');
+
+    this._container = notify_container;
+    this._label = notify_label;
+    this._switch = notify_switch;
+  }
+
+  addEventListener(type, callback)
+  {
+    this._container.addEventListener(type, ev => {
+      let path = ev.composedPath()[0];
+      if(path != this._switch)
+        this._switch.dispatchEvent(new Event('click'));
+      callback(ev);
+    });
+  }
+
+  enable()
+  {
+      this._container.removeAttribute('disabled');
+      this._switch.disabled = false;
+
+      this._container.title = 'Notify is supported';
+  }
+
+  disable(denied = false)
+  {
+      this._container.setAttribute('disabled', '');
+      this._switch.disabled = true;
+
+      this._container.title = denied ? 'Notify was denied' : 'Notify isn\'t supported';
+  }
+
+  check()
+  {
+    this._container.setAttribute('checked', '');
+    this._switch.checked = true;
+
+    this._container.title = 'Notify is enabled';
+  }
+
+  uncheck()
+  {
+    this._container.removeAttribute('checked');
+    this._switch.checked = false;
+
+    this._container.title = 'Notify is disabled';
   }
 }
 

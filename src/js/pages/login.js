@@ -104,7 +104,7 @@ function run_login({storage, registration}, auto_connect = true)
         }
 
         ws.onmessage = ev => {
-          console.log('message', ev.data);
+          console.log('message', JSON.parse(ev.data));
           const message = JSON.parse(ev.data);
           if(message.type == 'user'
             && message.command == 'authenticate')

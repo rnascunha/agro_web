@@ -1,0 +1,154 @@
+#main-device-detail{
+  overflow: auto;
+  height: 100%;
+}
+
+#main-device-detail h1
+{
+  font-size: 25px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#device-detail-content{
+    height: 100%;
+}
+
+.detail-content h2{
+  font-size: 22px;
+  text-decoration: underline;
+  width: 100%;
+  text-align: center;
+  background-color: var(--primary-color-dark);
+  padding: 5px;
+}
+
+.detail-content .detail-line{
+  width: 100%;
+  display: flex;
+  font-size: 20px;
+  align-items: center;
+}
+
+.detail-content .detail-line:hover{
+  background-color: var(--primary-color);
+}
+
+.detail-content .detail-icon{
+  width: 10%;
+  text-align: center;
+}
+
+.detail-content .detail-text{
+  font-weight: bold;
+  width: 30%;
+  padding-left: 10px;
+}
+
+.detail-content .detail-value{
+  width: 60%;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.detail-content .detail-name-container
+{
+  display: flex;
+}
+
+.detail-content .detail-name-container .detail-name{
+  width: 100%;
+  outline: none;
+}
+
+.detail-content .detail-name-container .detail-edit-name
+{
+  cursor: pointer;
+}
+
+/**
+ * AC load commands
+*/
+.detail-content .detail-value.detail-ac-load
+{
+  display: flex;
+  gap: 3px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-container
+{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-buttons
+{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-buttons button
+{
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-color);
+  background-color: var(--primary-color-dark);
+  font-family: var(--font-family);
+  padding: 3px 3px;
+  /* border: 1px solid black; */
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-buttons button:hover
+{
+  font-weight: bold;
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-buttons button:active
+{
+  transform: translateY(2px);
+}
+
+.detail-content .detail-value.detail-ac-load .ac-load-index
+{
+  padding: 0px 5px;
+  font-weight: bold;
+}
+
+/**
+ * Packets
+*/
+.detail-content .detail-value.detail-packets
+{
+  display: flex;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.detail-content .detail-value.detail-packets button
+{
+  width: 100%;
+  cursor: pointer;
+  color: var(--text-color);
+  background-color: var(--primary-color-dark);
+  font-family: var(--font-family);
+  padding: 3px 3px;
+  /* border: 1px solid black; */
+}
+
+.detail-content .detail-value.detail-packets button:hover
+{
+  font-weight: bold;
+}
+
+.detail-content .detail-value.detail-packets button:active
+{
+  transform: translateY(2px);
+}

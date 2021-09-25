@@ -1,6 +1,7 @@
 
 #main #header .drop-menu{
   position: relative;
+  outline: none;
 }
 
 #main #header .drop-menu .drop-menu-content{

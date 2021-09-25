@@ -43,6 +43,11 @@ customElements.define('drop-menu', class extends HTMLElement {
     {
 
     }
+
+    hide()
+    {
+      this._menu.style.display = 'none';
+    }
 });
 
 })();

@@ -1,0 +1,48 @@
+.main-container{
+  /* padding: 5px; */
+}
+
+.main-container h1
+{
+  margin: 5px;
+  font-size: 22px;
+  max-height: 22px;
+}
+
+.main-container table
+{
+  border-radius: 5px;
+  overflow:hidden;
+  background-color: var(--primary-color-dark);
+}
+
+.main-container table,
+.main-container tr,
+.main-container td,
+.main-container th{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+.main-container th
+{
+  background-color: var(--primary-color-light);
+  font-weight: bold;
+}
+
+.main-container tr,
+.main-container td,
+.main-container th
+{
+  padding: 5px;
+  vertical-align: middle;
+}
+
+.main-container tr td
+{
+  cursor: pointer;
+}
+
+.main-container tr:hover td{
+  font-weight: bold;
+}

@@ -1,6 +1,8 @@
 
 export const message_types = {
-  USER: 'user'
+  USER: 'user',
+  DEVICE: 'device',
+  REQUEST: 'request'
 }
 Object.freeze(message_types);
 
@@ -13,4 +15,11 @@ export const user_commands = {
   DELETE_USER: 'delete_user',
   ADD_GROUP: 'add_group',
   DELETE_GROUP: 'delete_group'
+}
+Object.freeze(user_commands);
+
+export const device_commands = {
+  LIST: 'list',
+  DATA: 'data',
+  EDIT: 'edit'
 }

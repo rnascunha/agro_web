@@ -1,0 +1,110 @@
+#main #header{
+  background-color: var(--primary-color-dark);
+  padding: 3px 5px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  font-size: 18px;
+}
+
+#main #header #title{
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#main #header #title:after{
+  content: 'Agro Telemetry';
+}
+
+#main #header div{
+  font-size: inherit;
+}
+
+#main #header #menu{
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+#main #header #title{
+  justify-self: center;
+}
+
+#main #header #options{
+  justify-self: end;
+}
+
+#main #header #options *{
+  vertical-align: middle;
+}
+
+#main #search-bar{
+  background-color: var(--primary-color-dark);
+  color: var(--text-color);
+  --icon-color: var(--text-color);
+  --close-font-size: 35px;
+  --color-placeholder: rgba(200, 200, 200, 0.9);
+  --inner-padding: 0px 2px;
+  font-size: inherit;
+  /* max-height: 32px; */
+  height: 25px;
+  width: 3ch;
+  transition: width 0.5s ease-out;
+  border: none;
+}
+
+#main #search-bar:hover,
+#main #search-bar:focus-within{
+  background-color: var(--primary-color);
+  width: 32ch;
+}
+
+#main #header #options *,
+#main #header #menu *{
+  cursor: pointer;
+}
+
+#main #header #options{
+  border: 1px solid white;
+  border-radius: 16px;
+  padding: 2px 7px 2px 1px;
+}
+
+#main #header svg
+{
+  transition: all 0.1s ease-out;
+}
+
+/* #main #header .icon-hover:hover */
+#main #header .drop-menu:focus .icon-menu svg,
+#main #header .icon-menu svg:hover
+{
+  /* transform: translateY(4px); */
+  background-color: var(--text-color);
+  color: var(--primary-color-dark);
+  border-radius: 10px;
+  padding: 1px;
+}
+
+#main #search-bar svg:hover{
+  transform: none;
+}
+
+#main #header #options .drop-menu-content{
+    z-index: 13;
+}
+
+@media only screen and (max-width: 600px) {
+  #main #search-bar{
+    display: none;
+  }
+
+  #main #header{
+    font-size: 25px;
+  }
+
+  #main #header #title:after{
+    content: 'AT';
+  }
+}

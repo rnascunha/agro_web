@@ -1,4 +1,5 @@
 import {Response_Handler_List} from './websocket.js'
+import {Device_List} from './device.js'
 import {make_message} from '../messages/make.js'
 import {page_manager} from '../libs/page.js'
 
@@ -8,12 +9,14 @@ export class Instance
               logged,
               server_addr,
               registration,
-              storage)
+              storage,
+              options)
   {
     this._ws = ws;
     this._logged = logged;
     this._registration = registration;
     this._storage = storage;
+    this._device_list = new Device_List(options.containers.device_table);
     this._response_handler = new Response_Handler_List();
 
     this._register_ws_events();
@@ -26,6 +29,8 @@ export class Instance
   get policy(){ return this._logged.policy; }
   get server_addr(){ return this._server_addr; }
   get registration(){ return this._registration; }
+
+  get device_list(){ return this._device_list; }
 
   add_handler(type, command, ...args)
   {
