@@ -1,3 +1,4 @@
+import {active_shine} from '../helper/effect.js'
 
 const attributes = ['name', 'version_fw', 'version_hw', 'endpoint',
                     'ch_config', 'ch_conn', 'children_table',
@@ -51,7 +52,9 @@ class Device{
 
   get channel_config(){ return this._ch_config; }
   get channel(){ return this._ch_conn; }
+
   get children(){ return this._children_table; }
+  get children_table(){ return this._children_table; }
   get layer(){ return this._layer; }
   get mac_ap(){ return this._mac_ap; }
   get net_id(){ return this._net_id; }
@@ -63,18 +66,19 @@ class Device{
   get gpios(){ return this._gpios; }
   get rssi(){ return this._rssi; }
   get temperature(){ return this._temp; }
+  get temp(){ return this._temp; }
 
   process(data, update_view = false)
   {
     attributes.forEach(attr => {
       if(attr in data)
       {
-        this.[`_${attr}`] = data[attr];
+        this[`_${attr}`] = data[attr];
       }
     });
 
     if(update_view)
-      this.update_view();
+      this.update_view(data);
   }
 
   register_view(name, view)
@@ -87,9 +91,9 @@ class Device{
     delete this._views[name];
   }
 
-  update_view()
+  update_view(data = null)
   {
-    Object.values(this._views).forEach(view => view.update(this))
+    Object.values(this._views).forEach(view => view.update(this, data))
   }
 }
 
@@ -188,7 +192,7 @@ class Devices_Table_Line_View{
     this._container = container;
   }
 
-  update(device)
+  update(device, data)
   {
     this._container.innerHTML = '';
 
@@ -200,21 +204,21 @@ class Devices_Table_Line_View{
       switch(attr)
       {
         case 'name':
-          this._make_cell(device.name ? device.name : device.mac);
+          this._make_cell(device.name ? device.name : device.mac, attr in data);
           break;
         case 'endpoint':
-          this._make_cell(device.endpoint.addr);
-          this._make_cell(device.endpoint.port);
+          this._make_cell(device.endpoint.addr, 'endpoint' in data);
+          this._make_cell(device.endpoint.port, 'endpoint' in data);
         break;
         case 'channel':
-          this._make_cell(`${device.channel}/${device.channel_config}`);
+          this._make_cell(`${device.channel}/${device.channel_config}`, 'channel' in data);
           break;
         case 'gpios':
           if(device.gpios.length)
           {
             let value = device.gpios[device.gpios.length - 1].value;
             value = ('00000000' + value.toString(2)).slice(-7);
-            this._make_cell(value);
+            this._make_cell(value, attr in data);
           }
           else
           {
@@ -225,7 +229,7 @@ class Devices_Table_Line_View{
         case 'temperature':
           if(device[attr].length)
           {
-            this._make_cell(device[attr][device[attr].length - 1].value);
+            this._make_cell(device[attr][device[attr].length - 1].value, attr in data);
           }
           else
           {
@@ -233,17 +237,23 @@ class Devices_Table_Line_View{
           }
           break;
         default:
-          this._make_cell(device[attr]);
+          this._make_cell(device[attr], attr in data);
         break;
       }
     })
   }
 
-  _make_cell(value)
+  _make_cell(value, shine)
   {
       const td = document.createElement('td');
+      td.classList.add('shine');
       td.textContent = value;
 
       this._container.appendChild(td);
+
+      if(shine)
+      {
+        active_shine(td);
+      }
   }
 }

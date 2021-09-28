@@ -35,7 +35,7 @@
 }
 
 .detail-content .detail-icon{
-  width: 10%;
+  width: 7%;
   text-align: center;
 }
 
@@ -46,9 +46,12 @@
 }
 
 .detail-content .detail-value{
-  width: 60%;
+  width: 63%;
   text-align: center;
   vertical-align: middle;
+  /* shine effect */
+  position: relative;
+  overflow: hidden;
 }
 
 .detail-content .detail-name-container

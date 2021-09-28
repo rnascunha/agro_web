@@ -11,6 +11,11 @@
   overflow: auto;
 }
 
+#device-container #device-main-container tbody td{
+  overflow: hidden;
+  position: relative;
+}
+
 #device-container #device-detail-container
 {
   position: absolute;

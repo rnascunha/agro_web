@@ -43,6 +43,12 @@ module.exports = (public_path) => {
                 inject: true,
                 chunks: ['index'],
             }),
+            new Html_Webpack_Plugin({
+                template: path.resolve(__dirname, '..', './src/test.html'),
+                filename: 'test.html',
+                // favicon: path.resolve(__dirname, '..', './icons/favicon.ico'),
+                inject: false,
+            }),
             // new Workbox_Plugin.GenerateSW({
             //     clientsClaim: true,
             //     skipWaiting: true,

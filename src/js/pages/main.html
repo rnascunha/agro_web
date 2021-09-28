@@ -1,5 +1,12 @@
 <template id=template-main>
   <main id=main>
+    <pop-modal id=report-history-container></pop-modal>
+    <div id=report-pop style=display:none class=shine>
+        <div>
+          <span id=report-pop-text>Data</span>
+          <span id=report-pop-close>&times</span>
+        </div>
+    </div>
     <load-screen id=main-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
     <section id=header>
       <div id=menu>
@@ -19,7 +26,10 @@
         <span class=drop-menu tabindex=0>
           <span class=icon-menu><i class="fas fa-cog"></i></span>
           <div class=drop-menu-content>
-            <p>option1</p>
+            <p id=menu-report-history>
+              <i class="fas fa-clipboard-list"></i>
+              <span class=drop-menu-item-text>Report History</span>
+            </p>
             <p>option2</p>
             <p>option3</p>
             <p>option3</p>
@@ -37,7 +47,7 @@
             </p>
             <p id=admin-portal class=is-admin>
               <i class="fas fa-users-cog"></i>
-              <span id=admin-portal-label>Admin portal</span>
+              <span class=drop-menu-item-text id=admin-portal-label>Admin portal</span>
             </p>
           </div>
         </span>

@@ -60,8 +60,6 @@ export class Persistent_Container
 
   terminate(container, ...args)
   {
-    console.dir(container);
-    console.dir(this._container);
     if(this._script_end)
     {
       this._script_end(container, ...args);

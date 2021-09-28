@@ -48,6 +48,7 @@
   font-size: 22px;
   cursor: pointer;
   display: flex;
+  user-select: none;
 }
 
 #main-main #main-side-menu li .side-menu-icon{

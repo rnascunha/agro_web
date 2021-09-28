@@ -2,6 +2,7 @@ import main_html from './main_device.html'
 import device_detail_html from './device_detail.html'
 import {Persistent_Container} from '../../libs/container.js'
 import {message_types, device_commands} from '../../messages/types.js'
+import {active_shine} from '../../helper/effect.js'
 
 const template = document.createElement('template');
 template.innerHTML = main_html;
@@ -49,6 +50,12 @@ export const main_device = new Persistent_Container(template,
 
 const template_detail = document.createElement('template');
 template_detail.innerHTML = device_detail_html;
+
+function shine(attr, data, el)
+{
+  if(!data) return;
+  if(attr in data) active_shine(el);
+}
 
 class Device_Detail_View{
   constructor(container, instance)
@@ -116,24 +123,54 @@ class Device_Detail_View{
     container.appendChild(temp);
   }
 
-  update(device)
+  update(device, data)
   {
     this._title.textContent = device.mac;
+
     this._id.textContent = device.id;
+    shine('id', data, this._id);
+
     this._name.textContent = device.name;
+    shine('name', data, this._name);
+
     this._fw.textContent = device.firmware_version;
+    shine('version_fw', data, this._fw);
+
     this._hw.textContent = device.hardware_version;
+    shine('version_hw', data, this._hw);
+
     this._endpoint.textContent = device.endpoint.addr + ':' + device.endpoint.port;
+    shine('endpoint', data, this._endpoint);
+
     this._layer.textContent = device.layer;
+    shine('layer', data, this._layer);
+
     this._parent.textContent = device.parent;
+    shine('parent', data, this._parent);
+
     this._netid.textContent = device.net_id;
+    shine('net_id', data, this._netid);
+
     this._channel.textContent = `${device.channel} / ${device.channel_config}`;
+    shine('ch_conn', data, this._channel);
+
     this._macap.textContent = device.mac_ap;
+    shine('mac_ap', data, this._macap);
+
     this._children.textContent = device.children;
+    shine('children_table', data, this._children);
+
     this._has_rtc.textContent = device.has_rtc;
+    shine('has_rtc', data, this._has_rtc);
+
     this._has_temp.textContent = device.has_temp_sensor;
+    shine('has_temp_sensor', data, this._has_temp);
+
     this._rssi.textContent = device.rssi.length ? device.rssi[device.rssi.length - 1].value : '<no value>';
+    shine('rssi', data, this._rssi);
+
     this._temp.textContent = device.temperature.length ? device.temperature[device.temperature.length - 1].value : '<no value>';
+    shine('temp', data, this._temp);
 
     let value;
     if(device.gpios.length)
@@ -143,5 +180,6 @@ class Device_Detail_View{
     }
     else value = '<no value>';
     this._gpios.textContent = value;
+    shine('gpios', data, this._gpios);
   }
 }

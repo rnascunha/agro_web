@@ -58,8 +58,9 @@
   border-radius: 15px;
 }
 
-#main #header #admin-portal-label
+#main #header .drop-menu-item-text
 {
   width: 100%;
   text-align: center;
+  user-select: none;
 }

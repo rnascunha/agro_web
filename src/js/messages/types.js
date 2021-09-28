@@ -2,7 +2,8 @@
 export const message_types = {
   USER: 'user',
   DEVICE: 'device',
-  REQUEST: 'request'
+  REQUEST: 'request',
+  REPORT: 'report'
 }
 Object.freeze(message_types);
 
@@ -22,4 +23,9 @@ export const device_commands = {
   LIST: 'list',
   DATA: 'data',
   EDIT: 'edit'
+}
+
+export const report_commands = {
+  LIST: 'list',
+  DEVICE: 'device'
 }

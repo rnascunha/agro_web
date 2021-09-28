@@ -7,7 +7,8 @@ import {policy_types} from '../messages/policy_types.js'
 import {Notify_View_Icon, Notify} from '../libs/notify.js'
 import {message_types,
         user_commands,
-        device_commands} from '../messages/types.js'
+        device_commands,
+        report_commands} from '../messages/types.js'
 import {admin_portal} from '../containers/admin_portal/admin_portal.js'
 import {main_container} from '../containers/main/main_portal.js'
 import {main_device} from '../containers/main/main_device.js'
@@ -16,10 +17,16 @@ import {main_job} from '../containers/main/main_job.js'
 import {main_image} from '../containers/main/main_image.js'
 import {main_app} from '../containers/main/main_app.js'
 import {Container_Manager} from '../libs/container.js'
+import {Report} from '../classes/report.js';
 
 function logout_start()
 {
   document.querySelector('#main-load-screen').show();
+}
+
+function blur_dropmenu()
+{
+  document.querySelectorAll('.drop-menu').forEach(el => el.blur());
 }
 
 function notify_handler(data, instance)
@@ -72,6 +79,8 @@ function run_main(data)
                                   device_table: main_device.container.querySelector('#main-device-tbody')
                                 }
                               });
+  const report = new Report(document.querySelector('#report-history-container'),
+                            document.querySelector('#report-pop'));
 
   /**
    * Enable/disabling containers that are only avaiable to user admins
@@ -101,6 +110,16 @@ function run_main(data)
                       device_commands.EDIT,
                       data => {
                         instance.device_list.process(data);
+                      })
+  instance.add_handler(message_types.REPORT,
+                      report_commands.DEVICE,
+                      data => {
+                        report.add(data.data, true);
+                      })
+  instance.add_handler(message_types.REPORT,
+                      report_commands.LIST,
+                      data => {
+                        report.add(data.data, true);
                       })
 
   /**
@@ -134,7 +153,15 @@ function run_main(data)
   document.querySelector('#admin-portal').addEventListener('click', ev => {
       main_manager.run('user_admin', instance);
       //This is to make the drop menu disappear
-      document.querySelectorAll('.drop-menu').forEach(el => el.blur());
+     blur_dropmenu();
+  });
+
+  /**
+   * Setting Report history event
+   */
+   document.querySelector('#menu-report-history').addEventListener('click', ev => {
+    report.show();
+    blur_dropmenu()
   });
 
   /**
