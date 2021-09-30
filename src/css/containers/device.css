@@ -53,7 +53,8 @@
 }
 
 #device-container #device-detail-container .device-detail-close:hover{
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }
 
 @media only screen and (max-width: 600px) {

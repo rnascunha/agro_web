@@ -4,7 +4,13 @@
   --primary-color-light: rgb(30, 50, 200);
   --secondary-color: rgb(0, 50, 150);
   --text-color: white;
-  --font-family: 'Indie Flower', cursive;
+  /* --font-family: 'Indie Flower', cursive; */
+  --font-family: 'Jura', sans-serif;
+  /* --font-family: 'PT Sans', sans-serif; */
+  /* --font-family: 'Gemunu Libre', sans-serif; */
+  /* --font-family: 'Montserrat', sans-serif; */
+  /* font-family: 'Roboto', sans-serif; */
+  --hover-effect: -0.06ex 0 currentColor, 0.06ex 0 currentColor;
 }
 
 * {

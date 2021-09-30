@@ -6,7 +6,7 @@ const attributes = ['name', 'version_fw', 'version_hw', 'endpoint',
                     //Config
                     'has_rtc', 'has_temp_sensor',
                     //Sensors
-                    'gpios', 'rssi', 'temp'];
+                    'gpios', 'gpios_out', 'rssi', 'temp'];
 
 class Device{
   constructor(id, mac, views = {})
@@ -35,6 +35,7 @@ class Device{
 
     //Sensor
     this._gpios = [];
+    this._gpios_out = [];
     this._rssi = [];
     this._temp = [];
 
@@ -64,6 +65,7 @@ class Device{
   get has_temp_sensor(){ return this._has_temp_sensor; }
 
   get gpios(){ return this._gpios; }
+  get gpios_out(){ return this._gpios_out; }
   get rssi(){ return this._rssi; }
   get temperature(){ return this._temp; }
   get temp(){ return this._temp; }
@@ -199,7 +201,7 @@ class Devices_Table_Line_View{
     ['id', 'mac', 'name', 'firmware_version',
     'hardware_version', 'endpoint', 'layer',
     'parent', 'net_id', 'channel', 'mac_ap', 'children',
-    'has_rtc', 'has_temp_sensor', 'gpios', 'rssi',
+    'has_rtc', 'has_temp_sensor', 'gpios', 'gpios_out', 'rssi',
     'temperature'].forEach(attr => {
       switch(attr)
       {
@@ -217,7 +219,19 @@ class Devices_Table_Line_View{
           if(device.gpios.length)
           {
             let value = device.gpios[device.gpios.length - 1].value;
-            value = ('00000000' + value.toString(2)).slice(-7);
+            value = ('000000000' + value.toString(2)).slice(-8);
+            this._make_cell(value, attr in data);
+          }
+          else
+          {
+            this._make_cell('');
+          }
+          break;
+        case 'gpios_out':
+          if(device.gpios_out.length)
+          {
+            let value = device.gpios_out[device.gpios_out.length - 1].value;
+            value = ('00' + value.toString(2)).slice(-3);
             this._make_cell(value, attr in data);
           }
           else

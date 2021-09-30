@@ -59,13 +59,15 @@
 
 #main-content #admin-portal-main #admin-user-tbody tr:hover td:not(.delete-data)
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
   cursor: pointer;
 }
 
 #main-content #admin-portal-main #admin-user-tbody tr td.delete-data:hover
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
   text-decoration: underline;
 }
 

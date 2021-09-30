@@ -79,31 +79,41 @@
 
 #report-history-container tbody tr:hover
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }
 
 #report-history-container .report-error td,
 #report-pop.report-error
 {
-  background-color: rgba(200, 0, 0, 0.8);
+  background-color: rgb(200, 0, 0);
 }
 
 #report-history-container .report-warning td,
 #report-pop.report-warning
 {
-  background-color: rgba(180, 180, 0, 0.8);
+  background-color: rgb(180, 180, 0);
 }
 
 #report-history-container .report-success td,
 #report-pop.report-success
 {
-  background-color: rgba(0, 180, 0, 0.8);
+  background-color: rgb(0, 180, 0);
 }
 
 #report-history-container .report-info td,
 #report-pop.report-info
 {
-  background-color: rgba(0, 0, 180, 0.8);
+  background-color: rgb(0, 0, 180);
+}
+
+#report-pop{
+  opacity: 0.9;
+}
+
+#report-pop:hover{
+  opacity: 1;
+  text-shadow: var(--hover-effect);
 }
 
 /**
@@ -146,13 +156,15 @@
 
 #report-pop #report-pop-close:hover
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }
 
 @media only screen and (max-width: 768px) {
   #report-history-container
   {
     --inner-width: 98%;
+    --max-inner-width: 98%;
   }
 
   #report-pop

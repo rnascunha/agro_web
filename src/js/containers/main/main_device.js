@@ -78,6 +78,7 @@ class Device_Detail_View{
     this._has_temp = temp.querySelector('.detail-has-temp');
     this._rssi = temp.querySelector('.detail-rssi');
     this._gpios = temp.querySelector('.detail-gpios');
+    this._gpios_out = temp.querySelector('.detail-gpios-out');
     this._temp = temp.querySelector('.detail-temp');
 
     const edit_name = temp.querySelector('.detail-edit-name');
@@ -176,10 +177,19 @@ class Device_Detail_View{
     if(device.gpios.length)
     {
       value = device.gpios[device.gpios.length - 1].value;
-      value = ('00000000' + value.toString(2)).slice(-7);
+      value = ('000000000' + value.toString(2)).slice(-8);
     }
     else value = '<no value>';
     this._gpios.textContent = value;
     shine('gpios', data, this._gpios);
+
+    if(device.gpios_out.length)
+    {
+      value = device.gpios_out[device.gpios_out.length - 1].value;
+      value = ('00' + value.toString(2)).slice(-3);
+    }
+    else value = '<no value>';
+    this._gpios_out.textContent = value;
+    shine('gpios_out', data, this._gpios_out);
   }
 }

@@ -44,5 +44,6 @@
 }
 
 .main-container tr:hover td{
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }

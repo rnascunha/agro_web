@@ -100,7 +100,8 @@
 
 .popup-container .popup-content .popup-option-container .popup-option:hover
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }
 
 .popup-container .popup-content .popup-option-container .popup-option:active
@@ -180,7 +181,8 @@
 
 .popup-container .popup-content #group-user-fieldset .group-user-check:hover
 {
-  font-weight: bold;
+  /* font-weight: bold; */
+  text-shadow: var(--hover-effect);
 }
 
 @media only screen and (max-width: 600px) {
