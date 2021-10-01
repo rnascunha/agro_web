@@ -24,9 +24,10 @@ function run_once_device(container, instance)
 
   let device = null;
   tbody.addEventListener('click', ev => {
-    detail.classList.add('show-container');
     let device_mac = ev.composedPath()[1].dataset.device;
+    if(!device_mac) return;
 
+    detail.classList.add('show-container');
     if(device)
       device.delete_view('detail');
 
@@ -47,6 +48,14 @@ export const main_device = new Persistent_Container(template,
                                             init_device_portal,
                                             finish_device_portal,
                                             run_once_device);
+
+export function create_device_container()
+{
+  return new Persistent_Container(template,
+                                  init_device_portal,
+                                  finish_device_portal,
+                                  run_once_device);
+}
 
 const template_detail = document.createElement('template');
 template_detail.innerHTML = device_detail_html;

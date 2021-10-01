@@ -153,10 +153,10 @@ function run_login({storage, registration}, auto_connect = true)
   connect.addEventListener('click', login);
 }
 
-const div = document.createElement('div');
-div.innerHTML = login_html;
+const template = document.createElement('template');
+template.innerHTML = login_html;
 page_manager.add('login',
-  new Page(div.firstChild, run_login,
+  new Page(template, run_login,
             {
               title: 'Agro Telemetry - Login',
               'theme-color': '#0064c8'

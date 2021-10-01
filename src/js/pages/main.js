@@ -11,7 +11,7 @@ import {message_types,
         report_commands} from '../messages/types.js'
 import {admin_portal} from '../containers/admin_portal/admin_portal.js'
 import {main_container} from '../containers/main/main_portal.js'
-import {main_device} from '../containers/main/main_device.js'
+import {create_device_container} from '../containers/main/main_device.js'
 import {main_net} from '../containers/main/main_net.js'
 import {main_job} from '../containers/main/main_job.js'
 import {main_image} from '../containers/main/main_image.js'
@@ -63,6 +63,11 @@ function run_main(data)
     }, 'autoconnect');
   }
 
+  /**
+   * Creating container
+   */
+  const main_device = create_device_container();
+
   const instance = new Instance(data.ws,
                                 new Logged(data.message.data.id,
                                           data.message.data.username,
@@ -88,6 +93,26 @@ function run_main(data)
   Policy.can(instance.logged_user, policy_types.user_admin)
     ? Policy.show_user_admin_element()
     : Policy.hide_user_admin_element();
+
+    /**
+     * Initiating main container manager
+     */
+    const main_manager = new Container_Manager(document.querySelector('#main-content'));
+    /**
+     * registering all main containers containers
+     */
+    main_manager.add('main', main_container);
+    main_manager.add('user_admin', admin_portal);
+    main_manager.add('device', main_device);
+    main_manager.add('net', main_net);
+    main_manager.add('job', main_job);
+    main_manager.add('image', main_image);
+    main_manager.add('app', main_app);
+
+  /**
+   * Initiaing persistent containers
+   */
+   main_device.install(instance);
 
   /**
    * Adding instance handlers (websocket handlers)
@@ -121,27 +146,6 @@ function run_main(data)
                       data => {
                         report.add(data.data, true);
                       })
-
-  /**
-   * Initiating main container manager
-   */
-  const main_manager = new Container_Manager(document.querySelector('#main-content'));
-  /**
-   * registering all main containers containers
-   */
-  main_manager.add('main', main_container);
-  main_manager.add('user_admin', admin_portal);
-  main_manager.add('device', main_device);
-  main_manager.add('net', main_net);
-  main_manager.add('job', main_job);
-  main_manager.add('image', main_image);
-  main_manager.add('app', main_app);
-
-  /**
-   * Initiaing persistent containers
-   */
-   main_device.install(instance);
-
   /**
    * Setting username
    */
@@ -232,11 +236,11 @@ function run_main(data)
 /**
  * Creating and registering main page
  */
-const div = document.createElement('div');
-div.innerHTML = main_html;
+const template = document.createElement('template');
+template.innerHTML = main_html;
 page_manager.add('main',
           new Page(
-            div.firstChild,
+            template,
             run_main,
             {
               title: 'Agro Telemetry',
