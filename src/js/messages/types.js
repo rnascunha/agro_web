@@ -22,6 +22,7 @@ Object.freeze(user_commands);
 export const device_commands = {
   LIST: 'list',
   DATA: 'data',
+  TREE: 'tree',
   EDIT: 'edit'
 }
 

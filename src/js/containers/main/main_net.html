@@ -1,3 +1,39 @@
-<div>
-    <h1>This is the main NET dashboard</h1>
+<div id=net-container class=main-container>
+  <h1>Net</h1>
+  <div id=net-container-tree></div>
+  <div id=net-container-list>
+    <div>
+      <h2>Unconnected</h2>
+      <table>
+        <thead>
+          <tr><th>Devices</th></tr>
+        </thead>
+        <tbody id=net-devices-unconnected>
+          <tr><td><em>No devices unconnected</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table>
+        <h2>Endpoints</h2>
+        <thead>
+          <tr><th>Device</th><th>Endpoint</th></tr>
+        </thead>
+        <tbody id=net-devices-endpoints>
+          <tr><td colspan=2><em>No endpoints avaiable</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table>
+        <h2>Tree</h2>
+        <thead>
+          <tr><th>#</th><th>Device</th><th>Parent</th><th>Children</th></tr>
+        </thead>
+        <tbody id=net-devices-tree>
+          <tr><td colspan=5><em>No devices connected</em></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

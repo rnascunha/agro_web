@@ -1,6 +1,11 @@
 <div id=main-device-detail>
   <h1 class=detail-title>11:22:33:44:55:66</h1>
   <div class=detail-content>
+    <div class=detail-line>
+      <span class=detail-icon><i class="fas fa-link"></i></span>
+      <span class=detail-text>Status</span>
+      <span class='detail-connected detail-value shine'></span>
+    </div>
     <div class=detail-general>
       <h2>General</h2>
       <div class=detail-line>
@@ -101,8 +106,9 @@
         <span class='detail-temp detail-value shine'></span>
       </div>
     </div>
-    <div>
+    <div class=detail-device-commands>
       <h2>Commands</h2>
+      <label class=detail-device-command-force><input type=checkbox> Force</label>
       <div class=detail-line>
         <span class=detail-icon><i class="fas fa-bullseye"></i></span>
         <span class=detail-text>AC Load</span>

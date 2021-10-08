@@ -29,7 +29,6 @@ export class Persistent_Container
 {
   constructor(template, script_init = null, script_end = null, run_once = null)
   {
-    this._template = template;
     this._container = template.content.firstElementChild.cloneNode(true);
     this._script_init = script_init;
     this._script_end = script_end;

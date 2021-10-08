@@ -12,12 +12,13 @@ import {message_types,
 import {admin_portal} from '../containers/admin_portal/admin_portal.js'
 import {main_container} from '../containers/main/main_portal.js'
 import {create_device_container} from '../containers/main/main_device.js'
-import {main_net} from '../containers/main/main_net.js'
+import {create_net_container} from '../containers/main/main_net.js'
 import {main_job} from '../containers/main/main_job.js'
 import {main_image} from '../containers/main/main_image.js'
 import {main_app} from '../containers/main/main_app.js'
 import {Container_Manager} from '../libs/container.js'
-import {Report} from '../classes/report.js';
+import {Report} from '../classes/report.js'
+import {Detail_View} from '../classes/detail_view.js'
 
 function logout_start()
 {
@@ -43,6 +44,24 @@ function notify_handler(data, instance)
     notify.get_subscription();
 }
 
+function update_endpoints(instance, data)
+{
+    data.data.tree.forEach(d => {
+      const ep = instance.tree.get_endpoint(d.device);
+      if(ep)
+      {
+        instance.device_list.process({
+          type: message_types.DEVICE,
+          command: device_commands.DATA,
+          data: {
+            device: d.device,
+            endpoint: ep
+          }
+        }, true);
+      }
+    })
+}
+
 function run_main(data)
 {
   if(data.storage)
@@ -66,7 +85,8 @@ function run_main(data)
   /**
    * Creating container
    */
-  const main_device = create_device_container();
+  const main_device = create_device_container(),
+        main_net = create_net_container();
 
   const instance = new Instance(data.ws,
                                 new Logged(data.message.data.id,
@@ -81,7 +101,10 @@ function run_main(data)
                                 data.storage,
                               {
                                 containers: {
-                                  device_table: main_device.container.querySelector('#main-device-tbody')
+                                  detail: new Detail_View(),
+                                  device_table: main_device.container.querySelector('#main-device-tbody'),
+                                  tree_container: main_net.container.querySelector('#net-container-list'),
+                                  tree_graph: main_net.container.querySelector('#net-container-tree')
                                 }
                               });
   const report = new Report(document.querySelector('#report-history-container'),
@@ -113,6 +136,7 @@ function run_main(data)
    * Initiaing persistent containers
    */
    main_device.install(instance);
+   main_net.install(instance);
 
   /**
    * Adding instance handlers (websocket handlers)
@@ -135,6 +159,13 @@ function run_main(data)
                       device_commands.EDIT,
                       data => {
                         instance.device_list.process(data);
+                      })
+  instance.add_handler(message_types.DEVICE,
+                      device_commands.TREE,
+                      data => {
+                        instance.tree.process(data, instance, true);
+                        instance.device_list.set_connected(data.data.unconnected, true);
+                        update_endpoints(instance, data);
                       })
   instance.add_handler(message_types.REPORT,
                       report_commands.DEVICE,

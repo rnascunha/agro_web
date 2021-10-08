@@ -1,8 +1,5 @@
 #device-container{
-  /* display: flex; */
-  position: relative;
-  height: 100%;
-  padding: 5px 5px 0px 5px;
+
 }
 
 #device-container #device-main-container{
@@ -14,51 +11,9 @@
 #device-container #device-main-container tbody td{
   overflow: hidden;
   position: relative;
-}
-
-#device-container #device-detail-container
-{
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 98%;
-  background-color: var(--primary-color-light);
-  border-top: 1px solid black;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
-  width: 0%;
-  overflow: hidden;
-  transition: all 0.2s ease-out;
-  border-radius: 15px 0px 0px 15px;
-  z-index: 11;
-}
-
-#device-container #device-detail-container.show-container{
-  width: 50%;
-  transition: all 0.2s ease-out;
-  padding: 10px;
-  box-shadow: -1px 1px 1px #000,
-              -2px 2px 2px #111;
-}
-
-#device-container #device-detail-container .device-detail-close
-{
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  font-size: 50px;
-  color: var(--text-color);
-  transform: translateY(-15px);
   cursor: pointer;
 }
 
-#device-container #device-detail-container .device-detail-close:hover{
-  /* font-weight: bold; */
-  text-shadow: var(--hover-effect);
-}
-
-@media only screen and (max-width: 600px) {
-  #device-container #device-detail-container.show-container{
-    width: 100%;
-  }
+#device-container #device-main-container tbody tr[data-connected='false']{
+  color: rgb(150, 150, 150);
 }

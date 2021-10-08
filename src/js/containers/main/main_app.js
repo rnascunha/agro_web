@@ -6,12 +6,10 @@ template.innerHTML = main_html;
 
 function init_main_portal(container, instance)
 {
-  console.log('main containet init');
 }
 
 function finish_main_portal(container, instance)
 {
-  console.log('main container finish');
 }
 
 export const main_app = new Persistent_Container(template,

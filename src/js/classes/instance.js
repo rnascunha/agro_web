@@ -1,7 +1,8 @@
 import {Response_Handler_List} from './websocket.js'
-import {Device_List} from './device.js'
+import {Device_List, Device_Detail_View} from './device.js'
 import {make_message} from '../messages/make.js'
 import {page_manager} from '../libs/page.js'
+import {Device_Tree} from './tree.js'
 
 export class Instance
 {
@@ -18,6 +19,8 @@ export class Instance
     this._storage = storage;
     this._device_list = new Device_List(options.containers.device_table);
     this._response_handler = new Response_Handler_List();
+    this._tree = new Device_Tree(options.containers.tree_container, options.containers.tree_graph);
+    this._detail = options.containers.detail;
 
     this._register_ws_events();
   }
@@ -31,6 +34,9 @@ export class Instance
   get registration(){ return this._registration; }
 
   get device_list(){ return this._device_list; }
+  get tree(){ return this._tree; }
+
+  get detail(){ return this._detail; }
 
   add_handler(type, command, ...args)
   {
@@ -45,6 +51,28 @@ export class Instance
   send(type, command, data)
   {
     this._ws.send(make_message(type, command, data));
+  }
+
+  open_device_detail(mac, show = true)
+  {
+    const device = this.device_list.list[mac];
+    if(!device) return false;
+
+    this._detail.clear();
+
+    const view = new Device_Detail_View(this._detail.content, this);
+    device.register_view('detail', view);
+    view.update(device);
+
+    if(show)
+      this._detail.show();
+
+    this._detail.register_close('detail', device => {
+      device.register_view('detail');
+      device = null;
+    })
+
+    return this._detail;
   }
 
   _register_ws_events()

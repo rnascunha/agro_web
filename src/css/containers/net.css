@@ -1,0 +1,36 @@
+/* #net-container{
+  height: 100%;
+  max-height: 100%;
+} */
+
+#net-container #net-container-list
+{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#net-container #net-container-list div
+{
+  padding: 5px;
+}
+
+#net-container #net-container-list div h2
+{
+  text-align: center;
+  padding: 2px;
+}
+
+#net-container #net-container-list td[data-device]
+{
+  cursor: pointer;
+}
+
+#net-container #net-container-list #net-devices-tree
+{
+  table-layout: fixed;
+}
+
+#net-container #net-container-list #net-devices-tree td{
+  word-wrap: break-word;
+  max-width: 20ch;
+}

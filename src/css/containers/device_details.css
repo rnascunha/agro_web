@@ -143,7 +143,6 @@
   background-color: var(--primary-color-dark);
   font-family: var(--font-family);
   padding: 3px 3px;
-  /* border: 1px solid black; */
 }
 
 .detail-content .detail-value.detail-packets button:hover
@@ -154,4 +153,30 @@
 .detail-content .detail-value.detail-packets button:active
 {
   transform: translateY(2px);
+}
+
+.detail-content .detail-device-commands[data-disabled='true'] .detail-value button
+{
+  cursor: not-allowed;
+  border-style: unset;
+}
+
+.detail-content .detail-device-commands[data-disabled='true'] .detail-value button:hover
+{
+  font-weight: normal;
+}
+
+.detail-content .detail-device-commands[data-disabled='true'] .detail-value button:active
+{
+  transform: none;
+}
+
+.detail-content .detail-device-commands[data-disabled='false'] .detail-device-command-force
+{
+  display: none;
+}
+
+.detail-content .detail-device-commands[data-disabled='true'] .detail-device-command-force
+{
+  cursor: pointer;
 }
