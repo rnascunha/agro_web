@@ -1,16 +1,16 @@
 
-#main #header .drop-menu{
+#main #header #options .drop-menu{
   position: relative;
   outline: none;
 }
 
-#main #header .drop-menu .drop-menu-content{
+#main #header #options .drop-menu .drop-menu-content{
   left: auto;
   right: -5px;
   transform: translateY(3px);
 }
 
-#main #header .drop-menu .drop-menu-content{
+#main #header #options .drop-menu .drop-menu-content{
   display: none;
   position: absolute;
   /* positining at center */
@@ -23,11 +23,10 @@
   border-radius: 10px 10px 10px 10px;
   border: 1px solid black;
   overflow: hidden;
-  z-index: 10;
   min-width: 200px;
 }
 
-#main #header .drop-menu-content p
+#main #header #options .drop-menu-content p
 {
   padding: 5px;
   background-color: var(--primary-color-dark);
@@ -36,7 +35,7 @@
   align-items: center;
 }
 
-#main #header .drop-menu-content p:hover
+#main #header #options .drop-menu .drop-menu-content p:hover
 {
   text-decoration: underline;
 }
@@ -44,21 +43,22 @@
 /**
  * Using focus (with html:tabindex=0) just active the menu at clicling
  */
-#main #header .drop-menu:focus .drop-menu-content{
+#main #header #options .drop-menu:focus .drop-menu-content
+{
   display: block;
 }
 
-#main #header .icon-hover{
+#main #header #options .icon-hover{
   padding: 2px;
 }
 
-#main #header .icon-hover:hover{
+#main #header #options .icon-hover:hover{
   background-color: var(--text-color);
   color: var(--primary-color-dark);
   border-radius: 15px;
 }
 
-#main #header .drop-menu-item-text
+#main #header #options .drop-menu-item-text
 {
   width: 100%;
   text-align: center;

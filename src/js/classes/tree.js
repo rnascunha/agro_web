@@ -8,6 +8,8 @@ export class Device_Tree{
     this._tree = [];
     this._view = [new Device_Tree_Table_View(container),
                   new Device_Tree_Graph(container_graph)];
+
+    this._show_name = false;
   }
 
   get unconnected(){ return this._unconnected; }
@@ -37,42 +39,64 @@ export class Device_Tree{
 
   process(data, instance, update_view = false)
   {
-    this._unconnected = data.data.unconnected;
-    this._endpoints = data.data.endpoints;
-    this._tree = data.data.tree;
+    this._unconnected = []
+    data.data.unconnected.forEach(d => {
+      if(d in instance.device_list.list)
+        this._unconnected.push(instance.device_list.list[d]);
+        instance.device_list.list[d].children = [];
+    });
+
+    this._endpoints = [];
+    data.data.endpoints.forEach(d => {
+      if(d.device in instance.device_list.list)
+        this._endpoints.push(instance.device_list.list[d.device]);
+    });
+
+    this._tree = [];
+    data.data.tree.forEach(d => {
+      if(d.device in instance.device_list.list)
+      {
+        this._tree.push(instance.device_list.list[d.device]);
+        instance.device_list.list[d.device].children = d.children;
+      }
+      else if(d.layer == -1 || d.layer == 0)
+      {
+        this._tree.push({mac: d.device, layer: d.layer, children: d.children});
+      }
+    });
 
     if(update_view)
     {
-      this.update_view(instance);
+      this.update_view(instance, this._show_name);
     }
   }
 
   /**
    * View
    */
-   update_view(instance)
+   update_view(instance, show_name)
    {
-     this._view.forEach(v => v.update(this, instance));
+     this._show_name = show_name === undefined ? this._show_name : show_name;
+     this._view.forEach(v => v.update(this, instance, this._show_name));
    }
 }
 
 class Device_Tree_Table_View{
   constructor(container)
   {
-    // container.appendChild(template.content.cloneNode(true));
     this._endpoints = container.querySelector('#net-devices-endpoints');
     this._unconnected = container.querySelector('#net-devices-unconnected');
     this._tree = container.querySelector('#net-devices-tree');
   }
 
-  update(model)
+  update(model, instance, show_name)
   {
-    this._update_unconnected(model);
-    this._update_endpoints(model);
-    this._update_tree(model);
+    this._update_unconnected(model, show_name);
+    this._update_endpoints(model, show_name);
+    this._update_tree(model, show_name);
   }
 
-  _update_unconnected(model)
+  _update_unconnected(model, show_name)
   {
     if(!model.unconnected.length)
     {
@@ -85,14 +109,15 @@ class Device_Tree_Table_View{
         const line = document.createElement('tr'),
               col = document.createElement('td');
 
-        col.textContent = dev;
+        col.dataset.device = dev.mac;
+        col.textContent = get_name(dev, show_name);
         line.appendChild(col);
         this._unconnected.appendChild(line);
       });
     }
   }
 
-  _update_endpoints(model)
+  _update_endpoints(model, show_name)
   {
     if(!model.endpoints.length)
     {
@@ -105,7 +130,8 @@ class Device_Tree_Table_View{
         const line = document.createElement('tr'),
               dcol = document.createElement('td'),
               dep = document.createElement('td');
-        dcol.textContent = dev.device;
+        dcol.dataset.device = dev.mac;
+        dcol.textContent = get_name(dev, show_name);
         dep.textContent = `${dev.endpoint.addr}:${dev.endpoint.port}`;
 
         line.appendChild(dcol);
@@ -116,7 +142,7 @@ class Device_Tree_Table_View{
     }
   }
 
-  _update_tree(model)
+  _update_tree(model, show_name)
   {
     if(!model.tree.length)
     {
@@ -132,15 +158,28 @@ class Device_Tree_Table_View{
               dcol = document.createElement('td'),
               dch = document.createElement('td');
 
-        dlayer.textContent = dev.layer;
-        dcol.textContent = dev.device;
-        dparent.textContent = dev.parent;
-        dch.textContent = dev.children.join(' ');
-        dch.style.wordWrap = 'break-word';
+        dlayer.textContent = dev.layer != -1 ? dev.layer : '-';
+        dcol.textContent = dev.layer != -1 ? get_name(dev, show_name) : 'daemon';
+        dparent.textContent = dev.layer == -1 ? '-' : (dev.layer == 0) ?
+                                                        'daemon'
+                                                        : get_device_name(dev.parent, model.tree, show_name);
         dch.style.width = '100%';
 
+        dev.children.forEach((c, i, chl) => {
+          const s = document.createElement('span');
+          // s.textContent = c + ' ';
+          s.textContent = get_device_name(c, model.tree, show_name);
+          if(dev.layer > -1)
+            s.dataset.device = c;
+          dch.appendChild(s);
+          if(i = (chl.length - 1))
+          {
+            dch.appendChild(document.createElement('br'));
+          }
+        });
+
         if(dev.layer > 0)
-          dcol.dataset.device = dev.device;
+          dcol.dataset.device = dev.mac;
         if(dev.layer > 1)
           dparent.dataset.device = dev.parent;
 
@@ -161,9 +200,9 @@ class Device_Tree_Graph{
     this._container = container;
   }
 
-  update(data, instance)
+  update(data, instance, show_name)
   {
-    draw_device_tree(this._make_data(data.tree), this._container, instance);
+    draw_device_tree(this._make_data(data.tree), this._container, instance, show_name);
   }
 
   _make_data(data)
@@ -173,13 +212,11 @@ class Device_Tree_Graph{
 
   _make_node(mac, data)
   {
-    let device = data.find(d => d.device == mac);
+    let device = data.find(d => d.mac == mac);
     if(!device) return {};
 
     let nd = {
-      device: mac,
-      layer: device.layer,
-      parent: device.parent,
+      device: device,
       children: []
     }
 
@@ -187,4 +224,19 @@ class Device_Tree_Graph{
 
     return nd;
   }
+}
+
+function get_name(device, show_name)
+{
+  if(!show_name) return device.mac;
+  return device.name ? device.name : device.mac;
+}
+
+function get_device_name(device, data, show_name)
+{
+  if(!show_name) return device;
+
+  let devp = data.find(d => d.mac == device || d.mac_ap == device);
+  if(!devp) return device;
+  return devp.name ? devp.name : device;
 }

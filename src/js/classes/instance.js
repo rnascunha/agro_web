@@ -15,12 +15,15 @@ export class Instance
   {
     this._ws = ws;
     this._logged = logged;
+    this._server_addr = server_addr;
     this._registration = registration;
     this._storage = storage;
     this._device_list = new Device_List(options.containers.device_table);
     this._response_handler = new Response_Handler_List();
-    this._tree = new Device_Tree(options.containers.tree_container, options.containers.tree_graph);
+    this._tree = new Device_Tree(options.containers.tree_container,
+                                  options.containers.tree_graph);
     this._detail = options.containers.detail;
+    this._main_content = options.containers.main_content;
 
     this._register_ws_events();
   }
@@ -37,6 +40,8 @@ export class Instance
   get tree(){ return this._tree; }
 
   get detail(){ return this._detail; }
+
+  get main_container(){ return this._main_content; }
 
   add_handler(type, command, ...args)
   {

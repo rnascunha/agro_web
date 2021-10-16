@@ -17,9 +17,8 @@ function finish_device_portal(container, instance)
 
 function run_once_device(container, instance)
 {
-  const tbody = container.querySelector('#main-device-tbody');
-
-  tbody.addEventListener('click', ev => {
+  container.querySelector('#main-device-tbody')
+    .addEventListener('click', ev => {
     let device_mac = ev.composedPath()[1].dataset.device;
     if(!device_mac) return;
 

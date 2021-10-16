@@ -29,6 +29,7 @@ class Device{
     //Network
     this._ch_config = null;
     this._ch_conn = null;
+    this._children = []; //direct children
     this._children_table = [];
     this._layer = -1;
     this._mac_ap = null;
@@ -62,7 +63,7 @@ class Device{
   get channel_config(){ return this._ch_config; }
   get channel(){ return this._ch_conn; }
 
-  get children(){ return this._children_table; }
+  get children(){ return this._children; }
   get children_table(){ return this._children_table; }
   get layer(){ return this._layer; }
   get mac_ap(){ return this._mac_ap; }
@@ -77,6 +78,11 @@ class Device{
   get rssi(){ return this._rssi; }
   get temperature(){ return this._temp; }
   get temp(){ return this._temp; }
+
+  set children(chs)
+  {
+    this._children = chs;
+  }
 
   set_connected(val, update_view = false)
   {
@@ -427,7 +433,7 @@ export class Device_Detail_View{
     this._macap.textContent = device.mac_ap;
     shine('mac_ap', data, this._macap);
 
-    this._children.textContent = device.children.join(' | ');
+    this._children.textContent = device.children_table.join(' | ');
     shine('children_table', data, this._children);
 
     this._has_rtc.textContent = device.has_rtc;

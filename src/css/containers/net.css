@@ -9,6 +9,15 @@
   flex-wrap: wrap;
 }
 
+#net-container label{
+  cursor: pointer;
+}
+#net-container label:hover
+{
+  /* box-shadow: var(--hover-effect); */
+  text-decoration: underline;
+}
+
 #net-container #net-container-list div
 {
   padding: 5px;
@@ -20,7 +29,8 @@
   padding: 2px;
 }
 
-#net-container #net-container-list td[data-device]
+#net-container #net-container-list td[data-device],
+#net-container #net-container-list td span[data-device]
 {
   cursor: pointer;
 }
@@ -33,4 +43,10 @@
 #net-container #net-container-list #net-devices-tree td{
   word-wrap: break-word;
   max-width: 20ch;
+}
+
+#net-container #net-container-list tbody td[data-device]:hover,
+#net-container #net-container-list tbody td span[data-device]:hover
+{
+  text-decoration: underline;
 }

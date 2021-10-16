@@ -33,6 +33,7 @@
 
 #main #header #options{
   justify-self: end;
+  z-index: 20;
 }
 
 #main #header #options *{

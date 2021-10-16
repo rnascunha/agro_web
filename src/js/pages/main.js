@@ -88,6 +88,8 @@ function run_main(data)
   const main_device = create_device_container(),
         main_net = create_net_container();
 
+  const main_content = document.querySelector('#main-content');
+
   const instance = new Instance(data.ws,
                                 new Logged(data.message.data.id,
                                           data.message.data.username,
@@ -102,6 +104,7 @@ function run_main(data)
                               {
                                 containers: {
                                   detail: new Detail_View(),
+                                  main_content: main_content,
                                   device_table: main_device.container.querySelector('#main-device-tbody'),
                                   tree_container: main_net.container.querySelector('#net-container-list'),
                                   tree_graph: main_net.container.querySelector('#net-container-tree')
@@ -120,7 +123,7 @@ function run_main(data)
     /**
      * Initiating main container manager
      */
-    const main_manager = new Container_Manager(document.querySelector('#main-content'));
+    const main_manager = new Container_Manager(main_content);
     /**
      * registering all main containers containers
      */
@@ -234,6 +237,13 @@ function run_main(data)
       .addEventListener('click', ev => {
         side_menu.classList.toggle('show-menu');
       });
+
+    /**
+     * Redrawing tree at the end of animation
+     */
+    side_menu.addEventListener('transitionend', () => {
+      instance.tree.update_view(instance);
+    });
 
     /**
      * Instanling size menu events

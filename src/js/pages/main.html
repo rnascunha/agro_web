@@ -1,92 +1,90 @@
-<!-- <template id=template-main> -->
-  <main id=main>
-    <pop-modal id=report-history-container></pop-modal>
-    <div id=report-pop style=display:none class=shine>
-        <div>
-          <span id=report-pop-text>Data</span>
-          <span id=report-pop-close>&times</span>
-        </div>
+<main id=main>
+  <pop-modal id=report-history-container></pop-modal>
+  <div id=report-pop style=display:none class=shine>
+      <div>
+        <span id=report-pop-text>Data</span>
+        <span id=report-pop-close>&times</span>
+      </div>
+  </div>
+  <load-screen id=main-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
+  <section id=header>
+    <div id=menu>
+      <span id=main-menu class=icon-menu><i class="fas fa-bars"></i></span>
+      <x-input-icon id=search-bar placeholder=search title=Username>
+      <i slot=icon class="fas fa-search"></i>
+      </x-input-icon>
     </div>
-    <load-screen id=main-load-screen><i class="fas fa-spinner fa-pulse"></i></load-screen>
-    <section id=header>
-      <div id=menu>
-        <span id=main-menu class=icon-menu><i class="fas fa-bars"></i></span>
-        <x-input-icon id=search-bar placeholder=search title=Username>
-        <i slot=icon class="fas fa-search"></i>
-        </x-input-icon>
-      </div>
-      <div id=title></div>
-      <div id=options>
-        <!-- <span id=notify-switch-container title='Notify not supported' disabled>
-          <span id=notify-label><i class="fas fa-bell"></i></span>
-          <check-switch id=notify-switch disabled></check-switch>
-        </span> -->
-        <span class=icon-menu id=notify-disabled disabled><i class="fas fa-bell-slash"></i></span>
-        <span class=icon-menu id=notify-enable disabled><i class="fas fa-bell"></i></span>
-        <span class=drop-menu tabindex=0>
-          <span class=icon-menu><i class="fas fa-cog"></i></span>
-          <div class=drop-menu-content>
-            <p id=menu-report-history>
-              <i class="fas fa-clipboard-list"></i>
-              <span class=drop-menu-item-text>Report History</span>
-            </p>
-            <p>option2</p>
-            <p>option3</p>
-            <p>option3</p>
-            <p>option3</p>
-            <p>option3</p>
-          </div>
-        </span>
-        <span class=drop-menu tabindex=0>
-          <span class=icon-menu><i class="fas fa-user"></i></span>
-          <div class=drop-menu-content>
-            <p>
-              <i class="fas fa-signature"></i>
-              <span id=menu-username title='User menu'>my name</span>
-              <span id=main-disconnect title='Logout' class=icon-hover><i class="fas fa-power-off"></i></span>
-            </p>
-            <p id=admin-portal class=is-admin>
-              <i class="fas fa-users-cog"></i>
-              <span class=drop-menu-item-text id=admin-portal-label>Admin portal</span>
-            </p>
-          </div>
-        </span>
-      </div>
-    </section>
-    <section id=main-main>
-      <div id=main-side-menu>
-        <ul>
-          <li id=main-dashboard>
-            <span class=side-menu-icon><i class="fas fa-poll"></i></span>
-            <span class=side-menu-text>Dashboard</span>
-          </li>
-          <li id=main-dashboard-device>
-            <span class=side-menu-icon><i class="fas fa-broadcast-tower"></i></span>
-            <span class=side-menu-text>Device</span>
-          </li>
-          <li id=main-dashboard-net>
-            <span class=side-menu-icon><i class="fas fa-network-wired"></i></span>
-            <span class=side-menu-text>Net</span>
-          </li>
-          <li id=main-dashboard-job>
-            <span class=side-menu-icon><i class="fas fa-tasks"></i></span>
-            <span class=side-menu-text>Jobs</span>
-          </li>
-          <li id=main-dashboard-image>
-            <span class=side-menu-icon><i class="fas fa-sd-card"></i></span>
-            <span class=side-menu-text>Image</span>
-          </li>
-          <li id=main-dashboard-app>
-            <span class=side-menu-icon><i class="fas fa-pager"></i></span>
-            <span class=side-menu-text>Apps</span>
-          </li>
-        </ul>
-      </div>
-      <div id=main-content></div>
-      <div id=detail-container>
-        <span class=detail-close>&times</span>
-        <div id=detail-content></div>
-      </div>
-    </section>
-  </main>
-<!-- </template> -->
+    <div id=title></div>
+    <div id=options>
+      <!-- <span id=notify-switch-container title='Notify not supported' disabled>
+        <span id=notify-label><i class="fas fa-bell"></i></span>
+        <check-switch id=notify-switch disabled></check-switch>
+      </span> -->
+      <span class=icon-menu id=notify-disabled disabled><i class="fas fa-bell-slash"></i></span>
+      <span class=icon-menu id=notify-enable disabled><i class="fas fa-bell"></i></span>
+      <span class=drop-menu tabindex=0>
+        <span class=icon-menu><i class="fas fa-cog"></i></span>
+        <div class=drop-menu-content>
+          <p id=menu-report-history>
+            <i class="fas fa-clipboard-list"></i>
+            <span class=drop-menu-item-text>Report History</span>
+          </p>
+          <p>option2</p>
+          <p>option3</p>
+          <p>option3</p>
+          <p>option3</p>
+          <p>option3</p>
+        </div>
+      </span>
+      <span class=drop-menu tabindex=0>
+        <span class=icon-menu><i class="fas fa-user"></i></span>
+        <div class=drop-menu-content>
+          <p>
+            <i class="fas fa-signature"></i>
+            <span id=menu-username title='User menu'>my name</span>
+            <span id=main-disconnect title='Logout' class=icon-hover><i class="fas fa-power-off"></i></span>
+          </p>
+          <p id=admin-portal class=is-admin>
+            <i class="fas fa-users-cog"></i>
+            <span class=drop-menu-item-text id=admin-portal-label>Admin portal</span>
+          </p>
+        </div>
+      </span>
+    </div>
+  </section>
+  <section id=main-main>
+    <div id=main-side-menu>
+      <ul>
+        <li id=main-dashboard>
+          <span class=side-menu-icon><i class="fas fa-poll"></i></span>
+          <span class=side-menu-text>Dashboard</span>
+        </li>
+        <li id=main-dashboard-device>
+          <span class=side-menu-icon><i class="fas fa-broadcast-tower"></i></span>
+          <span class=side-menu-text>Device</span>
+        </li>
+        <li id=main-dashboard-net>
+          <span class=side-menu-icon><i class="fas fa-network-wired"></i></span>
+          <span class=side-menu-text>Net</span>
+        </li>
+        <li id=main-dashboard-job>
+          <span class=side-menu-icon><i class="fas fa-tasks"></i></span>
+          <span class=side-menu-text>Jobs</span>
+        </li>
+        <li id=main-dashboard-image>
+          <span class=side-menu-icon><i class="fas fa-sd-card"></i></span>
+          <span class=side-menu-text>Image</span>
+        </li>
+        <li id=main-dashboard-app>
+          <span class=side-menu-icon><i class="fas fa-pager"></i></span>
+          <span class=side-menu-text>Apps</span>
+        </li>
+      </ul>
+    </div>
+    <div id=main-content></div>
+    <div id=detail-container>
+      <span class=detail-close>&times</span>
+      <div id=detail-content></div>
+    </div>
+  </section>
+</main>

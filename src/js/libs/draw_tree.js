@@ -7,15 +7,15 @@ const node_type = {
   NODE: 2
 }
 
-const outer_width = 800, outer_height = 300;
+const outer_height = 300;
 
-export function draw_device_tree(data, container, instance)
+export function draw_device_tree(data, container, instance, show_name)
 {
   container.innerHTML = '';
 
   // set the dimensions and margins of the diagram
-  const margin = {top: 20, right: 90, bottom: 30, left: 90},
-      width = outer_width - margin.left - margin.right,
+  const margin = {top: 20, right: 90, bottom: 20, left: 50},
+      width = (container.offsetWidth) - margin.left - margin.right,
       height = outer_height - margin.top - margin.bottom;
 
   // declares a tree layout and assigns the size
@@ -33,7 +33,8 @@ export function draw_device_tree(data, container, instance)
   // appends a 'group' element to 'svg'
   // moves the 'group' element to the top left margin
   const svg = d3.create("svg");
-  svg.attr("width", width + margin.left + margin.right)
+  svg
+    .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
   const g = svg.append("g")
       .attr("transform",
@@ -42,14 +43,32 @@ export function draw_device_tree(data, container, instance)
   // adds the links between the nodes
   const link = g.selectAll(".link")
       .data( nodes.descendants().slice(1))
-    .enter().append("path")
-      .attr("class", "link")
-      .attr("d", function(d) {
-         return "M" + d.y + "," + d.x
-           + "C" + (d.y + d.parent.y) / 2 + "," + d.x
-           + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
-           + " " + d.parent.y + "," + d.parent.x;
-         });
+    .enter()
+      .append("g")
+      .attr("class", "link");
+
+  //Adding link trace
+  link.append("path")
+    .attr("d", function(d) {
+     return "M" + d.y + "," + d.x
+       + "C" + (d.y + d.parent.y) / 2 + "," + d.x
+       + " " + (d.y + d.parent.y) / 2 + "," + d.parent.x
+       + " " + d.parent.y + "," + d.parent.x;
+     });
+
+  //Adding link rssi info
+  link.append("text")
+    .attr("transform", function(d) {
+        return "translate(" +
+            ((d.y + d.parent.y)/2) + "," +
+            ((d.x + d.parent.x)/2) + ")";
+    })
+    .attr("dy", ".35em")
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+        const rssi = get_rssi(d.data.device);
+        return rssi ? rssi : '';
+    });
 
    // adds each node as a group
   const node = g.selectAll(".node")
@@ -65,7 +84,7 @@ export function draw_device_tree(data, container, instance)
    node.append("circle")
      .attr("r", 10)
      .attr("class", function(d){
-       switch(d.data.layer)
+       switch(d.data.device.layer)
        {
          case -1:
           return 'node--daemon';
@@ -78,27 +97,75 @@ export function draw_device_tree(data, container, instance)
        }
      })
      .on('click', function(ev, data){
-       instance.open_device_detail(data.data.device);
+       instance.open_device_detail(data.data.device.mac);
      })
 
     // adds the text to the node
-  node.append("text")
-    .attr("dy", -13)
-    // .attr("x", 60)
-    .style("text-anchor", "middle")
-    .text(function(d) {
-      switch(d.data.layer)
-      {
-        case -1:
-          return 'Daemon';
-        case 0:
-          return `Router (${d.data.device})`;
-        case 1:
-          return `root (${d.data.device})`;
-        default:
-          return d.data.device;
-      }
-    });
+    node.append("text")
+      .each(function(){
+        let text = d3.select(this),
+            device = text.datum().data.device;
+
+        text
+          .style("text-anchor", "middle");
+        switch(device.layer)
+        {
+          case -1:
+            text
+              .attr("dy", -13)
+              .text("daemon");
+            break;
+          case 0:
+            text
+            .text(null)
+            .append("tspan")
+              .attr("dy", -13)
+              .text(device.mac);
+            text.append("tspan")
+              .attr("dy", -13)
+              .attr("x", 0)
+              .text("router");
+            break;
+          case 1:
+            text
+              .text(null)
+              .append("tspan")
+                .attr("dy", -13)
+                .text(get_name(device, show_name));
+              text.append("tspan")
+                .attr("dy", -13)
+                .attr("x", 0)
+                .text(`root [${get_endpoint(device)}]`);
+            break;
+          default:
+            text
+              .attr("dy", -13)
+              .text(get_name(device, show_name));
+            break;
+        }
+      });
 
   container.appendChild(svg.node());
+}
+
+function get_endpoint(device)
+{
+  if(device.layer != 1) return null;
+
+  return `${device.endpoint.addr}:${device.endpoint.port}`;
+}
+
+function get_rssi(device)
+{
+  if(device.layer == -1 || device.layer == 0) return null;
+
+  if(!device.rssi.length) return null;
+
+  return device.rssi[device.rssi.length - 1].value;
+}
+
+function get_name(device, show_name)
+{
+  if(!show_name) return device.mac;
+  return device.name ? device.name : device.mac;
 }
