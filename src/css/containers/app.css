@@ -1,0 +1,61 @@
+#app-container{
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+
+#app-container #app-header
+{
+  display: flex;
+  gap: 15px;
+}
+
+#app-container .app-upload-container
+{
+  display: inline-flex;
+  cursor: pointer;
+  align-items: center;
+  gap: 5px;
+  margin: 5px 0px;
+}
+
+#app-container .app-upload-container:hover{
+  font-weight: bold;
+}
+
+#app-container .app-upload-container svg
+{
+  font-size: 100%;
+}
+
+#app-container .app-upload-name
+{
+  display: inline-block;
+  width: 100%;
+  padding: 15px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
+}
+
+#app-container #main-app-tbody tr:hover
+{
+  cursor: pointer;
+}
+
+#app-container #main-app-tbody td.app-download:hover
+{
+  transform: translateY(2px);
+}
+
+#app-container #main-app-tbody td.app-close
+{
+  font-size: 25px;
+  padding: 2px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+#app-container #main-app-tbody td.app-close:hover
+{
+  text-decoration: underline;
+}

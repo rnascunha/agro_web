@@ -8,14 +8,16 @@ import {Notify_View_Icon, Notify} from '../libs/notify.js'
 import {message_types,
         user_commands,
         device_commands,
+        image_commands,
+        app_commands,
         report_commands} from '../messages/types.js'
-import {admin_portal} from '../containers/admin_portal/admin_portal.js'
-import {main_container} from '../containers/main/main_portal.js'
+import {create_admin_portal_container} from '../containers/admin_portal/admin_portal.js'
+import {create_main_container} from '../containers/main/main_portal.js'
 import {create_device_container} from '../containers/main/main_device.js'
 import {create_net_container} from '../containers/main/main_net.js'
-import {main_job} from '../containers/main/main_job.js'
-import {main_image} from '../containers/main/main_image.js'
-import {main_app} from '../containers/main/main_app.js'
+import {create_job_container} from '../containers/main/main_job.js'
+import {create_image_container} from '../containers/main/main_image.js'
+import {create_app_container} from '../containers/main/main_app.js'
 import {Container_Manager} from '../libs/container.js'
 import {Report} from '../classes/report.js'
 import {Detail_View} from '../classes/detail_view.js'
@@ -86,7 +88,11 @@ function run_main(data)
    * Creating container
    */
   const main_device = create_device_container(),
-        main_net = create_net_container();
+        main_net = create_net_container(),
+        main_image = create_image_container(),
+        main_container = create_main_container(),
+        main_job = create_job_container(),
+        main_app = create_app_container();
 
   const main_content = document.querySelector('#main-content');
 
@@ -107,7 +113,9 @@ function run_main(data)
                                   main_content: main_content,
                                   device_table: main_device.container.querySelector('#main-device-tbody'),
                                   tree_container: main_net.container.querySelector('#net-container-list'),
-                                  tree_graph: main_net.container.querySelector('#net-container-tree')
+                                  tree_graph: main_net.container.querySelector('#net-container-tree'),
+                                  image_table: main_image.container.querySelector('#main-image-tbody'),
+                                  app_table: main_app.container.querySelector('#main-app-tbody')
                                 }
                               });
   const report = new Report(document.querySelector('#report-history-container'),
@@ -128,7 +136,7 @@ function run_main(data)
      * registering all main containers containers
      */
     main_manager.add('main', main_container);
-    main_manager.add('user_admin', admin_portal);
+    main_manager.add('user_admin', create_admin_portal_container());
     main_manager.add('device', main_device);
     main_manager.add('net', main_net);
     main_manager.add('job', main_job);
@@ -140,6 +148,8 @@ function run_main(data)
    */
    main_device.install(instance);
    main_net.install(instance);
+   main_image.install(instance);
+   main_app.install(instance);
 
   /**
    * Adding instance handlers (websocket handlers)
@@ -157,29 +167,49 @@ function run_main(data)
                       device_commands.DATA,
                       data => {
                         instance.device_list.process(data);
-                      })
+                      });
   instance.add_handler(message_types.DEVICE,
                       device_commands.EDIT,
                       data => {
                         instance.device_list.process(data);
-                      })
+                      });
   instance.add_handler(message_types.DEVICE,
                       device_commands.TREE,
                       data => {
                         instance.tree.process(data, instance, true);
                         instance.device_list.set_connected(data.data.unconnected, true);
                         update_endpoints(instance, data);
-                      })
+                      });
+  instance.add_handler(message_types.IMAGE,
+                      image_commands.LIST,
+                      data => {
+                        instance.image_list.process(data, instance, true);
+                      });
+  instance.add_handler(message_types.APP,
+                      app_commands.LIST,
+                      data => {
+                        instance.app_list.process(data, instance, true);
+                      });
   instance.add_handler(message_types.REPORT,
                       report_commands.DEVICE,
                       data => {
                         report.add(data.data, true);
-                      })
+                      });
   instance.add_handler(message_types.REPORT,
                       report_commands.LIST,
                       data => {
                         report.add(data.data, true);
-                      })
+                      });
+  instance.add_handler(message_types.REPORT,
+                      report_commands.IMAGE,
+                      data => {
+                        report.add(data.data, true);
+                      });
+  instance.add_handler(message_types.REPORT,
+                      report_commands.APP,
+                      data => {
+                        report.add(data.data, true);
+                      });
   /**
    * Setting username
    */
@@ -277,15 +307,18 @@ function run_main(data)
 /**
  * Creating and registering main page
  */
-const template = document.createElement('template');
-template.innerHTML = main_html;
-page_manager.add('main',
-          new Page(
-            template,
-            run_main,
-            {
-              title: 'Agro Telemetry',
-              'theme-color': '#0a1496'
-            }
-          )
-        );
+ (function()
+ {
+  const template = document.createElement('template');
+  template.innerHTML = main_html;
+  page_manager.add('main',
+            new Page(
+              template,
+              run_main,
+              {
+                title: 'Agro Telemetry',
+                'theme-color': '#0a1496'
+              }
+            )
+          );
+})();

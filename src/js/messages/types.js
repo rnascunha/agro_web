@@ -2,8 +2,9 @@
 export const message_types = {
   USER: 'user',
   DEVICE: 'device',
-  REQUEST: 'request',
-  REPORT: 'report'
+  REPORT: 'report',
+  IMAGE: 'image',
+  APP: 'app'
 }
 Object.freeze(message_types);
 
@@ -23,10 +24,32 @@ export const device_commands = {
   LIST: 'list',
   DATA: 'data',
   TREE: 'tree',
+  EDIT: 'edit',
+  REQUEST: 'request'
+}
+
+export const image_commands = {
+  LIST: 'list',
+  DELETE: 'delete',
+  EDIT: 'edit',
+}
+
+export const app_commands = {
+  LIST: 'list',
+  DELETE: 'delete',
   EDIT: 'edit'
 }
 
 export const report_commands = {
   LIST: 'list',
-  DEVICE: 'device'
+  DEVICE: 'device',
+  IMAGE: 'image',
+  APP: 'app'
+}
+
+export const report_types = {
+  error: 'error',
+  warning: 'warning',
+  success: 'success',
+  info: 'info'
 }

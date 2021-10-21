@@ -1,3 +1,31 @@
-<div>
-    <h1>This is the main APP dashboard</h1>
+<div id=app-container class=main-container>
+  <h1>Apps</h1>
+  <div id=app-header>
+    <label class=app-upload-container title='Upload app'>
+      <input type=file class=file-input accept='.elf'>
+      <i class="fas fa-file-upload"></i>
+      <span>Upload</span>
+    </label>
+  </div>
+  <div id=app-main-container>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Version</th>
+          <th>Size</th>
+          <th>#</th>
+          <th>X</th>
+        </tr>
+      </thead>
+      <tbody id=main-app-tbody>
+        <tr>
+          <td colspan=20>
+            <em>No app uploaded</em>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

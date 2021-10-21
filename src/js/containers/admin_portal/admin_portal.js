@@ -10,9 +10,6 @@ import {User_Info_List} from '../../classes/user.js'
 import {Group_List} from '../../classes/groups.js'
 import {Container} from '../../libs/container.js'
 
-const template = document.createElement('template');
-template.innerHTML = admin_portal_html;
-
 function user_group_policies(data, container, instance)
 {
   const user_tbody = container.querySelector('#admin-user-tbody'),
@@ -99,4 +96,10 @@ function terminate_admin_portal(container, instance)
   instance.remove_handler(message_types.USER, user_commands.EDIT_USER);
 }
 
-export const admin_portal = new Container(template, admin_container_init, terminate_admin_portal);
+export function create_admin_portal_container()
+{
+  const template = document.createElement('template');
+  template.innerHTML = admin_portal_html;
+  
+  return new Container(template, admin_container_init, terminate_admin_portal);
+}

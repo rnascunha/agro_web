@@ -153,13 +153,16 @@ function run_login({storage, registration}, auto_connect = true)
   connect.addEventListener('click', login);
 }
 
-const template = document.createElement('template');
-template.innerHTML = login_html;
-page_manager.add('login',
-  new Page(template, run_login,
-            {
-              title: 'Agro Telemetry - Login',
-              'theme-color': '#0064c8'
-            }
-          )
-        );
+(function()
+{
+  const template = document.createElement('template');
+  template.innerHTML = login_html;
+  page_manager.add('login',
+    new Page(template, run_login,
+              {
+                title: 'Agro Telemetry - Login',
+                'theme-color': '#0064c8'
+              }
+            )
+          );
+})();

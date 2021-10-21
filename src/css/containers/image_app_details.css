@@ -1,0 +1,38 @@
+.image-app-detail .detail-content .detail-line
+{
+  padding: 3px;
+}
+
+.image-app-detail .detail-content .detail-value
+{
+  word-break: break-all;
+}
+
+.image-app-detail .detail-content .detail-edit-description
+{
+  cursor: pointer;
+}
+
+.image-app-detail .detail-content .detail-line-description .detail-line
+{
+  justify-content: space-between;
+  background-color: var(--secondary-color);
+}
+
+.image-app-detail .detail-content .detail-line-description:hover
+{
+  background-color: var(--primary-color);
+}
+
+.image-app-detail .detail-content .detail-description
+{
+  display: block;
+  padding: 5px;
+  border-radius: 10px;
+  outline: none;
+}
+
+.image-app-detail .detail-content .detail-description[contenteditable="true"]
+{
+  background: var(--primary-color);
+}

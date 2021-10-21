@@ -4,9 +4,6 @@ import {message_types, device_commands} from '../../messages/types.js'
 import {active_shine} from '../../helper/effect.js'
 import {Device_Detail_View} from '../../classes/device.js'
 
-const template = document.createElement('template');
-template.innerHTML = main_html;
-
 function init_device_portal(container, instance)
 {
 }
@@ -28,6 +25,9 @@ function run_once_device(container, instance)
 
 export function create_device_container()
 {
+  const template = document.createElement('template');
+  template.innerHTML = main_html;
+
   return new Persistent_Container(template,
                                   init_device_portal,
                                   finish_device_portal,

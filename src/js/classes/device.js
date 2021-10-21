@@ -366,11 +366,12 @@ export class Device_Detail_View{
         if(ev.target.tagName != 'BUTTON') return;
         if(this._commands.dataset.disabled == 'true') return;
 
-        instance._ws.send(JSON.stringify({
-          type: message_types.REQUEST,
-          request: `ac${ev.target.dataset.load}_${ev.target.dataset.on == 'true' ? 'on' : 'off'}`,
-          device: this._title.textContent
-        }));
+        instance.send(message_types.DEVICE,
+          device_commands.REQUEST,
+          {
+            request: `ac${ev.target.dataset.load}_${ev.target.dataset.on == 'true' ? 'on' : 'off'}`,
+            device: this._title.textContent
+          });
       });
 
       this._commands
@@ -379,11 +380,12 @@ export class Device_Detail_View{
           if(ev.target.tagName != 'BUTTON') return;
           if(this._commands.dataset.disabled == 'true') return;
 
-          instance._ws.send(JSON.stringify({
-            type: message_types.REQUEST,
-            request: ev.target.dataset.packet,
-            device: this._title.textContent
-          }));
+          instance.send(message_types.DEVICE,
+            device_commands.REQUEST,
+            {
+              request: ev.target.dataset.packet,
+              device: this._title.textContent
+            });
         });
 
     container.innerHTML = '';

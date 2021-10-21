@@ -4,15 +4,6 @@ import add_user_html  from './add_user.html'
 import delete_user_html  from './delete_user.html'
 import edit_user_html  from './edit_user.html'
 
-const delete_template = document.createElement('template');
-delete_template.innerHTML = delete_user_html;
-
-const add_template = document.createElement('template');
-add_template.innerHTML = add_user_html;
-
-const edit_template = document.createElement('template');
-edit_template.innerHTML = edit_user_html;
-
 function make_checkbox_groups(group_list, container, check = [])
 {
   container.innerHTML = '';
@@ -50,6 +41,9 @@ function read_checkbox_group_list(container)
 
 function delete_user_modal(instance, id)
 {
+  const delete_template = document.createElement('template');
+  delete_template.innerHTML = delete_user_html;
+
   const modal = document.createElement('pop-modal'),
         content = delete_template.content.cloneNode(true),
         user = instance.users.get_user(id);
@@ -86,6 +80,9 @@ function delete_user_modal(instance, id)
 
 export function add_new_user(instance)
 {
+  const add_template = document.createElement('template');
+  add_template.innerHTML = add_user_html;
+
   const modal = document.createElement('pop-modal');
   modal.appendChild(add_template.content.cloneNode(true));
 
@@ -143,6 +140,9 @@ export function add_new_user(instance)
 
 function edit_user_modal(instance, id)
 {
+  const edit_template = document.createElement('template');
+  edit_template.innerHTML = edit_user_html;
+
   const modal = document.createElement('pop-modal'),
         user = instance.users.get_user(id);
 

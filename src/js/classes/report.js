@@ -155,9 +155,9 @@ export class Report{
    _make_message(data)
    {
      let msg = '';
-     if('device' in data)
+     if('reference' in data)
      {
-       msg = `[${data.device}]: `;
+       msg = `[${data.reference}]: `;
      }
      msg += data.message;
 
