@@ -65,7 +65,9 @@ function run_once(container, instance)
 
     if(target.classList.contains('image-download'))
     {
-      console.log('download ' + target.parentNode.dataset.image);
+      instance.send(message_types.IMAGE, image_commands.DOWNLOAD, {
+        name: target.parentNode.dataset.image
+      });
       return;
     }
 

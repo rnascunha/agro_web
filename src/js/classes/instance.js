@@ -6,6 +6,7 @@ import {page_manager} from '../libs/page.js'
 import {Device_Tree} from './tree.js'
 import {Image_List, Image_Detail_View} from './image.js'
 import {App_List, App_Detail_View} from './app.js'
+import {download} from '../helper/download.js'
 
 const binary_type = {
   JSON: 0,
@@ -186,14 +187,22 @@ export class Instance
 
   _register_ws_events()
   {
+    this._ws.binaryType = "arraybuffer";
     this._ws.onmessage = ev => {
-      try{
-        const message = JSON.parse(ev.data);
-        this._response_handler.run(message);
-      }
-      catch(e)
+      if(typeof ev.data === 'string')
       {
-          console.error("Error parsing message", ev.data, e);
+        try{
+          const message = JSON.parse(ev.data);
+          this._response_handler.run(message);
+        }
+        catch(e)
+        {
+            console.error("Error parsing message", ev.data, e);
+        }
+      }
+      else
+      {
+          this._read_binary_data(ev.data);
       }
     }
 
@@ -201,5 +210,17 @@ export class Instance
       console.log('close');
       page_manager.run('login', {storage: this._storage, registration: this._registration}, false);
     }
+  }
+
+  _read_binary_data(data)
+  {
+    console.log(data);
+    const array = new Uint8Array(data);
+    const type = array.slice(0, 1)[0],
+          name_size = new Uint16Array(array.slice(1,3))[0],
+          name = new TextDecoder().decode(new Uint8Array(array.slice(3, 3 + name_size))),
+          file = new Uint8Array(array.slice(3 + name_size));
+
+    download(name, file);
   }
 }

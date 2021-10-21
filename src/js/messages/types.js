@@ -32,12 +32,14 @@ export const image_commands = {
   LIST: 'list',
   DELETE: 'delete',
   EDIT: 'edit',
+  DOWNLOAD: 'download'
 }
 
 export const app_commands = {
   LIST: 'list',
   DELETE: 'delete',
-  EDIT: 'edit'
+  EDIT: 'edit',
+  DOWNLOAD: 'download'
 }
 
 export const report_commands = {

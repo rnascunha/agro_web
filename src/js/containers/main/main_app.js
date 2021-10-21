@@ -61,13 +61,13 @@ function run_once(container, instance)
 
     if(target.classList.contains('app-download'))
     {
-      console.log('download ' + target.parentNode.dataset.app);
+      instance.send(message_types.APP, app_commands.DOWNLOAD, {
+        name: target.parentNode.dataset.app
+      });
       return;
     }
 
-    console.log('open app detail ' + target.parentNode.dataset.app);
     instance.open_app_detail(target.parentNode.dataset.app);
-    // instance.open_app_detail(target.parentNode.dataset.app);
   });
 }
 
