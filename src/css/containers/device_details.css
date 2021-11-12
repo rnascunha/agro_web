@@ -1,5 +1,6 @@
 .detail-content .detail-name-container
 {
+  width: 100%;
   display: flex;
 }
 
@@ -13,104 +14,18 @@
   cursor: pointer;
 }
 
-/**
- * AC load commands
-*/
-.detail-content .detail-value.detail-ac-load
-{
-  display: flex;
-  gap: 3px;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-container
-{
-  display: flex;
-  width: 100%;
-  align-items: center;
-  background-color: var(--primary-color);
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-buttons
-{
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-buttons button
-{
-  width: 100%;
-  cursor: pointer;
-  color: var(--text-color);
-  background-color: var(--primary-color-dark);
-  font-family: var(--font-family);
-  padding: 3px 3px;
-  /* border: 1px solid black; */
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-buttons button:hover
-{
-  font-weight: bold;
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-buttons button:active
-{
-  transform: translateY(2px);
-}
-
-.detail-content .detail-value.detail-ac-load .ac-load-index
-{
-  padding: 0px 5px;
-  font-weight: bold;
-}
-
-/**
- * Packets
-*/
-.detail-content .detail-value.detail-packets
-{
-  display: flex;
-  border-radius: 10px;
-  overflow: hidden;
-  width: 100%;
-}
-
-.detail-content .detail-value.detail-packets button
-{
-  width: 100%;
-  cursor: pointer;
-  color: var(--text-color);
-  background-color: var(--primary-color-dark);
-  font-family: var(--font-family);
-  padding: 3px 3px;
-}
-
-.detail-content .detail-value.detail-packets button:hover
-{
-  font-weight: bold;
-}
-
-.detail-content .detail-value.detail-packets button:active
-{
-  transform: translateY(2px);
-}
-
-.detail-content .detail-device-commands[data-disabled='true'] .detail-value button
+.detail-content .detail-device-commands[data-disabled='true'] button
 {
   cursor: not-allowed;
   border-style: unset;
 }
 
-.detail-content .detail-device-commands[data-disabled='true'] .detail-value button:hover
+.detail-content .detail-device-commands[data-disabled='true'] button:hover
 {
   font-weight: normal;
 }
 
-.detail-content .detail-device-commands[data-disabled='true'] .detail-value button:active
+.detail-content .detail-device-commands[data-disabled='true'] button:active
 {
   transform: none;
 }

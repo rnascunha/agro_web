@@ -1,0 +1,209 @@
+<div id=main-device-description>
+  <h1 class=detail-title>11:22:33:44:55:66</h1>
+  <div class=detail-content>
+    <detail-line>
+      <i class="fas fa-link" slot=icon></i>
+      <span slot=name>Status</span>
+      <span class='detail-connected shine'></span>
+    </detail-line>
+    <expand-menu>
+      <h2 slot=title>General</h2>
+      <detail-line>
+        <i class="fas fa-fingerprint" slot=icon></i>
+        <div slot=name>ID</div>
+        <div class='detail-id shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-signature" slot=icon></i>
+        <div slot=name>Name</div>
+        <span class='detail-name-container detail-value shine'>
+          <span class=detail-name></span>
+          <span class=detail-edit-name><i class="fas fa-edit"></i></span>
+        </span>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-code" slot=icon></i>
+        <div slot=name>Firmware</div>
+        <div class='detail-fw shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-microchip" slot=icon></i>
+        <div slot=name>Hardware</div>
+        <div class='detail-hw shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-at" slot=icon></i>
+        <div slot=name>Endpoint</div>
+        <div class='detail-endpoint shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu>
+      <h2 slot=title>Mesh Network</h2>
+      <detail-line>
+        <i class="fas fa-layer-group" slot=icon></i>
+        <div slot=name>Layer</div>
+        <div class='detail-layer shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sort-up" slot=icon></i>
+        <div slot=name>Parent</div>
+        <div class='detail-parent shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sitemap" slot=icon></i>
+        <div slot=name>Net ID</div>
+        <div class='detail-netid shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sliders-h" slot=icon></i>
+        <div slot=name>Channel</div>
+        <div class='detail-channel shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-wifi" slot=icon></i>
+        <div slot=name>MAC AP</div>
+        <div class='detail-macap shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-baby" slot=icon></i>
+        <div slot=name>Children</div>
+        <div class='detail-children shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu>
+      <h2 slot=title>Configuration</h2>
+      <detail-line>
+        <i class="fas fa-clock" slot=icon></i>
+        <div slot=name>RTC</div>
+        <div class='detail-has-rtc shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-thermometer-half" slot=icon></i>
+        <div slot=name>Temperature Sensor</div>
+        <div class='detail-has-temp shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu>
+      <h2 slot=title>Sensors</h2>
+      <div class=description-sensor-content></div>
+    </expand-menu>
+    <expand-menu class=detail-device-commands>
+      <h2 slot=title>Commands</h2>
+      <label class=detail-device-command-force><input type=checkbox> Force</label>
+      <div class=device-command-list-container>
+        <detail-command class=detail-ac-load-container>
+          <i class="fas fa-bullseye" slot=icon></i>
+          <div slot=title>AC Load</div>
+          <span class=detail-ac-load>
+            <btn-on-off data-index=1>
+              <span slot=on><i class="fas fa-check-circle"></i></span>
+              <span slot=off><i class="fas fa-times-circle"></i></span>
+            </btn-on-off>
+            <btn-on-off data-index=2>
+              <span slot=on><i class="fas fa-check-circle"></i></span>
+              <span slot=off><i class="fas fa-times-circle"></i></span>
+            </btn-on-off>
+            <btn-on-off data-index=3>
+              <span slot=on><i class="fas fa-check-circle"></i></span>
+              <span slot=off><i class="fas fa-times-circle"></i></span>
+            </btn-on-off>
+          </span>
+        </detail-command>
+        <detail-command id=detail-packet>
+          <i class="fas fa-cube" slot=icon></i>
+          <div slot=title>Packets</div>
+          <array-command class='detail-command' data-type=packet>
+            <button data-index='board'>Board</button>
+            <button data-index='config'>Config</button>
+            <button data-index='sensors'>Sensors</button>
+            <button data-index='route'>Route</button>
+            <button data-index='full_config'>Full Config</button>
+          </array-command>
+        </detail-command>
+        <detail-command id=detail-time>
+          <i class="fas fa-clock" slot=icon></i>
+          <div slot=title title=Time>Time</div>
+          <span class='detail-command detail-command-time'>
+            <div class=detail-time-value-container>
+              <div class='detail-time-value shine' title='<time> <lag> <fuse>' data-format=normal></div>
+              <div class='detail-time-switch' title='switch time format'><i class="fas fa-exchange-alt"></i></div>
+            </div>
+            <div class=detail-time-command-container>
+              <div class=detail-time-index>Time</div>
+              <array-command class=detail-time-command data-type=time>
+                <button data-index=get_rtc>Get</button>
+                <button data-index=update_rtc>Update</button>
+              </array-command>
+            </div>
+            <div class=detail-time-command-container>
+              <div class=detail-time-index>Fuse</div>
+              <array-command class=detail-time-command data-type=fuse>
+                <button data-index=get_fuse>Get</button>
+                <button data-index=update_fuse>Update</button>
+              </array-command>
+            </div>
+          </span>
+        </detail-command>
+        <detail-command id=detail-ota>
+          <i class="fas fa-cloud-upload-alt" slot=icon></i>
+          <div slot=title title='Update Over the Air'>OTA</div>
+          <span class='detail-command'>
+              <div class='detail-ota-version shine'></div>
+              <array-command data-type=ota>
+                <button data-index=get_ota_version>Get</button>
+                <select class=detail-select-ota-image></select>
+                <button data-index=update_ota>Update</button>
+              </array-command>
+          </span>
+        </detail-command>
+        <detail-command id=detail-system>
+          <i class="fas fa-cogs" slot=icon></i>
+          <div slot=title>System</div>
+          <array-command class=detail-command data-type=system>
+            <div class=inner-command>
+              <div class='inner-value detail-reset-reason shine'>Reason</div>
+              <button data-index=reset_reason>Reset reason</button>
+            </div>
+            <div class=inner-command>
+              <div class='inner-value inner-value-uptime'>
+                <div class='detail-uptime shine' title='microseconds since boot' data-format=normal></div>
+                <div class='detail-uptime-switch' title='switch time format'><i class="fas fa-exchange-alt"></i></div>
+              </div>
+              <button data-index=uptime>Uptime</button>
+            </div>
+            <div class=inner-command>
+              <button data-index=reset>Reset</button>
+              <button data-index=waive_root>Waive root</button>
+            </div>
+          </array-command>
+        </detail-command>
+        <detail-command id=detail-custom>
+          <i class="fas fa-hat-wizard" slot=icon></i>
+          <div slot=title>Custom</div>
+          <div class=detail-command>
+            <div class=inner-command>
+              <select class=custom-request-type>
+                <option>Type</option>
+                <option value=get>GET</option>
+                <option value=post>POST</option>
+                <option value=put>PUT</option>
+                <option value=delete>DELETE</option>
+              </select>
+              <input placeholder='Resource path, e.g, /path/to/resource?query=1' class=custom-request-path autocapitalize="none">
+            </div>
+            <binary-data class=custom-request-payload></binary-data>
+            <div class=inner-command>
+              <div class=custom-request-made></div>
+              <button class=custom-request-button>Request</button>
+              <button class=custom-response-button>Responses</button>
+            </div>
+          </div>
+        </detail-command>
+      </div>
+    </expand-menu>
+    <expand-menu class=detail-device-graph>
+      <h2 slot=title>Graph2</h2>
+      <div class=detail-device-graph-container></div>
+    </expand-menu>
+  </div>
+</div>

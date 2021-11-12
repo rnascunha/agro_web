@@ -4,7 +4,8 @@ export const message_types = {
   DEVICE: 'device',
   REPORT: 'report',
   IMAGE: 'image',
-  APP: 'app'
+  APP: 'app',
+  SENSOR: 'sensor'
 }
 Object.freeze(message_types);
 
@@ -25,8 +26,18 @@ export const device_commands = {
   DATA: 'data',
   TREE: 'tree',
   EDIT: 'edit',
-  REQUEST: 'request'
+  REQUEST: 'request',
+  CUSTOM_RESPONSE: 'custom_response',
 }
+Object.freeze(device_commands);
+
+export const sensor_commands = {
+  LIST: 'list',
+  ADD: 'add',
+  EDIT: 'edit',
+  REMOVE: 'remove'
+}
+Object.freeze(sensor_commands);
 
 export const image_commands = {
   LIST: 'list',
@@ -54,4 +65,11 @@ export const report_types = {
   warning: 'warning',
   success: 'success',
   info: 'info'
+}
+
+export const sensor_unit_type = {
+  0: {value: 0, name: 'integer', title: 'Integer'},
+  1: {value: 1, name: 'unsigned', title: 'Unsigned'},
+  2: {value: 2, name: 'float', title: 'Float'},
+  // 3: {value: 3, name: 'array', title: 'Array'}
 }

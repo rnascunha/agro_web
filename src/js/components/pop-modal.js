@@ -22,6 +22,9 @@ template.innerHTML =`
       --inner-width: auto;
       --min-inner-width: auto;
       --max-inner-width: 50%;
+      --inner-height: auto;
+      --min-inner-height: auto;
+      --max-inner-height: auto;
     }
 
     .pop-up{
@@ -32,6 +35,9 @@ template.innerHTML =`
       justify-content: center;
       align-items: center;
       z-index: 1003;
+      height: var(--inner-height);
+      min-height: var(--min-inner-height);
+      max-height: var(--max-inner-height);
     }
 
     @media only screen and (max-width: 600px) {

@@ -119,6 +119,7 @@ class Image_Table_View
             case 'description':
             case 'uploader':
             case 'date_upload':
+            case 'idf_version':
               break;
             default:
               const col = document.createElement('td');

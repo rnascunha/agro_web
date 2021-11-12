@@ -1,0 +1,4 @@
+select.hide-first-opiton option:first-child
+{
+  display: none;
+}

@@ -8,10 +8,12 @@ import {Notify_View_Icon, Notify} from '../libs/notify.js'
 import {message_types,
         user_commands,
         device_commands,
+        sensor_commands,
         image_commands,
         app_commands,
         report_commands} from '../messages/types.js'
 import {create_admin_portal_container} from '../containers/admin_portal/admin_portal.js'
+import {create_sensor_type_container} from '../containers/sensor_type/sensor_type_main.js'
 import {create_main_container} from '../containers/main/main_portal.js'
 import {create_device_container} from '../containers/main/main_device.js'
 import {create_net_container} from '../containers/main/main_net.js'
@@ -142,6 +144,7 @@ function run_main(data)
     main_manager.add('job', main_job);
     main_manager.add('image', main_image);
     main_manager.add('app', main_app);
+    main_manager.add('sensor_type', create_sensor_type_container());
 
   /**
    * Initiaing persistent containers
@@ -180,6 +183,16 @@ function run_main(data)
                         instance.device_list.set_connected(data.data.unconnected, true);
                         update_endpoints(instance, data);
                       });
+  instance.add_handler(message_types.DEVICE,
+                      device_commands.CUSTOM_RESPONSE,
+                      data => {
+                        instance.device_list.process(data);
+                      });
+  instance.add_handler(message_types.SENSOR,
+                      sensor_commands.LIST,
+                      data => {
+                        instance.sensor_type_list.process(data, true);
+                      });
   instance.add_handler(message_types.IMAGE,
                       image_commands.LIST,
                       data => {
@@ -210,6 +223,7 @@ function run_main(data)
                       data => {
                         report.add(data.data, true);
                       });
+
   /**
    * Setting username
    */
@@ -227,8 +241,19 @@ function run_main(data)
   /**
    * Setting Report history event
    */
-   document.querySelector('#menu-report-history').addEventListener('click', ev => {
-    report.show();
+   document.querySelector('#menu-report-history')
+    .addEventListener('click', ev => {
+      report.show();
+      blur_dropmenu()
+  });
+
+  /**
+   *
+   */
+  document.querySelector('#menu-sensor-type')
+    .addEventListener('click', ev => {
+    main_manager.run('sensor_type', instance);
+    //This is to make the drop menu disappear
     blur_dropmenu()
   });
 

@@ -50,8 +50,7 @@ export class Report{
   }
 
   add(report, update_view = false)
-  {
-
+  {    
     if(!this._list.length && (!Array.isArray(report) || (Array.isArray(report) && report.length)))
     {
         this.clear_view();

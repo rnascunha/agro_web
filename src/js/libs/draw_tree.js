@@ -66,7 +66,7 @@ export function draw_device_tree(data, container, instance, show_name)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
     .text(function(d) {
-        const rssi = get_rssi(d.data.device);
+        const rssi = get_rssi(d.data.device, instance);
         return rssi ? rssi : '';
     });
 
@@ -155,13 +155,14 @@ function get_endpoint(device)
   return `${device.endpoint.addr}:${device.endpoint.port}`;
 }
 
-function get_rssi(device)
+function get_rssi(device, instance)
 {
-  if(device.layer == -1 || device.layer == 0) return null;
+  const rssi_type = instance.sensor_type_list.get_name('rssi');
 
-  if(!device.rssi.length) return null;
+  if(!rssi_type || device.layer == -1 || device.layer == 0) return null;
 
-  return device.rssi[device.rssi.length - 1].value;
+  const rssi = device.sensor_list.last_data(rssi_type.id, 0);
+  return rssi ? rssi.value : null;
 }
 
 function get_name(device, show_name)

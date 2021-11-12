@@ -1,0 +1,58 @@
+#detail-custom{
+  font-size: 15px;
+}
+
+#detail-custom .detail-command{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1px;
+}
+
+#detail-custom .detail-command .inner-command{
+  display: flex;
+  gap: 1px;
+  width: 100%;
+  align-items: center;
+}
+
+#detail-custom .detail-command .inner-command option:first-child{
+  display: none;
+}
+
+#detail-custom .detail-command .inner-command div{
+  flex-grow: 1;
+}
+
+#detail-custom .detail-command select{
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family-light);
+  cursor: pointer;
+  outline: none;
+  flex-grow: 4;
+  padding: 4px;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+#detail-custom .detail-command input{
+  padding: 4px;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family-light);
+  outline: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 100%;
+}
+
+#detail-custom .detail-command binary-data{
+
+}
+
+#detail-custom .detail-command button{
+  border-radius: 5px;
+  align-self: flex-end;
+  width: fit-content;
+}

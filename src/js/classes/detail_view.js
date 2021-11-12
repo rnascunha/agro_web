@@ -7,6 +7,7 @@ export class Detail_View
     this._close = this._detail.querySelector('.detail-close');
 
     this._close_cb = {};
+    this._close_args = {};
 
     this._close.addEventListener('click', ev => {
       this.hide();
@@ -30,12 +31,17 @@ export class Detail_View
 
   clear()
   {
-    Object.values(this._close_cb).forEach(f => f());
+    Object.entries(this._close_cb).forEach(([n,f]) => {
+      f(...this._close_args[n]);
+
+      delete this._close_cb[name];
+      delete this._close_args[name];
+    });
   }
 
-  register_close(name, callback)
+  register_close(name, callback, ...args)
   {
     this._close_cb[name] = callback;
-    delete this._close_cb[name];
+    this._close_args[name] = args;
   }
 }

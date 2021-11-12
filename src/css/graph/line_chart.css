@@ -1,0 +1,63 @@
+/**
+ * https://stackoverflow.com/a/25978286
+ * About response SVG
+ */
+.chart-line-graph
+{
+  padding: 5px;
+
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 300px; /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.chart-line-graph svg
+{
+  background-color: rgba(200, 200, 200, 0.8);
+  border-radius: 15px;
+  color: black;
+
+  display: inline-block;
+  position: absolute;
+  left: 0;
+}
+
+.chart-line-graph svg .line {
+  fill: none;
+  stroke: red;
+  stroke-width: 2px;
+}
+
+.chart-line-graph svg .circle {
+  fill: red;
+  stroke: red;
+}
+
+.chart-line-graph .tooltip {
+  position: absolute;
+  text-align: center;
+  width: 60px;
+  height: 28px;
+  padding: 2px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  color: black;
+  z-index: 100;
+}
+
+.chart-line-graph .label{
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+  .chart-line-graph
+  {
+    padding-bottom: 82%;
+  }
+}

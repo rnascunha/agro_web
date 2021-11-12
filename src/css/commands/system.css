@@ -1,0 +1,36 @@
+#detail-system{
+  font-size: 18px;
+  width: 350px;
+}
+
+#detail-system .detail-command
+{
+  flex-direction: column;
+}
+
+#detail-system .detail-command .inner-command{
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#detail-system .detail-command .inner-command .inner-value{
+  width: 100%;
+  flex-grow: 4;
+}
+
+#detail-system .detail-command .inner-command .inner-value-uptime{
+  display: flex;
+}
+
+#detail-system .detail-command .inner-command .detail-uptime{
+  flex-grow: 4;
+}
+
+#detail-system .detail-command .inner-command .detail-uptime-switch{
+  cursor: pointer;
+}
+
+#detail-system .detail-command .inner-command button{
+  flex-shrink: 2;
+}

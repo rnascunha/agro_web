@@ -31,6 +31,7 @@
   color: var(--text-color);
   transform: translateY(-15px);
   cursor: pointer;
+  z-index: 100;
 }
 
 #main #main-main #detail-container .detail-close:hover{

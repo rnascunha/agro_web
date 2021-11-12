@@ -3,43 +3,43 @@
   <div class=detail-content>
     <div class=detail-general>
       <h2>Details</h2>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-fingerprint"></i></span>
-        <span class=detail-text>ID</span>
-        <span class='detail-id detail-value'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-code"></i></span>
-        <span class=detail-text>Version</span>
-        <span class='detail-version detail-value'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-expand-arrows-alt"></i></span>
-        <span class=detail-text>Size</span>
-        <span class='detail-size detail-value'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-hashtag"></i></span>
-        <span class=detail-text>Hash</span>
-        <span class='detail-hash detail-value'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-user-tag"></i></span>
-        <span class=detail-text>Uploader</span>
-        <span class='detail-uploader detail-value'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-calendar-day"></i></span>
-        <span class=detail-text>Upload date</span>
-        <span class='detail-upload-date detail-value'></span>
-      </div>
+      <detail-line>
+        <i class="fas fa-fingerprint" slot=icon></i>
+        <div slot=name>ID</div>
+        <div class='detail-id shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-code" slot=icon></i>
+        <div slot=name>Version</div>
+        <div class='detail-version shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-expand-arrows-alt" slot=icon></i>
+        <div slot=name>Size</div>
+        <div class='detail-size shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-hashtag" slot=icon></i>
+        <div slot=name>Hash</div>
+        <div class='detail-hash shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-user-tag" slot=icon></i>
+        <div slot=name>Uploader</div>
+        <div class='detail-uploader shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-calendar-day" slot=icon></i>
+        <div slot=name>Upload date</div>
+        <div class='detail-upload-date shine'></div>
+      </detail-line>
     </div>
     <div class=detail-line-description>
-      <div class=detail-line>
+      <h2>
         <span class=detail-icon><i class="fas fa-audio-description"></i></span>
         <span class=detail-text>Description</span>
         <span class=detail-edit-description><i class="fas fa-edit"></i></span>
-      </div>
+      </h2>
       <div class=detail-description contenteditable="false"></div>
     </div>
   </div>

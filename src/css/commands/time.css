@@ -1,0 +1,47 @@
+#detail-time
+{
+  width: 325px;
+  font-size: 18px;
+}
+
+.detail-command.detail-command-time
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.detail-command.detail-command-time .detail-time-value-container
+{
+  width: 100%;
+  display: flex;
+  padding-bottom: 6px;
+}
+
+.detail-command.detail-command-time .detail-time-value
+{
+  flex-grow: 4;
+}
+
+.detail-command.detail-command-time .detail-time-switch
+{
+  cursor: pointer;
+}
+
+.detail-command.detail-command-time .detail-time-switch:hover
+{
+  font-weight: bold;
+}
+
+.detail-command.detail-command-time .detail-time-command-container
+{
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+}
+
+.detail-command.detail-command-time .detail-time-index
+{
+  font-weight: bold;
+}

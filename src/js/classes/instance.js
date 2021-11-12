@@ -1,11 +1,13 @@
 import {Response_Handler_List} from './websocket.js'
-import {Device_List, Device_Detail_View} from './device.js'
+import {Device_List} from './device.js'
+import {Device_Detail_View} from './views/device_detail.js'
 import {make_message} from '../messages/make.js'
 import {message_types} from '../messages/types.js'
 import {page_manager} from '../libs/page.js'
 import {Device_Tree} from './tree.js'
 import {Image_List, Image_Detail_View} from './image.js'
 import {App_List, App_Detail_View} from './app.js'
+import {Sensor_Type_List} from './sensor_type.js'
 import {download} from '../helper/download.js'
 
 const binary_type = {
@@ -34,6 +36,8 @@ export class Instance
                                   options.containers.tree_graph);
     this._images = new Image_List(options.containers.image_table);
     this._apps = new App_List(options.containers.app_table);
+    this._sensor_types = new Sensor_Type_List();
+
     this._detail = options.containers.detail;
     this._main_content = options.containers.main_content;
 
@@ -52,6 +56,7 @@ export class Instance
   get tree(){ return this._tree; }
   get image_list(){ return this._images; }
   get app_list(){ return this._apps; }
+  get sensor_type_list(){ return this._sensor_types; }
 
   get detail(){ return this._detail; }
 
@@ -101,12 +106,13 @@ export class Instance
     view.update(device);
 
     if(show)
+    {
       this._detail.show();
+    }
 
-    this._detail.register_close('detail', device => {
-      device.register_view('detail');
-      device = null;
-    })
+    this._detail.register_close('detail', d => {
+      d.delete_view('detail');
+    }, device)
 
     return this._detail;
   }
@@ -122,11 +128,13 @@ export class Instance
     view.update(image);
 
     if(show)
+    {
       this._detail.show();
+    }
 
-    this._detail.register_close('detail', device => {
-      image = null;
-    });
+    // this._detail.register_close('detail', () => {
+    //
+    // });
 
     return this._detail;
   }
@@ -142,11 +150,12 @@ export class Instance
     view.update(app);
 
     if(show)
+    {
       this._detail.show();
+    }
 
-    this._detail.register_close('detail', device => {
-      app = null;
-    });
+    // this._detail.register_close('detail', () => {
+    // });
 
     return this._detail;
   }
@@ -207,14 +216,12 @@ export class Instance
     }
 
     this._ws.onclose = ev => {
-      console.log('close');
       page_manager.run('login', {storage: this._storage, registration: this._registration}, false);
     }
   }
 
   _read_binary_data(data)
   {
-    console.log(data);
     const array = new Uint8Array(data);
     const type = array.slice(0, 1)[0],
           name_size = new Uint16Array(array.slice(1,3))[0],

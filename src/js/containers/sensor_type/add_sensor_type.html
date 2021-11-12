@@ -1,0 +1,40 @@
+<div id=sensor-type-popup-container class=popup-container>
+  <h1 class=popup-header>
+    <i class="fas fa-weight-hanging"></i>
+    <span class=popup-title></span>
+  </h1>
+  <div class=popup-content>
+    <div class=input-line>
+      <overtext-input placeholder=ID class='sensor-type-short sensor-type-id'>
+        <span slot=field>ID</span>
+      </overtext-input>
+      <overtext-input placeholder='Name ID' class='sensor-type-long sensor-type-name-id'>
+        <span slot=field>Name ID</span>
+      </overtext-input>
+    </div>
+    <overtext-input placeholder=Name class=sensor-type-name>
+      <span slot=field>Name</span>
+    </overtext-input>
+    <div class=input-line>
+      <overtext-input placeholder='Unit' class='sensor-type-short sensor-type-unit'>
+        <span slot=field>Unit</span>
+      </overtext-input>
+      <overtext-input placeholder='Unit Name' class='sensor-type-long sensor-type-unit-name'>
+        <span slot=field>Unit Name</span>
+      </overtext-input>
+    </div>
+    <select class='hide-first-opiton sensor-type-unit-type'></select>
+    <fieldset>
+      <legend>Description</legend>
+      <div name="name" class=sensor-type-description contenteditable="true"></div>
+      <!-- <textarea name="name" rows="3" class=sensor-type-description></textarea> -->
+    </fieldset>
+    <div>
+      <div class=popup-error></div>
+      <div class=popup-option-container>
+        <span class=popup-option id=option-yes></span>
+        <span class=popup-option id=option-cancel></span>
+      </div>
+    </div>
+  </div>
+</div>

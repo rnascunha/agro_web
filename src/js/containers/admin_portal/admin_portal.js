@@ -20,8 +20,6 @@ function user_group_policies(data, container, instance)
     container.querySelector('#admin-user-tbody'));
   group_list(instance, data.data.groups,
     container.querySelector('#admin-group-tbody'));
-  // lists.policies = policy_list(data.data.policies,
-  //   container.querySelector('#admin-policy-tbody'), lists.users, lists.groups);
 }
 
 function admin_container_init(container, instance)
@@ -57,35 +55,12 @@ function admin_container_init(container, instance)
           instance.groups.set_user_group(data.data.id, data.data.groups, true);
       });
 
-  // instance.add_handler(message_types.USER,
-  //   user_commands.ADD_GROUP,
-  //   data => {
-  //     lists.groups.add(data.data.id,
-  //       data.data.name,
-  //       data.data.description,
-  //       data.data.members, true);
-  //   });
-
-  // instance.add_handler(message_types.USER,
-  //     user_commands.DELETE_GROUP,
-  //     data => {
-  //       lists.groups.remove(data.data.id, true);
-  //     });
-
   instance.send(message_types.USER,
     user_commands.USER_GROUP_POLICIES);
 
   container.querySelector('#admin-user-add').addEventListener('click', ev => {
     document.body.appendChild(add_new_user(instance, instance.groups));
   });
-
-  // container.querySelector('#admin-group-add').addEventListener('click', ev => {
-  //   document.body.appendChild(add_new_group(instance, lists.users));
-  // });
-  //
-  // container.querySelector('#admin-policy-add').addEventListener('click', ev => {
-  //   document.body.appendChild(add_new_policy(instance, lists.users, lists.groups));
-  // });
 }
 
 function terminate_admin_portal(container, instance)
@@ -100,6 +75,6 @@ export function create_admin_portal_container()
 {
   const template = document.createElement('template');
   template.innerHTML = admin_portal_html;
-  
+
   return new Container(template, admin_container_init, terminate_admin_portal);
 }

@@ -104,7 +104,6 @@ function run_login({storage, registration}, auto_connect = true)
         }
 
         ws.onmessage = ev => {
-          console.log('message', JSON.parse(ev.data));
           const message = JSON.parse(ev.data);
           if(message.type == 'user'
             && message.command == 'authenticate')
@@ -126,13 +125,11 @@ function run_login({storage, registration}, auto_connect = true)
           }
         }
         ws.onclose = ev => {
-          // console.log('close', ev);
           not_connecting();
           show_error(`${ev.code != 1006 && ev.code in Websocket_Close_Reason ? Websocket_Close_Reason[ev.code] : 'Error connecting'}`)
           ws = null;
         }
         ws.onerror = ev => {
-          // console.log('error', ev);
         }
     }
     catch(e)

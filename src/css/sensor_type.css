@@ -1,0 +1,171 @@
+#main-content #sensor-type-main
+{
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  padding: 5px;
+  height: 100%;
+  flex-direction: column;
+}
+
+#main-content #sensor-type-main h1
+{
+  margin: 5px;
+  font-size: 22px;
+  max-height: 22px;
+}
+
+#main-content #sensor-type-main table
+{
+  border-radius: 5px;
+  overflow:hidden;
+  background-color: var(--primary-color-dark);
+}
+
+#main-content #sensor-type-main table,
+#main-content #sensor-type-main tr,
+#main-content #sensor-type-main td,
+#main-content #sensor-type-main th{
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+#main-content #sensor-type-main th
+{
+  background-color: var(--primary-color-light);
+  font-weight: bold;
+}
+
+#main-content #sensor-type-main tr,
+#main-content #sensor-type-main td,
+#main-content #sensor-type-main th
+{
+  padding: 5px;
+}
+
+#main-content #sensor-type-main tbody tr td
+{
+  cursor: pointer;
+}
+
+#main-content #sensor-type-main tbody tr:hover
+{
+  text-shadow: var(--hover-effect);
+}
+
+#main-content #sensor-type-main .delete-data
+{
+  padding: 0px;
+  font-size: 24px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#main-content #sensor-type-main #sensor-type-tbody tr td.delete-data:hover
+{
+  text-shadow: var(--hover-effect);
+  text-decoration: underline;
+}
+
+#main-content #sensor-type-main #sensor-type-tbody tr td.edit-data:hover
+{
+  transform: translateY(2px);
+}
+
+#main-content #sensor-type-main .sensor-type-add-new-button
+{
+  cursor: pointer;
+}
+
+/*
+ */
+#sensor-type-popup-container .input-line
+{
+  display: flex;
+}
+
+#sensor-type-popup-container .input-line .sensor-type-short
+{
+  flex: 2 5 50px;
+}
+
+#sensor-type-popup-container .input-line .sensor-type-long
+{
+  flex: 5 1 100px;
+}
+
+#sensor-type-popup-container fieldset
+{
+  padding: 3px;
+  width: 100%;
+}
+
+#sensor-type-popup-container .sensor-type-description
+{
+  width: 100%;
+  padding: 3px;
+  border: none;
+  background: inherit;
+  outline: none;
+  font-family: inherit;
+  font-size: 18px;
+  color: inherit;
+  max-height: 6ch;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/**
+ * add
+ */
+#sensor-type-popup-container.sensor-type-add-new .popup-title:after
+{
+  content: 'Add Sensor';
+}
+
+#sensor-type-popup-container.sensor-type-add-new #option-yes::after
+{
+  content: 'Add';
+}
+
+#sensor-type-popup-container.sensor-type-add-new #option-cancel::after
+{
+  content: 'Cancel';
+}
+
+/**
+ * Edit
+ */
+ #sensor-type-popup-container.sensor-type-edit-new .popup-title:after
+ {
+   content: 'Edit Sensor';
+ }
+
+ #sensor-type-popup-container.sensor-type-edit-new #option-yes::after
+ {
+   content: 'Edit';
+ }
+
+ #sensor-type-popup-container.sensor-type-edit-new #option-cancel::after
+ {
+   content: 'Cancel';
+ }
+
+ /**
+  * show
+  */
+  #sensor-type-popup-container.sensor-type-show-new .popup-title:after
+  {
+    content: 'Sensor';
+  }
+
+  #sensor-type-popup-container.sensor-type-show-new #option-yes
+  {
+    display: none;
+  }
+
+  #sensor-type-popup-container.sensor-type-show-new #option-cancel::after
+  {
+    content: 'Close';
+  }

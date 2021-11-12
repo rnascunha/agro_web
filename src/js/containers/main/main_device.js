@@ -1,8 +1,6 @@
 import main_html from './main_device.html'
 import {Persistent_Container} from '../../libs/container.js'
-import {message_types, device_commands} from '../../messages/types.js'
-import {active_shine} from '../../helper/effect.js'
-import {Device_Detail_View} from '../../classes/device.js'
+import {Device_Description_View} from '../../classes/views/device_description.js'
 
 function init_device_portal(container, instance)
 {
@@ -14,12 +12,33 @@ function finish_device_portal(container, instance)
 
 function run_once_device(container, instance)
 {
+  const description = container.querySelector("#main-device-description");
+
   container.querySelector('#main-device-tbody')
     .addEventListener('click', ev => {
     let device_mac = ev.composedPath()[1].dataset.device;
     if(!device_mac) return;
 
-    instance.open_device_detail(device_mac);
+    // instance.open_device_detail(device_mac);
+    if(!(device_mac in instance.device_list.list)) return;
+
+    description.innerHTML = '';
+
+    const device = instance.device_list.list[device_mac],
+          view = new Device_Description_View(description, device, instance);
+
+    device.register_view('description', view);
+    view.update(device);
+
+    /**
+     * This will scroll to a id element, and then remove the reference,
+     * so you will be able to scroll again. The delay time is to the
+     * CSS 'scroll-behaviour: smooth' take effect.
+     */
+    window.location.hash = 'main-device-description';
+    setTimeout(() => {
+      window.location.hash = '';
+    }, 1000);
   });
 }
 

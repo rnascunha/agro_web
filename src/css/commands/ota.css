@@ -1,0 +1,41 @@
+#detail-ota{
+  font-size: 18px;
+  width: 290px;
+}
+
+#detail-ota .detail-command{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#detail-ota .detail-command button{
+  width: fit-content;
+  padding: 6px 6px;
+}
+
+#detail-ota .detail-select-ota-image
+{
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family-light);
+  cursor: pointer;
+  outline: none;
+  flex-grow: 4;
+  width: 100%;
+}
+
+#detail-ota .detail-select-ota-image:first-child
+{
+  display: none;
+}
+
+#detail-ota .detail-select-ota-image option
+{
+  font-size: 20px;
+}
+
+#detail-ota .detail-select-ota-image option:first-child
+{
+  display: none;
+}

@@ -1,152 +1,120 @@
 <div id=main-device-detail>
   <h1 class=detail-title>11:22:33:44:55:66</h1>
   <div class=detail-content>
-    <div class=detail-line>
-      <span class=detail-icon><i class="fas fa-link"></i></span>
-      <span class=detail-text>Status</span>
-      <span class='detail-connected detail-value shine'></span>
-    </div>
-    <div class=detail-general>
-      <h2>General</h2>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-fingerprint"></i></span>
-        <span class=detail-text>ID</span>
-        <span class='detail-id detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-signature"></i></span>
-        <span class=detail-text>Name</span>
+    <detail-line>
+      <i class="fas fa-link" slot=icon></i>
+      <span slot=name>Status</span>
+      <span class='detail-connected shine'></span>
+    </detail-line>
+    <expand-menu>
+      <h2 slot=title>General</h2>
+      <detail-line>
+        <i class="fas fa-fingerprint" slot=icon></i>
+        <div slot=name>ID</div>
+        <div class='detail-id shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-signature" slot=icon></i>
+        <div slot=name>Name</div>
         <span class='detail-name-container detail-value shine'>
           <span class=detail-name></span>
           <span class=detail-edit-name><i class="fas fa-edit"></i></span>
         </span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-code"></i></span>
-        <span class=detail-text>Firmware</span>
-        <span class='detail-fw detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-microchip"></i></span>
-        <span class=detail-text>Hardware</span>
-        <span class='detail-hw detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-at"></i></span>
-        <span class=detail-text>Endpoint</span>
-        <span class='detail-endpoint detail-value shine'></span>
-      </div>
-    </div>
-    <div>
-      <h2>Mesh Network</h2>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-layer-group"></i></span>
-        <span class=detail-text>Layer</span>
-        <span class='detail-layer detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-sort-up"></i></span>
-        <span class=detail-text>Parent</span>
-        <span class='detail-parent detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-sitemap"></i></span>
-        <span class=detail-text>Net ID</span>
-        <span class='detail-netid detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-sliders-h"></i></span>
-        <span class=detail-text>Channel</span>
-        <span class='detail-channel detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-wifi"></i></span>
-        <span class=detail-text>MAC AP</span>
-        <span class='detail-macap detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-baby"></i></span>
-        <span class=detail-text>Children</span>
-        <span class='detail-children detail-value shine'></span>
-      </div>
-    </div>
-    <div>
-      <h2>Configuration</h2>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-clock"></i></span>
-        <span class=detail-text>RTC</span>
-        <span class='detail-has-rtc detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-thermometer-half"></i></span>
-        <span class=detail-text>Temperature Sensor</span>
-        <span class='detail-has-temp detail-value shine'></span>
-      </div>
-    </div>
-    <div>
-      <h2>Sensors</h2>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-signal"></i></span>
-        <span class=detail-text>RSSI</span>
-        <span class='detail-rssi detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-ethernet"></i></span>
-        <span class=detail-text>GPIO's</span>
-        <span class='detail-gpios detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-plug"></i></span>
-        <span class=detail-text>Output's</span>
-        <span class='detail-gpios-out detail-value shine'></span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-thermometer"></i></span>
-        <span class=detail-text>Temperature</span>
-        <span class='detail-temp detail-value shine'></span>
-      </div>
-    </div>
-    <div class=detail-device-commands>
-      <h2>Commands</h2>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-code" slot=icon></i>
+        <div slot=name>Firmware</div>
+        <div class='detail-fw shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-microchip" slot=icon></i>
+        <div slot=name>Hardware</div>
+        <div class='detail-hw shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-at" slot=icon></i>
+        <div slot=name>Endpoint</div>
+        <div class='detail-endpoint shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu>
+      <h2 slot=title>Mesh Network</h2>
+      <detail-line>
+        <i class="fas fa-layer-group" slot=icon></i>
+        <div slot=name>Layer</div>
+        <div class='detail-layer shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sort-up" slot=icon></i>
+        <div slot=name>Parent</div>
+        <div class='detail-parent shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sitemap" slot=icon></i>
+        <div slot=name>Net ID</div>
+        <div class='detail-netid shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-sliders-h" slot=icon></i>
+        <div slot=name>Channel</div>
+        <div class='detail-channel shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-wifi" slot=icon></i>
+        <div slot=name>MAC AP</div>
+        <div class='detail-macap shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-baby" slot=icon></i>
+        <div slot=name>Children</div>
+        <div class='detail-children shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu>
+      <h2 slot=title>Configuration</h2>
+      <detail-line>
+        <i class="fas fa-clock" slot=icon></i>
+        <div slot=name>RTC</div>
+        <div class='detail-has-rtc shine'></div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-thermometer-half" slot=icon></i>
+        <div slot=name>Temperature Sensor</div>
+        <div class='detail-has-temp shine'></div>
+      </detail-line>
+    </expand-menu>
+    <expand-menu class=detail-device-commands>
+      <h2 slot=title>Commands</h2>
       <label class=detail-device-command-force><input type=checkbox> Force</label>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-bullseye"></i></span>
-        <span class=detail-text>AC Load</span>
-        <span class='detail-value detail-ac-load'>
-          <div class=ac-load-container>
-            <div class=ac-load-index>1</div>
-            <div class=ac-load-buttons>
-              <button data-on=true data-load=1>ON</button>
-              <button data-on=false data-load=1>OFF</button>
-            </div>
-          </div>
-          <div class=ac-load-container>
-            <div class=ac-load-index>2</div>
-            <div class=ac-load-buttons>
-                <button data-on=true data-load=2>ON</button>
-                <button data-on=false data-load=2>OFF</button>
-              </div>
-          </div>
-          <div class=ac-load-container>
-            <div class=ac-load-index>3</div>
-            <div class=ac-load-buttons>
-              <button data-on=true data-load=3>ON</button>
-              <button data-on=false data-load=3>OFF</button>
-            </div>
-          </div>
+      <detail-line>
+        <i class="fas fa-bullseye" slot=icon></i>
+        <div slot=name>AC Load</div>
+        <span class=detail-ac-load>
+          <btn-on-off data-index=1>
+            <span slot=on><i class="fas fa-check-circle"></i></span>
+            <span slot=off><i class="fas fa-times-circle"></i></span>
+          </btn-on-off>
+          <btn-on-off data-index=2>
+            <span slot=on><i class="fas fa-check-circle"></i></span>
+            <span slot=off><i class="fas fa-times-circle"></i></span>
+          </btn-on-off>
+          <btn-on-off data-index=3>
+            <span slot=on><i class="fas fa-check-circle"></i></span>
+            <span slot=off><i class="fas fa-times-circle"></i></span>
+          </btn-on-off>
         </span>
-      </div>
-      <div class=detail-line>
-        <span class=detail-icon><i class="fas fa-cube"></i></span>
-        <span class=detail-text>Packets</span>
-        <span class='detail-value detail-packets'>
-          <button data-packet='board'>Board</button>
-          <button data-packet='config'>Config</button>
-          <button data-packet='sensor'>Sensors</button>
-          <button data-packet='route'>Route</button>
-          <button data-packet='full_config'>Full Config</button>
-        </span>
-      </div>
-    </div>
+      </detail-line>
+      <detail-line>
+        <i class="fas fa-cube" slot=icon></i>
+        <div slot=name>Packets</div>
+        <array-command class='detail-command' data-type=packet>
+          <button data-index='board'>Board</button>
+          <button data-index='config'>Config</button>
+          <button data-index='sensors'>Sensors</button>
+          <button data-index='route'>Route</button>
+          <button data-index='full_config'>Full Config</button>
+        </array-command>
+      </detail-line>
+    </expand-menu>
   </div>
 </div>

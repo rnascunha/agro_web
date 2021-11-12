@@ -1,0 +1,34 @@
+.temperature-graph-path{
+  stroke: green !important;
+}
+
+.temperature-graph-dot{
+  stroke: green !important;
+  fill: green !important;
+}
+
+.detail-device-graph-output{
+  padding-bottom: 110px !important;
+}
+
+.output-graph-path{
+  stroke: brown !important;
+}
+
+.output-graph-dot{
+  stroke: brown !important;
+  fill: brown !important;
+}
+
+.detail-device-graph-input{
+  padding-bottom: 110px !important;
+}
+
+.input-graph-path{
+  stroke: orange !important;
+}
+
+.input-graph-dot{
+  stroke: orange !important;
+  fill: orange !important;
+}

@@ -8,6 +8,9 @@
 .detail-content{
   overflow: auto;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .detail-content h2{
@@ -17,35 +20,4 @@
   text-align: center;
   background-color: var(--primary-color-dark);
   padding: 5px;
-}
-
-.detail-content .detail-line{
-  width: 100%;
-  display: flex;
-  font-size: 20px;
-  align-items: center;
-}
-
-.detail-content .detail-line:hover{
-  background-color: var(--primary-color);
-}
-
-.detail-content .detail-icon{
-  width: 7%;
-  text-align: center;
-}
-
-.detail-content .detail-text{
-  font-weight: bold;
-  width: 30%;
-  padding-left: 10px;
-}
-
-.detail-content .detail-value{
-  width: 63%;
-  text-align: center;
-  vertical-align: middle;
-  /* shine effect */
-  position: relative;
-  overflow: hidden;
 }

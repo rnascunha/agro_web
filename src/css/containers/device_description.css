@@ -1,0 +1,65 @@
+#main-device-description
+{
+  display: flex;
+  flex-direction: column;
+}
+
+#main-device-description h1
+{
+  text-align: center;
+}
+
+#main-device-description .detail-content
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: flex-start;
+}
+
+#main-device-description .detail-content expand-menu
+{
+  width: 40%;
+  min-width: 300px;
+}
+
+#main-device-description .detail-content expand-menu.detail-device-commands,
+#main-device-description .detail-content expand-menu.detail-device-graph
+{
+  width: 100%;
+}
+
+#main-device-description .detail-content expand-menu.detail-device-commands .device-command-list-container
+{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+#main-device-description .detail-content expand-menu.detail-device-commands detail-command
+{
+  max-width: 48%;
+}
+
+@media only screen and (max-width: 600px) {
+  #main-device-description .detail-content expand-menu{
+    width: 100%;
+  }
+
+  #main-device-description .detail-content expand-menu.detail-device-commands detail-command
+  {
+    max-width: 100%;
+  }
+}
+
+/**
+ *
+ */
+.description-sensor-content:empty::after{
+  content: 'No sensor data received yet';
+}
+
+.detail-device-graph-container:empty::after{
+  content: 'No sensor data received yet';
+}

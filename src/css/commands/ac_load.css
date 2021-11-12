@@ -1,0 +1,16 @@
+/**
+ * AC load commands
+*/
+.detail-content detail-command.detail-ac-load-container
+{
+  min-width: 300px;
+  width: fit-content;
+}
+
+.detail-content .detail-ac-load
+{
+  display: flex;
+  gap: 3px;
+  justify-content: space-between;
+  /* width: 100%;   */
+}

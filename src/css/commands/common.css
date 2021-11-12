@@ -1,0 +1,35 @@
+.detail-device-commands detail-command
+{
+  height: fit-content;
+  padding: 2px;
+  border: 2px solid #222;
+  box-shadow: 1px 1px 1px #222,
+              2px 2px 2px #444,
+              3px 3px 3px #666;
+}
+
+.detail-command button
+{
+  cursor: pointer;
+  width: 100%;
+  color: var(--text-color);
+  background-color: var(--primary-color-dark);
+  font-family: var(--font-family);
+  padding: 6px 3px;
+}
+
+.detail-command button:hover
+{
+   font-weight: bold;
+}
+
+.detail-command button:active
+{
+  transform: translateY(2px);
+}
+
+@media only screen and (max-width: 600px) {
+  #main-device-description expand-menu.detail-device-commands detail-command{
+    width: 100%;
+  }
+}
