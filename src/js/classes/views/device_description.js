@@ -12,6 +12,7 @@ import device_description from '../../containers/main/device_description.html'
 import {esp_reset_reason_string} from '../../helper/esp.js'
 import {make_sensors} from './sensor_line.js'
 import {make_sensors_graph} from './sensor_graph.js'
+import {Sensor_Description_View} from './sensor_description.js'
 import {Custom_Request} from '../../libs/custom_request.js'
 
 const template_description = document.createElement('template');
@@ -44,6 +45,7 @@ export class Device_Description_View{
 
     //Sensors
     this._sensors = temp.querySelector('.description-sensor-content');
+    this._sensor_description = null;
     make_sensors(this._sensors, device, instance);
 
     //Commands
@@ -91,6 +93,7 @@ export class Device_Description_View{
                 request: `ac${ev.detail.index}_${ev.detail.on == 'true' ? 'on' : 'off'}`,
                 device: this._title.textContent
               });
+            break;
             case 'packet':
               instance.send(message_types.DEVICE,
                 device_commands.REQUEST,
@@ -220,6 +223,41 @@ export class Device_Description_View{
     });
 
     /**
+     * Open sensor popup
+     */
+    this._sensors.addEventListener('click', ev => {
+      let t = ev.target;
+      while(t != this._sensors)
+      {
+        if('sensor' in t.dataset) break;
+        t = t.parentNode;
+      }
+      if(!('sensor' in t.dataset))
+      {
+        return;
+      }
+
+      const sensor_desc = document.createElement('pop-modal');
+      sensor_desc.id = 'sensor-description-popup';
+      sensor_desc.addEventListener('cancel', ev => {
+        this._sensor_description = null;
+        sensor_desc.delete();
+      });
+
+      document.body.appendChild(sensor_desc);
+      sensor_desc.show();
+
+      let [type, index] = t.dataset.sensor.split('@');
+      type = +type; index = +index;
+
+      const sensor_type = instance.sensor_type_list.get_id(type),
+            sensor = device.sensor_list.sensor(type, index);
+
+      this._sensor_description = new Sensor_Description_View(sensor_desc, instance, sensor);
+      this._sensor_description.update();
+    });
+
+    /**
      *
      */
     container.innerHTML = '';
@@ -229,13 +267,10 @@ export class Device_Description_View{
     this._graphs_container = temp.querySelector('.detail-device-graph-container');
     make_sensors_graph(this._graphs, this._graphs_container, device, instance);
 
-    this._commands_gpios_out.forEach(g => {
-      const s = device.sensor_list.last_data(5, 0);
-      if(s)
-      {
+    const s = device.sensor_list.last_data(5, 0);
+    s && this._commands_gpios_out.forEach(g => {
           g.state = s.value & (1 << (+g.dataset.index + 8 - 1));
-      }
-    });
+        });
   }
 
   disable_commands(disable)
@@ -246,7 +281,7 @@ export class Device_Description_View{
     });
   }
 
-  update(device, data)
+  update(device, data, force = false)
   {
     this._title.textContent = device.mac;
 
@@ -262,23 +297,23 @@ export class Device_Description_View{
       {
         case 'fw':
         case 'hw':
-          if(shine(`version_${attr}`, data, this[`_${attr}`]))
+          if(shine(`version_${attr}`, data, this[`_${attr}`]) || force)
             this[`_${attr}`].textContent = attr == 'fw' ? device.firmware_version : device.hardware_version;
         break;
         case 'endpoint':
-          if(shine('endpoint', data, this._endpoint))
+          if(shine('endpoint', data, this._endpoint) || force)
             this._endpoint.textContent = device.endpoint.addr + ':' + device.endpoint.port;
         break;
         case 'channel':
-          if(shine('ch_conn', data, this._channel))
+          if(shine('ch_conn', data, this._channel) || force)
             this._channel.textContent = `${device.channel} / ${device.channel_config}`;
         break;
         case 'children_table':
-          if(shine('children_table', data, this._children))
+          if(shine('children_table', data, this._children) || force)
             this._children.textContent = device.children_table.join(' | ');
         break;
         default:
-          if(shine(attr, data, this[`_${attr}`]))
+          if(shine(attr, data, this[`_${attr}`]) || force)
             this[`_${attr}`].textContent = device[attr];
         break;
       }
@@ -299,16 +334,19 @@ export class Device_Description_View{
                                       '<reset_reason>';
     shine('reset_reason', data, this._reset_reason);
 
-    if(data && 'sensor' in data)
+    if((data && 'sensor' in data)  || force)
     {
       make_sensors(this._sensors, device, this._instance, data.sensor);
-      this._commands_gpios_out.forEach(g => {
-        const s = device.sensor_list.last_data(5, 0);
-        if(s)
-        {
+      const s = device.sensor_list.last_data(5, 0);
+      s && this._commands_gpios_out.forEach(g => {
             g.state = s.value & (1 << (+g.dataset.index + 8 - 1));
-        }
-      });
+          });
+
+      if(this._sensor_description)
+      {
+        this._sensor_description.update();
+      }
+
       make_sensors_graph(this._graphs, this._graphs_container, device, this._instance, data.sensor);
     }
   }

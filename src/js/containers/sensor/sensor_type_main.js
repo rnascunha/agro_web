@@ -48,7 +48,8 @@ function get_fields(container)
     unit: container.querySelector('.sensor-type-unit'),
     name: container.querySelector('.sensor-type-name'),
     name_id: container.querySelector('.sensor-type-name-id'),
-    id: container.querySelector('.sensor-type-id')
+    id: container.querySelector('.sensor-type-id'),
+    add_change: container.querySelector('.sensor-type-add-change')
   }
 }
 
@@ -145,7 +146,8 @@ function add_new_sensor(modal, instance)
       unit: fields.unit.value,
       unit_name: fields.unit_name.value,
       unit_type: +fields.unit_type.selectedOptions[0].value,
-      description: fields.description.innerText
+      description: fields.description.innerText,
+      add_change: fields.add_change.checked
     });
 
     modal.delete();
@@ -168,6 +170,7 @@ function show_sensor(container, sensor)
   fields.unit_name.value = sensor.unit_name;
   fields.unit_type.selectedIndex = sensor.type + 1;
   fields.description.innerText = sensor.description;
+  fields.add_change.checked = sensor.add_change;
 }
 
 function edit_sensor(container, sensor, instance)
@@ -185,6 +188,7 @@ function edit_sensor(container, sensor, instance)
   fields.unit_name.value = sensor.unit_name;
   fields.unit_type.selectedIndex = sensor.type + 1;
   fields.description.innerText = sensor.description;
+  fields.add_change.checked = sensor.add_change;
 
   container.querySelector('#option-yes')
     .addEventListener('click', ev => {
@@ -197,7 +201,8 @@ function edit_sensor(container, sensor, instance)
       unit: fields.unit.value,
       unit_name: fields.unit_name.value,
       unit_type: +fields.unit_type.selectedOptions[0].value,
-      description: fields.description.innerText
+      description: fields.description.innerText,
+      add_change: fields.add_change.checked
     });
 
     container.delete();

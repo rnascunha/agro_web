@@ -43,12 +43,10 @@ export class Time_Line_Chart{
 
     this._svg = d3.select(container)
         .append("svg")
-          // .attr("width", this._width + this._margin.left + this._margin.right)
-          // .attr("height", this._height + this._margin.top + this._margin.bottom)
-          .attr("preserveAspectRatio", "xMinYMin meet")
           .attr("viewBox", "0 0 "
             + (this._width + this._options.margin.left + this._options.margin.right) + " "
             + (this._height + this._options.margin.top + this._options.margin.bottom))
+            .attr("preserveAspectRatio", "xMidYMid meet")
         .append("g")
           .attr("transform",
               "translate(" + this._options.margin.left + "," + this._options.margin.top + ")");
@@ -75,7 +73,7 @@ export class Time_Line_Chart{
 
     // Add the valueline path.
     const path = this._svg.selectAll(".line")
-                            .data([data])
+                            .data([data], function(d){ return d.time})
                             .join("path");
 
     if(this._options.path)
@@ -107,15 +105,14 @@ export class Time_Line_Chart{
     if(this._tooltip)
     {
       circles.on("mouseover", (event,d) => {
-           const pev = d3.pointer(event);
            this._tooltip
             .transition()
              .duration(200)
              .style("opacity", .9);
            this._tooltip
             .html(this._tooltipFormatTime(d.time) + "<br/>" + d.value)
-             .style("left", (pev[0] + this._options.margin.left - 25) + "px")
-             .style("top", (pev[1] + this._options.margin.top - 25) + "px");
+            .style("left", (event.offsetX - 25) + "px")
+            .style("top", (event.offsetY - 30) + "px");
            })
          .on("mouseout", (d) => {
            this._tooltip

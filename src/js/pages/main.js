@@ -13,7 +13,7 @@ import {message_types,
         app_commands,
         report_commands} from '../messages/types.js'
 import {create_admin_portal_container} from '../containers/admin_portal/admin_portal.js'
-import {create_sensor_type_container} from '../containers/sensor_type/sensor_type_main.js'
+import {create_sensor_type_container} from '../containers/sensor/sensor_type_main.js'
 import {create_main_container} from '../containers/main/main_portal.js'
 import {create_device_container} from '../containers/main/main_device.js'
 import {create_net_container} from '../containers/main/main_net.js'
@@ -296,9 +296,9 @@ function run_main(data)
     /**
      * Redrawing tree at the end of animation
      */
-    side_menu.addEventListener('transitionend', () => {
-      instance.tree.update_view(instance);
-    });
+    // side_menu.addEventListener('transitionend', () => {
+    //   instance.tree.update_view(instance);
+    // });
 
     /**
      * Instanling size menu events

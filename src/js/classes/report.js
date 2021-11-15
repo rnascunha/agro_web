@@ -3,24 +3,6 @@ import {active_shine} from '../helper/effect.js'
 const template = document.createElement('template');
 template.innerHTML = `<div id=report-history-content>
   <h1>Report History</h1>
-  <!-- <div id=report-history-switch-container>
-    <span class=report-switch-line data-report=info>
-      <span slot=name>Info</span>
-      <check-switch></check-switch>
-    </span>
-    <span class=report-switch-line data-report=success>
-      <span>Success</span>
-      <check-switch></check-switch>
-    </span>
-    <span class=report-switch-line data-report=warning>
-      <span>Warning</span>
-      <check-switch checked></check-switch>
-    </span>
-    <span class=report-switch-line data-report=error>
-      <span>Error</span>
-      <check-switch checked></check-switch>
-    </span>
-  </div> -->
   <div id=report-history-table-container>
     <table>
       <thead>
@@ -50,7 +32,7 @@ export class Report{
   }
 
   add(report, update_view = false)
-  {    
+  {
     if(!this._list.length && (!Array.isArray(report) || (Array.isArray(report) && report.length)))
     {
         this.clear_view();

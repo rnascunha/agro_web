@@ -101,7 +101,9 @@ class Image_Table_View
     }
 
     this._container.innerHTML = '';
-    Object.values(model.list).forEach(image => {
+    Object.values(model.list)
+      .sort(function(a,b){ return a.id - b.id; })
+      .forEach(image => {
         const line = document.createElement('tr');
         line.dataset.image = image.name;
         attr.forEach(a => {

@@ -27,6 +27,11 @@ class Sensor{
     this._data.push(data);
   }
 
+  last_data()
+  {
+    return this._data[this._data.length - 1];
+  }
+
   /**
    * Check if package data has data to update sensor
    */
@@ -55,7 +60,7 @@ export class Sensor_List{
     const sensor = this.sensor(type, index);
     if(!sensor) return null;
 
-    return sensor.data[sensor.data.length - 1];
+    return sensor.last_data();
   }
 
   process(data)

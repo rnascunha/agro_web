@@ -1,7 +1,7 @@
 import {sensor_unit_type} from '../messages/types.js'
 
 class Sensor_Type{
-  constructor({id, name, long_name, type, unit, unit_name, description})
+  constructor({id, name, long_name, type, unit, unit_name, add_change, description})
   {
     this._id = id;
     this._name = name;
@@ -9,6 +9,7 @@ class Sensor_Type{
     this._type = type;
     this._unit = unit;
     this._unit_name = unit_name;
+    this._add_change = add_change;
     this._description = description;
   }
 
@@ -18,6 +19,7 @@ class Sensor_Type{
   get type(){ return this._type; }
   get unit(){ return this._unit; }
   get unit_name(){ return this._unit_name; }
+  get add_change(){ return this._add_change; }
   get description(){ return this._description; }
 }
 

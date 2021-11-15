@@ -28,7 +28,7 @@ function run_once_device(container, instance)
           view = new Device_Description_View(description, device, instance);
 
     device.register_view('description', view);
-    view.update(device);
+    view.update(device, {}, true);
 
     /**
      * This will scroll to a id element, and then remove the reference,

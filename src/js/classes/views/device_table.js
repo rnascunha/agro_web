@@ -11,10 +11,13 @@ export class Devices_Table_Line_View{
   {
     this._container.innerHTML = '';
 
-    ['id', 'mac', 'name', 'firmware_version',
-    'hardware_version', 'endpoint', 'connected', 'layer',
-    'parent', 'net_id', 'channel', 'mac_ap', 'children',
-    'has_rtc', 'has_temp_sensor'].forEach(attr => {
+    [
+      // 'id', 
+    'mac', 'name', 'firmware_version',
+    'hardware_version', 'endpoint', 'connected',
+    // 'layer', 'parent', 'net_id', 'channel', 'mac_ap', 'children'
+    // 'has_rtc', 'has_temp_sensor'
+  ].forEach(attr => {
       switch(attr)
       {
         case 'name':

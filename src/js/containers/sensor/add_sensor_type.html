@@ -23,11 +23,13 @@
         <span slot=field>Unit Name</span>
       </overtext-input>
     </div>
-    <select class='hide-first-opiton sensor-type-unit-type'></select>
+    <div>
+      <select class='hide-first-opiton sensor-type-unit-type'></select>
+      <label title='A new value will only be inserted when a different value from previouly be received'><input class=sensor-type-add-change type=checkbox> Insert only at change</label>
+    </div>
     <fieldset>
       <legend>Description</legend>
       <div name="name" class=sensor-type-description contenteditable="true"></div>
-      <!-- <textarea name="name" rows="3" class=sensor-type-description></textarea> -->
     </fieldset>
     <div>
       <div class=popup-error></div>

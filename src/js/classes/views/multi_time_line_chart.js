@@ -18,11 +18,11 @@ export class Multi_Time_Line_Chart
         long_name: 'AC Load ' + i,
       }),...{
         dot: {
-          fill: d3.schemePaired[i],
-          stroke: d3.schemePaired[i]
+          fill: d3.schemePaired[i - 1],
+          stroke: d3.schemePaired[i - 1]
         },
         path: {
-          stroke: d3.schemePaired[i]
+          stroke: d3.schemePaired[i - 1]
         }
       }});
 
@@ -41,11 +41,11 @@ export class Multi_Time_Line_Chart
         long_name: 'Input ' + i,
       }),...{
         dot: {
-          fill: d3.schemePaired[i + 3],
-          stroke: d3.schemePaired[i + 3]
+          fill: d3.schemePaired[i + 3 - 1],
+          stroke: d3.schemePaired[i + 3 - 1]
         },
         path: {
-          stroke: d3.schemePaired[i + 3]
+          stroke: d3.schemePaired[i + 3 - 1]
         }
       }});
 
@@ -63,7 +63,7 @@ export class Multi_Time_Line_Chart
 
     this._inputs.forEach((graph, i) => {
       graph.update(data.map(d => {
-        return {time: d.time, value: (d.value >> (i - 1)) & 1};
+        return {time: d.time, value: (d.value >> i) & 1};
       }))
     });
   }

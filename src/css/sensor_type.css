@@ -101,6 +101,16 @@
   width: 100%;
 }
 
+#sensor-type-popup-container .sensor-type-unit-type
+{
+  width: fit-content;
+}
+
+#sensor-type-popup-container label
+{
+  cursor: pointer;
+}
+
 #sensor-type-popup-container .sensor-type-description
 {
   width: 100%;
@@ -153,7 +163,7 @@
  }
 
  /**
-  * show
+  * Show
   */
   #sensor-type-popup-container.sensor-type-show-new .popup-title:after
   {
@@ -168,4 +178,9 @@
   #sensor-type-popup-container.sensor-type-show-new #option-cancel::after
   {
     content: 'Close';
+  }
+
+  #sensor-type-popup-container.sensor-type-show-new label
+  {
+    pointer-events: none;
   }

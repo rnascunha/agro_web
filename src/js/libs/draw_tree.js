@@ -34,8 +34,12 @@ export function draw_device_tree(data, container, instance, show_name)
   // moves the 'group' element to the top left margin
   const svg = d3.create("svg");
   svg
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("viewBox", "0 0 "
+      + (width + margin.left + margin.right) + " "
+      + (height + margin.top + margin.bottom))
+    .attr("preserveAspectRatio", "xMaxYMin meet")
+    // .attr("width", width + margin.left + margin.right)
+    // .attr("height", height + margin.top + margin.bottom);
   const g = svg.append("g")
       .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");

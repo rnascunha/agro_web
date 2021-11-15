@@ -20,8 +20,19 @@
 
 #main-device-description .detail-content expand-menu
 {
-  width: 40%;
+  width: 49%;
   min-width: 300px;
+}
+
+#main-device-description .detail-content expand-menu detail-line.description-sensor
+{
+  cursor: pointer;
+}
+
+#main-device-description .detail-content expand-menu detail-line.description-sensor:hover
+{
+  background-color: var(--primary-color-light);
+  font-weight: bold;
 }
 
 #main-device-description .detail-content expand-menu.detail-device-commands,
@@ -43,7 +54,8 @@
 }
 
 @media only screen and (max-width: 600px) {
-  #main-device-description .detail-content expand-menu{
+  #main-device-description .detail-content expand-menu
+  {
     width: 100%;
   }
 

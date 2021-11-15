@@ -4,14 +4,14 @@
  */
 .chart-line-graph
 {
-  padding: 5px;
+  padding: 1px;
 
   display: inline-block;
   position: relative;
   width: 100%;
-  padding-bottom: 300px; /* aspect ratio */
-  vertical-align: top;
-  overflow: hidden;
+  /* padding-bottom: 300px; *//* aspect ratio */
+  /* vertical-align: top; */
+  /* overflow: hidden; */
 }
 
 .chart-line-graph svg
@@ -21,8 +21,8 @@
   color: black;
 
   display: inline-block;
-  position: absolute;
-  left: 0;
+  /* position: absolute; */
+  /* left: 0; */
 }
 
 .chart-line-graph svg .line {
@@ -49,15 +49,9 @@
   pointer-events: none;
   color: black;
   z-index: 100;
+  top: 0; /* make it start at top positiion, not incresing container */
 }
 
 .chart-line-graph .label{
   font-weight: bold;
-}
-
-@media only screen and (max-width: 600px) {
-  .chart-line-graph
-  {
-    padding-bottom: 82%;
-  }
 }
