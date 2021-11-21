@@ -11,15 +11,25 @@ const default_options = {
   axis: {
     bottom: {
       format: d3.timeFormat("%H:%M"),
-      bottom: 'Time'
+      label: 'Time'
     },
     left: {
       label: 'Value'
     }
   },
+  zoom: {
+    max: Infinity
+  },
+  brush: {
+    height: 80,
+    margin: {bottom: 30, top: 0}
+  },
+  old_brush: false,
   path: false,
   dot: false
 }
+
+const radius = 5;
 
 export class Time_Line_Chart{
   constructor(container, options = {})
@@ -28,10 +38,18 @@ export class Time_Line_Chart{
     this._width = container.offsetWidth - this._options.margin.left - this._options.margin.right;
     this._height = this._options.height - this._options.margin.top - this._options.margin.bottom;
 
-    // this._parseTime = d3.timeParse("%s");
-    // this._formatTime = d3.timeFormat(this._options.time_format);
-    if(this._options.tooltip && 'time_format' in this._options.tooltip)
-      this._tooltipFormatTime = d3.timeFormat(this._options.tooltip.time_format);
+    if(this._options.tooltip)
+    {
+      this._tooltip = d3.select(container)
+                      .append("div")
+                        .attr("class", "tooltip")
+                        .style("opacity", 0);
+
+      if('time_format' in this._options.tooltip)
+      {
+        this._tooltipFormatTime = d3.timeFormat(this._options.tooltip.time_format);
+      }
+    }
 
     this._x = d3.scaleTime().range([0, this._width]);
     this._y = d3.scaleLinear().range([this._height, 0]);
@@ -41,20 +59,25 @@ export class Time_Line_Chart{
         .x(d => { return this._x(d.time); })
         .y(d => { return this._y(d.value); });
 
-    this._svg = d3.select(container)
+    const svg = d3.select(container)
         .append("svg")
           .attr("viewBox", "0 0 "
-            + (this._width + this._options.margin.left + this._options.margin.right) + " "
-            + (this._height + this._options.margin.top + this._options.margin.bottom))
-            .attr("preserveAspectRatio", "xMidYMid meet")
+            + (this._width
+              + this._options.margin.left
+              + this._options.margin.right) + " "
+            + (this._height
+              + this._options.margin.top
+              + this._options.margin.bottom
+              + (this._options.brush ?
+                this._options.brush.height
+                + this._options.brush.margin.top
+                + this._options.brush.margin.bottom : 0)))
+            .attr("preserveAspectRatio", "xMidYMid meet");
+
+    this._svg = svg
         .append("g")
           .attr("transform",
               "translate(" + this._options.margin.left + "," + this._options.margin.top + ")");
-
-    this._tooltip = d3.select(container)
-                    .append("div")
-                      .attr("class", "tooltip")
-                      .style("opacity", 0);
 
     const axis = this._options.axis;
     if(axis)
@@ -62,46 +85,162 @@ export class Time_Line_Chart{
       this._create_axis(Object.keys(axis));
       this._create_labels(axis);
     }
+
+    if(this._options.zoom || this._options.brush || this._options.old_brush)
+    {
+
+      this._x2 = d3.scaleTime().range(this._x.range());
+      /**
+       * This area is defined so when zooming, the graph don't overflow
+       */
+      this._svg.append("defs").append("svg:clipPath")
+          .attr("id", "clip")
+        .append("svg:rect")
+          .attr("width", this._width)
+          .attr("height", this._height + (2 * radius))
+          .attr("x", 0)
+          .attr("y", -radius);
+
+      this._area = this._svg.append("g").attr("clip-path", "url(#clip)");
+
+      this._transform = null;
+    }
+    else
+    {
+      this._area = this._svg;
+    }
+
+    if(this._options.zoom)
+    {
+      /**
+       * This just need to be done if zoom is enabled
+       */
+      this._zoom = d3.zoom()
+                      .scaleExtent([1, this._options.zoom.max])
+                      .translateExtent([[0, 0], [this._width, this._height]])
+                      .extent([[0, 0], [this._width, this._height]])
+                      .on('zoom', this._zoomed.bind(this));
+
+      this._area.append("rect")
+        .attr("class", "zoom")
+        .attr("width", this._width)
+        .attr("height", this._height + (2 * radius))
+        .attr("x", 0)
+        .attr("y", -radius)
+        .call(this._zoom);
+    }
+
+    if(this._options.brush)
+    {
+      this._y2 = d3.scaleLinear().range([this._options.brush.height, 0]);
+      this._valueline2 = d3.line()
+          .curve(this._options.curve)
+          .x(d => { return this._x2(d.time); })
+          .y(d => { return this._y2(d.value); });
+
+      this._brush = d3.brushX()
+          .extent([[0, 0], [this._width, this._options.brush.height]])
+          .on("brush end", this._brushed.bind(this));
+
+      this._svg2 = svg
+          .append("g")
+            .attr("transform",
+                "translate(" + this._options.margin.left + ","
+                              + (this._options.brush.margin.top
+                              + this._options.height) + ")");
+
+      this._create_axis(['bottom'], this._options.brush.height, this._svg2);
+
+      this._svg2.append("g")
+        .attr("class", "brush")
+          .call(this._brush)
+          .call(this._brush.move, this._x.range());
+    }
+
+    if(this._options.old_brush)
+    {
+      this._old_brush = d3.brushX()
+        .extent([[0, 0], [this._width, this._height]])
+        .on("end", this._old_brushed.bind(this));
+
+      this._area.append("g")
+          .attr("class", "brush")
+          .call(this._old_brush);
+
+      this._cleared = false;
+    }
   }
 
   update(data)
   {
     // Scale the range of the data
-    this._x.domain(d3.extent(data, function(d) { return d.time; }));
+    if(this._options.zoom || this._options.brush || this._options.old_brush)
+    {
+        this._x2.domain(d3.extent(data, function(d) { return d.time; }));
+        this._x.domain(this._transform ?
+                        this._transform
+                        : this._x2.domain());
+    }
+    else
+    {
+      this._x.domain(d3.extent(data, function(d) { return d.time; }));
+    }
     this._y.domain('domain_y' in this._options ? this._options.domain_y :
                     d3.extent(data, function(d) { return d.value; }));
+    if(this._options.brush)
+      this._y2.domain(this._y.domain());
 
     // Add the valueline path.
-    const path = this._svg.selectAll(".line")
-                            .data([data], function(d){ return d.time})
-                            .join("path");
+    this._area.selectAll(".line")
+              .data([data], function(d){ return d.time; })
+              .join(
+                enter => enter.append("path")
+                                .classed("line", true)
+                                .call(this._style.bind(this), this._options.path)
+              )
+              .transition()
+                .attr("d", this._valueline)
 
-    if(this._options.path)
-    {
-      this._style(path, this._options.path);
-    }
+    this._area.selectAll("circle")
+              .data(data)
+              .join(
+                enter => enter.append("circle")
+                              .classed("circle", true)
+                              .call(this._style.bind(this), this._options.dot)
+                              .call(this._set_tooltips.bind(this))
+              )
+              .transition()
+                .attr("r", radius)
+                .attr("cx", (d) => { return this._x(d.time); })
+                .attr("cy", (d) => { return this._y(d.value); });
 
-    path
-        .classed("line", true)
-        .transition()
-          .attr("d", this._valueline);
 
-    const circles = this._svg.selectAll("circle")
-                              .data(data)
-                              .join("circle");
 
-    if(this._options.dot)
-    {
-      this._style(circles, this._options.dot);
-    }
+    this._update_axis(this._options.axis);
+    this._update_brush(data);
+  }
 
-    circles
-      .classed("circle", true)
+  _update_brush(data)
+  {
+    if(!this._options.brush) return;
+
+    this._svg2.selectAll(".line-brush")
+      .data([data], function(d){ return d.time; })
+      .join(
+        enter => enter.append("path")
+                        .classed("line-brush", true)
+                        .call(this._style.bind(this), this._options.path)
+      )
       .transition()
-        .attr("r", 5)
-        .attr("cx", (d) => { return this._x(d.time); })
-        .attr("cy", (d) => { return this._y(d.value); });
+        .attr("d", this._valueline2);
 
+    this._svg2
+      .select(`.bottom--axis`)
+      .call(this._format_axis(d3.axisBottom(this._x2), {format: d3.timeFormat("%H:%M")}));
+  }
+
+  _set_tooltips(circles)
+  {
     if(this._tooltip)
     {
       circles.on("mouseover", (event,d) => {
@@ -121,13 +260,16 @@ export class Time_Line_Chart{
              .style("opacity", 0);
            });
     }
-
-    this._update_axis(this._options.axis);
   }
 
-  _create_axis(axis)
+  _create_axis(axis, height = null, container = null)
   {
     if(!axis || !Array.isArray(axis)) return;
+
+    if(!container)
+    {
+      container = this._svg;
+    }
 
     axis.forEach(ax => {
       switch(ax)
@@ -135,16 +277,16 @@ export class Time_Line_Chart{
         case 'top':
         case 'left':
         case 'right':
-          this._svg
+          container
             .append("g")
               .attr('class', `axis ${ax}--axis`);
           break;
         case 'bottom':
-        this._svg
-          .append("g")
-            .attr('class', `axis ${ax}--axis`)
-            .attr('transform',
-              'translate(0,' + this._height + ')');
+          container
+            .append("g")
+              .attr('class', `axis ${ax}--axis`)
+              .attr('transform',
+                'translate(0,' + (height ? height : this._height) + ')');
           break;
         default:
           break;
@@ -152,7 +294,7 @@ export class Time_Line_Chart{
     });
   }
 
-  _update_axis(axis_entries)
+  _update_axis(axis_entries, container = null)
   {
     Object.entries(axis_entries).forEach(([ax, format]) => {
       let axis = this._svg.select(`.${ax}--axis`);
@@ -243,6 +385,7 @@ export class Time_Line_Chart{
 
   _style(element, options)
   {
+    if(!options) return;
     if('class' in options)
     {
       element.classed(options.class, true);
@@ -256,6 +399,75 @@ export class Time_Line_Chart{
     if('fill' in options)
     {
       element.style('fill', options.fill);
+    }
+  }
+
+  _update_chart()
+  {
+    this._area
+          .selectAll(".line")
+          .attr("d", this._valueline);
+
+    this._area.selectAll("circle")
+          .classed("circle", true)
+          .transition()
+            .attr("r", 5)
+            .attr("cx", (d) => { return this._x(d.time); })
+            .attr("cy", (d) => { return this._y(d.value); });
+
+    this._update_axis(this._options.axis);
+  }
+
+  _zoomed(ev)
+  {
+    this._transform = ev.transform.rescaleX(this._x2).domain();
+    this._x.domain(this._transform);
+
+    this._update_chart();
+
+    if(this._options.brush)
+    {
+      const t = ev.transform;
+      this._svg2.select(".brush").call(this._brush.move, this._x.range().map(t.invertX, t));
+    }
+  }
+
+  _brushed(ev)
+  {
+    let s = ev.selection || this._x2.range();
+    this._x.domain(s.map(this._x2.invert, this._x2));
+
+    this._update_chart();
+  }
+
+  _old_brushed(ev)
+  {
+    if(this._cleared)
+    {
+      this._cleared = false;
+      return;
+    }
+
+    const s = ev.selection;
+    if(s && s[0] == this._x.domain()[0] && s[1] == this._x.domain()[1])
+    {
+      //nothing to do
+      return;
+    }
+
+    this._transform = !s ? this._x2.domain() :
+                      (ev.mode == 'handle' ?
+                            [this._x.invert(s[0]), this._x.invert(s[1])]
+                            : s.map(this._x2.invert, this._x2) /* ev.mode == 'drag' */)
+
+    this._x.domain(this._transform);
+    this._update_chart();
+
+    //Clear brush selection, if needed
+    if(s)
+    {
+      this._cleared = true;
+      this._svg.select(".brush").call(this._old_brush.move, null);
     }
   }
 }

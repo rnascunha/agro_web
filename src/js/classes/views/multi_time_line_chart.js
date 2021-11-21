@@ -4,7 +4,7 @@ import * as d3 from 'd3'
 
 export class Multi_Time_Line_Chart
 {
-  constructor(container, sensor)
+  constructor(container, sensor, options = {})
   {
     //Outputs
     this._outputs = [];
@@ -14,7 +14,7 @@ export class Multi_Time_Line_Chart
       c.classList.add('detail-device-graph-output', 'chart-line-graph');
       container.appendChild(c);
 
-      const graph = new Time_Line_Chart(c, {...graph_options('digital', {
+      const graph = new Time_Line_Chart(c, {...graph_options('digital', sensor, {
         long_name: 'AC Load ' + i,
       }),...{
         dot: {
@@ -24,7 +24,7 @@ export class Multi_Time_Line_Chart
         path: {
           stroke: d3.schemePaired[i - 1]
         }
-      }});
+      }, ...options});
 
       this._outputs.push(graph);
     }
@@ -37,7 +37,7 @@ export class Multi_Time_Line_Chart
       c.classList.add('detail-device-graph-input', 'chart-line-graph');
       container.appendChild(c);
 
-      const graph = new Time_Line_Chart(c, {...graph_options('digital', {
+      const graph = new Time_Line_Chart(c, {...graph_options('digital', sensor, {
         long_name: 'Input ' + i,
       }),...{
         dot: {
@@ -47,7 +47,7 @@ export class Multi_Time_Line_Chart
         path: {
           stroke: d3.schemePaired[i + 3 - 1]
         }
-      }});
+      }, ...options});
 
       this._inputs.push(graph);
     }

@@ -9,9 +9,6 @@
   display: inline-block;
   position: relative;
   width: 100%;
-  /* padding-bottom: 300px; *//* aspect ratio */
-  /* vertical-align: top; */
-  /* overflow: hidden; */
 }
 
 .chart-line-graph svg
@@ -21,14 +18,18 @@
   color: black;
 
   display: inline-block;
-  /* position: absolute; */
-  /* left: 0; */
 }
 
 .chart-line-graph svg .line {
   fill: none;
   stroke: red;
   stroke-width: 2px;
+}
+
+.chart-line-graph svg .line-brush {
+  fill: none;
+  stroke: red;
+  stroke-width: 1px;
 }
 
 .chart-line-graph svg .circle {
@@ -39,7 +40,6 @@
 .chart-line-graph .tooltip {
   position: absolute;
   text-align: center;
-  width: 60px;
   height: 28px;
   padding: 2px;
   font: 12px sans-serif;
@@ -54,4 +54,10 @@
 
 .chart-line-graph .label{
   font-weight: bold;
+}
+
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
 }

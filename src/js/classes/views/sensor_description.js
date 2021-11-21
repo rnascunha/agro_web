@@ -7,7 +7,7 @@ const template = document.createElement('template');
 template.innerHTML = sensor_description_html;
 
 export class Sensor_Description_View{
-  constructor(container, instance, sensor)
+  constructor(container, instance, sensor, graph_options = {})
   {
     this._sensor = sensor;
     this._sensor_type = instance.sensor_type_list.get_id(sensor.type);
@@ -29,7 +29,7 @@ export class Sensor_Description_View{
     make_sensor_table(this._table_tbody, this._sensor.data, this._sensor_type);
     this._graph = make_sensor_graph(graph_container,
                                     this._sensor,
-                                    this._sensor_type);
+                                    this._sensor_type, graph_options);
   }
 
   get sensor(){ return this._sensor; }

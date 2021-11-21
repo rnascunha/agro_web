@@ -265,7 +265,12 @@ export class Device_Description_View{
 
     this._graphs = {}
     this._graphs_container = temp.querySelector('.detail-device-graph-container');
-    make_sensors_graph(this._graphs, this._graphs_container, device, instance);
+    make_sensors_graph(this._graphs,
+          this._graphs_container,
+          device, instance,
+          null,
+          {zoom: false, brush: false},
+          -20);
 
     const s = device.sensor_list.last_data(5, 0);
     s && this._commands_gpios_out.forEach(g => {
@@ -347,7 +352,12 @@ export class Device_Description_View{
         this._sensor_description.update();
       }
 
-      make_sensors_graph(this._graphs, this._graphs_container, device, this._instance, data.sensor);
+      make_sensors_graph(this._graphs,
+        this._graphs_container,
+        device, this._instance,
+        data.sensor,
+        {zoom: false},
+        -20);
     }
   }
 }

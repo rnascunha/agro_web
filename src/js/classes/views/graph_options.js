@@ -1,11 +1,12 @@
+import {make_sensor_name} from './sensor_helper.js'
 import * as d3 from 'd3'
 
-export function graph_options(type, sensor_type)
+export function graph_options(type, sensor, sensor_type, options = {})
 {
   switch(type)
   {
       case 'top_axis':
-        return {
+        return {...{
           margin: {top: 40, right: 20, bottom: 10, left: 60},
           axis: {
             top: {
@@ -13,7 +14,7 @@ export function graph_options(type, sensor_type)
               format: d3.timeFormat("%H:%M")
             },
             left: {
-              label: `${sensor_type.long_name} (${sensor_type.unit})`
+              label: `${make_sensor_name(sensor, sensor_type)} (${sensor_type.unit})`
             }
           },
           dot: {
@@ -23,9 +24,9 @@ export function graph_options(type, sensor_type)
           path: {
             stroke: 'green'
           }
-        };
+        }, ...options};
       case 'digital':
-        return {
+        return {...{
           margin: {top: 20, right: 20, bottom: 20, left: 30},
           height: 110,
           domain_y: [0, 1],
@@ -40,9 +41,9 @@ export function graph_options(type, sensor_type)
               values: []
             }
           }
-        }
+        }, ...options};
       default:
-        return {
+        return {...{
           margin: {top: 20, right: 20, bottom: 40, left: 60},
           axis: {
             bottom: {
@@ -50,9 +51,9 @@ export function graph_options(type, sensor_type)
               format: d3.timeFormat("%H:%M")
             },
             left: {
-              label: `${sensor_type.long_name} (${sensor_type.unit})`
+              label: `${make_sensor_name(sensor, sensor_type)} (${sensor_type.unit})`
             }
           }
-        };
+        }, ...options};
   }
 }
