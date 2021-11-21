@@ -53,6 +53,12 @@ export class Multi_Time_Line_Chart
     }
   }
 
+  set_brush_selection(value)
+  {
+    this._inputs.forEach(g => g.set_brush_selection(value));
+    this._outputs.forEach(g => g.set_brush_selection(value));
+  }
+
   update(data)
   {
     this._outputs.forEach((graph, i) => {

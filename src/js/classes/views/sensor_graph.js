@@ -52,7 +52,6 @@ export function make_sensors_graph(graphs, container, device, instance, data, op
       {
         graphs[index] = graph;
         graphs[index].update(get_data(device, sensor, data_size));
-        // graph.update(device.sensor_list.sensor(sensor.type, sensor.index).data);
       }
       return;
     }

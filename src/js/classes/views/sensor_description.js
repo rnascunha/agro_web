@@ -33,6 +33,7 @@ export class Sensor_Description_View{
   }
 
   get sensor(){ return this._sensor; }
+  get graph(){ return this._graph; }
 
   update()
   {

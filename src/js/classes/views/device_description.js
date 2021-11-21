@@ -255,6 +255,7 @@ export class Device_Description_View{
 
       this._sensor_description = new Sensor_Description_View(sensor_desc, instance, sensor);
       this._sensor_description.update();
+      this._sensor_description.graph.set_brush_selection(20);
     });
 
     /**

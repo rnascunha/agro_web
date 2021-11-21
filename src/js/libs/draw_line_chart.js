@@ -171,15 +171,39 @@ export class Time_Line_Chart{
     }
   }
 
+  set_brush_selection(value)
+  {
+    if(!this._options.brush) return;
+
+    const data = this._area.selectAll('.line').data()[0];
+    if(data.length < value)
+    {
+      this._svg2.select('.brush').call(this._brush.move, this._x.range());
+      return;
+    }
+
+    const d = data[data.length - value];
+    this._update_brush_selection([this._x2(d.time), this._x2.range()[1]]);
+  }
+
   update(data)
   {
     // Scale the range of the data
     if(this._options.zoom || this._options.brush || this._options.old_brush)
     {
         this._x2.domain(d3.extent(data, function(d) { return d.time; }));
-        this._x.domain(this._transform ?
+        if(this._options.brush)
+        {
+          const s = d3.brushSelection(this._svg2.select(".brush").node());
+          this._transform = s.map(this._x2.invert, this._x2);
+          this._x.domain(this._transform);
+        }
+        else
+        {
+          this._x.domain(this._transform ?
                         this._transform
                         : this._x2.domain());
+        }
     }
     else
     {
@@ -406,10 +430,11 @@ export class Time_Line_Chart{
   {
     this._area
           .selectAll(".line")
-          .attr("d", this._valueline);
+          .transition()
+            .attr("d", this._valueline);
 
-    this._area.selectAll("circle")
-          .classed("circle", true)
+    this._area
+          .selectAll("circle")
           .transition()
             .attr("r", 5)
             .attr("cx", (d) => { return this._x(d.time); })
@@ -432,12 +457,27 @@ export class Time_Line_Chart{
     }
   }
 
-  _brushed(ev)
+  _update_brush_selection(selection)
   {
-    let s = ev.selection || this._x2.range();
-    this._x.domain(s.map(this._x2.invert, this._x2));
+    this._transform = selection.map(this._x2.invert, this._x2);
+    this._x.domain(this._transform);
+
+    /**
+     * Zoom at the brushed area
+     */
+    this._svg
+      .select(".zoom")
+      .call(this._zoom.transform, d3.zoomIdentity
+      .scale(this._width / (selection[1] - selection[0]))
+      .translate(-selection[0], 0));
 
     this._update_chart();
+  }
+
+  _brushed(ev)
+  {
+    if(!ev.mode) return;
+    this._update_brush_selection(ev.selection || this._x2.range());
   }
 
   _old_brushed(ev)
