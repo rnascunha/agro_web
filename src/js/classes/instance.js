@@ -29,6 +29,7 @@ export class Instance
     this._logged = logged;
     this._server_addr = server_addr;
     this._registration = registration;
+    this._is_subscribed = false;
     this._storage = storage;
     this._device_list = new Device_List(options.containers.device_table);
     this._response_handler = new Response_Handler_List();
@@ -49,8 +50,13 @@ export class Instance
   get username(){ return this._logged.info.username; }
   get session_id(){ return this._logged.session_id; }
   get policy(){ return this._logged.policy; }
+  get notify(){ return this._logged.notify; }
   get server_addr(){ return this._server_addr; }
+
   get registration(){ return this._registration; }
+  get is_subscribed(){ return this._is_subscribed; }
+
+  set is_subscribed(val){ this._is_subscribed = Boolean(val); }
 
   get device_list(){ return this._device_list; }
   get tree(){ return this._tree; }

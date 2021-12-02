@@ -4,14 +4,15 @@ import {Instance} from '../classes/instance.js'
 import {Logged} from '../classes/user.js'
 import {Policy} from '../classes/policy.js'
 import {policy_types} from '../messages/policy_types.js'
-import {Notify_View_Icon, Notify} from '../libs/notify.js'
+import {Push_Notify_View_Icon, Push_Notify} from '../libs/notify.js'
 import {message_types,
         user_commands,
         device_commands,
         sensor_commands,
         image_commands,
         app_commands,
-        report_commands} from '../messages/types.js'
+        report_commands,
+        notify_commands} from '../messages/types.js'
 import {create_admin_portal_container} from '../containers/admin_portal/admin_portal.js'
 import {create_sensor_type_container} from '../containers/sensor/sensor_type_main.js'
 import {create_main_container} from '../containers/main/main_portal.js'
@@ -20,6 +21,8 @@ import {create_net_container} from '../containers/main/main_net.js'
 import {create_job_container} from '../containers/main/main_job.js'
 import {create_image_container} from '../containers/main/main_image.js'
 import {create_app_container} from '../containers/main/main_app.js'
+import {create_notification_container,
+        set_notify_status} from '../containers/notification/notification.js'
 import {Container_Manager} from '../libs/container.js'
 import {Report} from '../classes/report.js'
 import {Detail_View} from '../classes/detail_view.js'
@@ -36,16 +39,18 @@ function blur_dropmenu()
 
 function notify_handler(data, instance)
 {
-  if(!Notify.support()) return;
+  if(!Push_Notify.support()) return;
 
-  const notify = new Notify(
+  const notify = new Push_Notify(
     instance.ws,
     instance.username,
     data.data.key,
     instance.registration,
-    new Notify_View_Icon());
+    new Push_Notify_View_Icon());
 
-    notify.get_subscription();
+    notify.get_subscription().then(is_sub => {
+      instance.is_subscribed = is_sub;
+    });
 }
 
 function update_endpoints(instance, data)
@@ -64,6 +69,15 @@ function update_endpoints(instance, data)
         }, true);
       }
     })
+}
+
+function update_push_subscribe_status(status, container_manager, instance)
+{
+  instance.is_subscribed = status;
+  if(container_manager.current == 'notify')
+  {
+    set_notify_status(container_manager.container, instance);
+  }
 }
 
 function run_main(data)
@@ -145,6 +159,7 @@ function run_main(data)
     main_manager.add('image', main_image);
     main_manager.add('app', main_app);
     main_manager.add('sensor_type', create_sensor_type_container());
+    main_manager.add('notify', create_notification_container());
 
   /**
    * Initiaing persistent containers
@@ -161,6 +176,12 @@ function run_main(data)
                       user_commands.NOTIFY_KEY,
                       notify_handler,
                       instance);
+  instance.add_handler(message_types.USER,
+                      user_commands.PUSH_UNSUBSCRIBE,
+                      data => update_push_subscribe_status(false, main_manager, instance));
+  instance.add_handler(message_types.USER,
+                      user_commands.PUSH_SUBSCRIBE,
+                      data => update_push_subscribe_status(true, main_manager, instance));
   instance.add_handler(message_types.DEVICE,
                       device_commands.LIST,
                       data => {
@@ -223,7 +244,26 @@ function run_main(data)
                       data => {
                         report.add(data.data, true);
                       });
-
+  instance.add_handler(message_types.REPORT,
+                      report_commands.NOTIFY,
+                      data => {
+                        report.add(data.data, true);
+                      });
+  instance.add_handler(message_types.NOTIFY,
+                      notify_commands.GENERAL_LIST,
+                    data => {
+                      instance.notify.set(data.data);
+                    });
+  instance.add_handler(message_types.NOTIFY,
+                      notify_commands.DEVICE_LIST,
+                    data => {
+                      instance.notify.set_device(data.data)
+                    });
+  instance.add_handler(message_types.NOTIFY,
+                      notify_commands.SENSOR_LIST,
+                    data => {
+                      instance.notify.set_sensors(data.data);
+                    });
   /**
    * Setting username
    */
@@ -256,6 +296,15 @@ function run_main(data)
     //This is to make the drop menu disappear
     blur_dropmenu()
   });
+
+  /**
+   *
+   */
+   document.querySelector("#notification-menu")
+    .addEventListener('click', ev => {
+      main_manager.run('notify', instance);
+      blur_dropmenu();
+    });
 
   /**
    * Title event (go to main container)

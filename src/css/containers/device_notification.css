@@ -1,0 +1,69 @@
+.pop-modal-notify
+{
+  --inner-height: 90%;
+}
+
+
+.device-notify-popup
+{
+  max-height: 90%;
+  overflow: auto;
+}
+
+.device-notify-popup .popup-content
+{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.device-notify-popup .popup-content fieldset
+{
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.device-notify-popup .popup-content label
+{
+  cursor: pointer;
+}
+
+.device-notify-popup .popup-content label:hover
+{
+  font-weight: bold;
+}
+
+.device-notify-popup fieldset.notify-device
+{
+  flex: 0 4 180px;
+}
+
+.device-notify-popup fieldset.notify-sensor
+{
+  width: 100%;
+  align-self: flex-start;
+  flex: 0 4 200px;
+}
+
+.device-notify-popup .notify-sensor .add-notify-sensor
+{
+  cursor: pointer;
+}
+
+.device-notify-popup .notify-sensor .notify-sensor-list sensor-notify
+{
+  padding-bottom: 2px;
+}
+
+.device-notify-popup .notify-sensor .notify-sensor-list:empty::after
+{
+  content: 'No sensor notify set';
+}
+
+.device-notify-popup .notify-footer
+{
+  display: flex;
+  justify-content: flex-end;
+}

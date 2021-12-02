@@ -11,8 +11,12 @@ export class Devices_Table_Line_View{
   {
     this._container.innerHTML = '';
 
+    // const cell = document.createElement('td');
+    // cell.innerHTML = '<i class="fas fa-flag"></i>';
+    // this._container.appendChild(cell);
+
     [
-      // 'id', 
+      // 'id',
     'mac', 'name', 'firmware_version',
     'hardware_version', 'endpoint', 'connected',
     // 'layer', 'parent', 'net_id', 'channel', 'mac_ap', 'children'

@@ -1,5 +1,6 @@
 .custom-response-modal{
   --inner-width: 60%;
+  --min-inner-width: 500px;
   color: var(--text-color);
   --inner-height: 90%;
 }
@@ -48,4 +49,11 @@
   flex-wrap: wrap;
   display: flex;
   gap: 2px;
+}
+
+@media only screen and (max-width: 600px) {
+  .custom-response-modal{
+    --inner-width: 98%;
+    --min-inner-width: 0px;
+  }
 }

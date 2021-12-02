@@ -2,6 +2,7 @@
   --primary-color: rgba(0, 100, 200);
   --primary-color-dark: rgb(10, 20, 150);
   --primary-color-light: rgb(30, 50, 200);
+  --primary-color-light2: rgb(40, 80, 250);
   --secondary-color: rgb(0, 50, 150);
   --text-color: white;
   /* --font-family: 'Indie Flower', cursive; */
@@ -42,23 +43,12 @@ html, body{
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color-dark);
-  /* background: green; */
+  /* background: var(--primary-color-dark); */
+  background: var(--primary-color-light2);
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-color-light);
-  /* background: red; */
 }
-
-/* test */
-/* #device-data{
-  font-family: monospace;
-}
-
-#device-data p{
-  background-color: red;
-  margin-bottom: 5px;
-} */

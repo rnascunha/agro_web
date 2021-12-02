@@ -77,6 +77,7 @@ export class Container_Manager{
   }
 
   get current(){ return this._current_name; }
+  get container(){ return this._container; }
 
   add(name, container)
   {

@@ -2,3 +2,19 @@ select.hide-first-opiton option:first-child
 {
   display: none;
 }
+
+.table-container
+{
+  overflow-y: auto;
+  padding-bottom: 2px;
+}
+
+.button-normal
+{
+  cursor: pointer;
+  color: var(--text-color);
+  background-color: var(--primary-color-dark);
+  font-family: var(--font-family);
+  padding: 6px 3px;
+  border-radius: 5px;
+}

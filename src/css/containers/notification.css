@@ -1,0 +1,40 @@
+#notification-container label
+{
+  cursor: pointer;
+}
+
+#notification-container #notification-content label
+{
+  display: block;
+}
+
+#notification-container #notification-content label:hover
+{
+  /* box-shadow: var(--hover-effect); */
+  font-weight: bold;
+}
+
+#notification-container #notification-status
+{
+  padding: 5px 5px 5px 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  width: fit-content;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+#notification-container #notification-status.enabled
+{
+  background-color: rgba(0, 200, 0, 0.8);
+}
+
+#notification-container #notification-status.disabled
+{
+  background-color: rgba(200, 200, 0, 0.8);
+}
+
+#notification-container #notification-status.not-supported
+{
+  background-color: rgba(200, 0, 0, 0.8);
+}

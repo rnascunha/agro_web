@@ -24,6 +24,8 @@ import './css/containers/image.css'
 import './css/containers/app.css'
 import './css/containers/sensor_graph.css'
 import './css/containers/sensor_description.css'
+import './css/containers/notification.css'
+import './css/containers/device_notification.css'
 import './css/commands/common.css'
 import './css/commands/ac_load.css'
 import './css/commands/packets.css'
@@ -56,6 +58,7 @@ import "./js/components/btn-on-off.js"
 import "./js/components/array-command.js"
 import "./js/components/binary-data.js"
 import "./js/components/header-value.js"
+import "./js/components/sensor-notify.js"
 
 //js
 import './js/pages/login.js'

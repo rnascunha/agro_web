@@ -5,7 +5,8 @@ export const message_types = {
   REPORT: 'report',
   IMAGE: 'image',
   APP: 'app',
-  SENSOR: 'sensor'
+  SENSOR: 'sensor',
+  NOTIFY: 'notify'
 }
 Object.freeze(message_types);
 
@@ -17,7 +18,9 @@ export const user_commands = {
   EDIT_USER: 'edit_user',
   DELETE_USER: 'delete_user',
   ADD_GROUP: 'add_group',
-  DELETE_GROUP: 'delete_group'
+  DELETE_GROUP: 'delete_group',
+  PUSH_SUBSCRIBE: 'push_subscribe',
+  PUSH_UNSUBSCRIBE: 'push_unsubscribe'
 }
 Object.freeze(user_commands);
 
@@ -57,7 +60,8 @@ export const report_commands = {
   LIST: 'list',
   DEVICE: 'device',
   IMAGE: 'image',
-  APP: 'app'
+  APP: 'app',
+  NOTIFY: 'notify'
 }
 
 export const report_types = {
@@ -72,4 +76,13 @@ export const sensor_unit_type = {
   1: {value: 1, name: 'unsigned', title: 'Unsigned'},
   2: {value: 2, name: 'float', title: 'Float'},
   // 3: {value: 3, name: 'array', title: 'Array'}
+}
+
+export const notify_commands = {
+  GENERAL_LIST: 'general_list',
+  GENERAL_SET: 'general_set',
+  DEVICE_LIST: 'device_list',
+  DEVICE_SET: 'device_set',
+  SENSOR_LIST: 'sensor_list',
+  SENSOR_SET: 'sensor_set',
 }

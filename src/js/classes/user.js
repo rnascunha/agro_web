@@ -1,3 +1,5 @@
+import {Notify} from './notify.js'
+
 
 export const user_status = {
   INVALID: {value: -1, name: 'invalid'},
@@ -226,10 +228,12 @@ export class Logged
     this._info = new User_Info(id, username, name, email, status);
     this._session_id = session_id;
     this._policy = policy;
+    this._notify = new Notify();
   }
 
   get id(){ return this._info.id; }
   get info(){ return this._info; }
   get session_id(){ return this._session_id; }
   get policy(){ return this._policy; }
+  get notify(){ return this._notify; }
 }

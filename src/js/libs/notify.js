@@ -17,7 +17,7 @@ function urlB64ToUint8Array(base64String) {
   return outputArray;
 }
 
-export class Notify_View_Icon{
+export class Push_Notify_View_Icon{
   constructor()
   {
     const notify_disabled = document.querySelector('#main #notify-disabled'),
@@ -71,7 +71,7 @@ export class Notify_View_Icon{
   }
 }
 
-export class Notify_View_Switch{
+export class Push_Notify_View_Switch{
   constructor()
   {
     const notify_switch = document.querySelector('#main #notify-switch'),
@@ -126,7 +126,7 @@ export class Notify_View_Switch{
   }
 }
 
-export class Notify{
+export class Push_Notify{
   constructor(ws, user, application_key, registration, container)
   {
     this._ws = ws;
@@ -148,6 +148,8 @@ export class Notify{
       }
     });
   }
+
+  get is_subscribed(){ return this._is_subscribed; }
 
   send_subscribe()
   {
@@ -181,13 +183,15 @@ export class Notify{
   {
     if(!this._registration) return;
 
-    this._registration.pushManager.getSubscription()
+    return this._registration.pushManager.getSubscription()
       .then(subscription => {
         this._subscription = subscription;
         this._is_subscribed = !(subscription === null);
 
       this.send_subscribe();
-      this._update_container()
+      this._update_container();
+
+      return this._is_subscribed;
     });
   }
 
@@ -219,11 +223,9 @@ export class Notify{
         console.log('Error unsubscribing', error);
       })
       .then(() => {
-        console.log('User is unsubscribed.');
         this._is_subscribed = false;
 
         this.send_unsubscribe();
-
         this._update_container()
     });
   }

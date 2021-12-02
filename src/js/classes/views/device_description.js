@@ -14,6 +14,7 @@ import {make_sensors} from './sensor_line.js'
 import {make_sensors_graph} from './sensor_graph.js'
 import {Sensor_Description_View} from './sensor_description.js'
 import {Custom_Request} from '../../libs/custom_request.js'
+import {notify_device} from './notify_device.js'
 
 const template_description = document.createElement('template');
 template_description.innerHTML = device_description;
@@ -25,7 +26,7 @@ export class Device_Description_View{
 
     this._instance = instance;
 
-    this._title = temp.querySelector('.detail-title');
+    this._title = temp.querySelector('.device-title');
     this._connected = temp.querySelector('.detail-connected');
     this._id = temp.querySelector('.detail-id');
     this._name = temp.querySelector('.detail-name');
@@ -257,6 +258,12 @@ export class Device_Description_View{
       this._sensor_description.update();
       this._sensor_description.graph.set_brush_selection(20);
     });
+
+    /**
+     *
+     */
+     temp.querySelector('.device-notify')
+      .addEventListener('click', ev => notify_device(device, instance));
 
     /**
      *

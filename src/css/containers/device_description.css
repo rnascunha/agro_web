@@ -7,6 +7,22 @@
 #main-device-description h1
 {
   text-align: center;
+  font-weight: bold;
+}
+
+#main-device-description .detail-title
+{
+  display: flex;
+}
+
+#main-device-description .detail-title .device-title
+{
+  width: 100%;
+}
+
+#main-device-description .detail-title .device-notify
+{
+  cursor: pointer;
 }
 
 #main-device-description .detail-content
