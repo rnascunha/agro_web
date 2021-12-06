@@ -33,7 +33,7 @@ function admin_container_init(container, instance)
     user_commands.ADD_USER,
     data => {
       const msg = data.data;
-      instance.users.add(msg.id, msg.username, msg.name, msg.email, msg.status, true);
+      instance.users.add(msg.id, msg.username, msg.name, msg.email, msg.telegram_chat_id, msg.status, true);
       if('groups' in msg && Array.isArray(msg.groups))
       {
         instance.groups.add_user_to_groups(msg.id, msg.groups, true);

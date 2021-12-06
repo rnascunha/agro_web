@@ -117,6 +117,7 @@ function run_main(data)
                                           data.message.data.username,
                                           data.message.data.name,
                                           data.message.data.email,
+                                          data.message.data.telegram_chat_id,
                                           data.message.data.status,
                                           data.sessionid,
                                           data.policy),

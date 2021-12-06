@@ -24,13 +24,14 @@ export const root_name = 'root';
 
 export class User_Info
 {
-  constructor(id, username, name, email, status)
+  constructor(id, username, name, email, telegram_chat_id, status)
   {
     this._id = id;
     this._username = username;
     this._name = name;
     this._email = email;
     this._status = status;
+    this._telegram_chat_id = telegram_chat_id;
   }
 
   get id(){ return this._id; }
@@ -38,16 +39,18 @@ export class User_Info
   get name(){ return this._name; }
   get email(){ return this._email; }
   get status(){ return this._status; }
+  get telegram_chat_id(){ return this._telegram_chat_id; }
   get status_string()
   {
     return User_Info.status_string(this._status);
   }
 
-  update(username, name, email)
+  update(username, name, email, telegram_chat_id)
   {
     this._username = username;
     this._name = name;
     this._email = email;
+    this._telegram_chat_id  = telegram_chat_id;
   }
 
   static status_string(status)
@@ -139,19 +142,19 @@ export class User_Info_List
     return Object.keys(this._list).length;
   }
 
-  add(id, username, name, email, status, update_view = false)
+  add(id, username, name, email, telegram_chat_id, status, update_view = false)
   {
-    this._list[id] = new User_Info(id, username, name, email, status);
+    this._list[id] = new User_Info(id, username, name, email, telegram_chat_id, status);
     if(update_view)
     {
       this.update_view();
     }
   }
 
-  update(id, username, name, email, update_view = false)
+  update(id, username, name, email, telegram_chat_id, update_view = false)
   {
     if(!(id in this._list)) return;
-    this._list[id].update(username, name, email);
+    this._list[id].update(username, name, email, telegram_chat_id);
 
     update_view && this.update_view();
   }
@@ -223,9 +226,9 @@ class User_Info_List_Table_View{
 
 export class Logged
 {
-  constructor(id, username, name, email, status, session_id, policy)
+  constructor(id, username, name, email, telegram_chat_id, status, session_id, policy)
   {
-    this._info = new User_Info(id, username, name, email, status);
+    this._info = new User_Info(id, username, name, email, telegram_chat_id, status);
     this._session_id = session_id;
     this._policy = policy;
     this._notify = new Notify();

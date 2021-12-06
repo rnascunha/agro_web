@@ -94,6 +94,7 @@ export function add_new_user(instance)
         name = modal.querySelector('#name'),
         password = modal.querySelector('#password'),
         email = modal.querySelector('#email'),
+        telegram_chat_id = modal.querySelector('#telegram-chat-id'),
         button_yes = modal.querySelector('#option-yes'),
         button_cancel = modal.querySelector('#option-cancel'),
         group_list_check = modal.querySelector("#add-user-group-list"),
@@ -127,6 +128,7 @@ export function add_new_user(instance)
         name: name.value ? name.value : username.value,
         password: password.value,
         email: email.value,
+        telegram_chat_id: telegram_chat_id.value,
         groups: read_checkbox_group_list(group_list_check)
       });
       modal.delete();
@@ -157,6 +159,7 @@ function edit_user_modal(instance, id)
         username = modal.querySelector('#username'),
         name = modal.querySelector('#name'),
         email = modal.querySelector('#email'),
+        telegram_chat_id = modal.querySelector('#telegram-chat-id'),
         button_yes = modal.querySelector('#option-yes'),
         button_cancel = modal.querySelector('#option-cancel'),
         group_list_check = modal.querySelector("#add-user-group-list");
@@ -165,6 +168,7 @@ function edit_user_modal(instance, id)
   username.textContent = user.username;
   name.textContent = user.name;
   email.textContent = user.email ? user.email : '<no email>';
+  telegram_chat_id.textContent = user.telegram_chat_id ? user.telegram_chat_id : '<no chat ID>';
 
   make_checkbox_groups(instance.groups,
     group_list_check,
@@ -183,6 +187,7 @@ function edit_user_modal(instance, id)
         username: user.username,
         name: user.name,
         email: user.email,
+        telegram_chat_id: user.telegram_chat_id,
         groups: read_checkbox_group_list(group_list_check)
       });
       modal.delete();
@@ -199,7 +204,7 @@ let table_event = null;
 export function user_list(instance, users, tbody)
 {
   users.forEach(user => {
-    instance.users.add(user.id, user.username, user.name, user.email, user.status, false);
+    instance.users.add(user.id, user.username, user.name, user.email, user.telegram_chat_id, user.status, false);
   });
   instance.users.update_view();
 
