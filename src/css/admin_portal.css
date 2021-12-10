@@ -75,3 +75,83 @@
 {
   cursor: pointer;
 }
+
+#main-content #admin-portal-main .portal-category
+{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 5px;
+}
+
+#main-content #admin-portal-main .portal-category legend
+{
+  font-size: 20px;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line
+{
+  display: flex;
+  padding-bottom: 5px;
+  align-items: center;
+  font-size: 18px;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-icon
+{
+  flex: 0 1 40px;
+  width: 10%;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line input[type=checkbox],
+#main-content #admin-portal-main .portal-category .portal-line label
+{
+  cursor: pointer;
+  user-select: none;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-title
+{
+  flex: 1 0 100px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input
+{
+  flex: 5 1 auto;
+  font-size: inherit;
+  text-align: center;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input .input-text
+{
+  font-size: inherit;
+  text-align: center;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input.email-input
+{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input.email-input div
+{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input .mail-option
+{
+  cursor: pointer;
+}
+
+#main-content #admin-portal-main .portal-category .portal-line .portal-input .mail-option:hover
+{
+  transform: translateY(2px);
+}

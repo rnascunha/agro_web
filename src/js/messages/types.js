@@ -85,4 +85,6 @@ export const notify_commands = {
   DEVICE_SET: 'device_set',
   SENSOR_LIST: 'sensor_list',
   SENSOR_SET: 'sensor_set',
+  CREDENTIAL_LIST: 'credential_list',
+  UPDATE_CREDENTIAL: 'update_credential',
 }

@@ -1,42 +1,83 @@
 <div id=admin-portal-main>
-  <section>
-    <h1>
-      <span>Users <span>
-      <span class=admin-add-new id=admin-user-add title='Add new user'><i class="fas fa-plus-square"></i><span>
-    </h1>
-    <table>
-      <thead>
-        <tr>
+  <fieldset class=portal-category>
+    <legend>Notification</legend>
+    <div class=portal-line id=notify-push>
+      <span class=portal-icon><i class="fas fa-flag"></i></span>
+      <input type=checkbox title=Enable id=notify-push-check>
+      <label class=portal-title for=notify-push-check>Push Notification</label>
+      <!-- <input class='input-text portal-input' placeholder="Private Key" title='BOT Token'> -->
+      <div class=portal-input></div>
+    </div>
+    <div class=portal-line id=notify-telegram>
+      <span class=portal-icon><i class="fab fa-telegram-plane"></i></span>
+      <input type=checkbox title=Enable id=notify-telegram-check>
+      <label class=portal-title for=notify-telegram-check>Telegram</label>
+      <input class='input-text portal-input' placeholder="BOT Token" title='BOT Token'>
+    </div>
+    <div class=portal-line id=notify-mail>
+      <span class=portal-icon><i class="fas fa-envelope"></i></span>
+      <input type=checkbox title=Enable id=notify-mail-check>
+      <label class=portal-title for=notify-mail-check>Email</label>
+      <div class='portal-input email-input'>
+        <div>
+          <input class='input-text' placeholder=User id=notify-mail-user title=User>
+          <span>:</span>
+          <input class='input-text' placeholder=Password id=notify-mail-password type=password title=Password>
+        </div>
+        <div>
+          <input class='input-text' placeholder='SMTP server' id=notify-mail-server title=Server>
+          <span>:</span>
+          <input type=number class='input-text remove-arrow' placeholder=Port min=1 max=65535  id=notify-mail-port title='Server Port'>
+          <span id=mail-option-container>
+            <span class=mail-option data-comp=google title=Google><i class="fab fa-google"></i></span>
+            <span class=mail-option data-comp=yahoo title=Yahoo><i class="fab fa-yahoo"></i></span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <button class=button-normal id=notify-update-credentials>Apply</button>
+  </fieldset>
+  <fieldset class=portal-category>
+    <legend>Users / Groups</legend>
+    <section>
+      <h1>
+        <span>Users <span>
+        <span class=admin-add-new id=admin-user-add title='Add new user'><i class="fas fa-plus-square"></i><span>
+      </h1>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>#</th>
+          </tr>
+        </thead>
+        <tbody id=admin-user-tbody>
+          <tr><td colspan=6><em>No users avaiable</em></td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section>
+      <h1>
+        <span>User Groups <span>
+        <!-- <span class=admin-add-new id=admin-group-add title='Add new group'><i class="fas fa-plus-square"></i><span> -->
+      </h1>
+      <table>
+        <thead>
           <th>ID</th>
-          <th>Username</th>
           <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>#</th>
-        </tr>
-      </thead>
-      <tbody id=admin-user-tbody>
-        <tr><td colspan=6><em>No users avaiable</em></td></tr>
-      </tbody>
-    </table>
-  </section>
-  <section>
-    <h1>
-      <span>User Groups <span>
-      <!-- <span class=admin-add-new id=admin-group-add title='Add new group'><i class="fas fa-plus-square"></i><span> -->
-    </h1>
-    <table>
-      <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Size</th>
-        <th>Members</th>
-        <!-- <th>#</th> -->
-      </thead>
-      <tbody id=admin-group-tbody>
-        <tr><td colspan=6><em>No groups avaiable</em></td></tr>
-      </tbody>
-    </table>
-  </section>
+          <th>Description</th>
+          <th>Size</th>
+          <th>Members</th>
+          <!-- <th>#</th> -->
+        </thead>
+        <tbody id=admin-group-tbody>
+          <tr><td colspan=6><em>No groups avaiable</em></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </fieldset>
 </div>

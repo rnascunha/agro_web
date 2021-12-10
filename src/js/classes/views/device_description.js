@@ -325,6 +325,14 @@ export class Device_Description_View{
           if(shine('children_table', data, this._children) || force)
             this._children.textContent = device.children_table.join(' | ');
         break;
+        case 'name':
+          //Do not update while updating... ;-P
+          if(this._name.contentEditable == false)
+          {
+            if(shine(attr, data, this[`_${attr}`]) || force)
+              this[`_${attr}`].textContent = device[attr];
+          }
+          break;
         default:
           if(shine(attr, data, this[`_${attr}`]) || force)
             this[`_${attr}`].textContent = device[attr];
