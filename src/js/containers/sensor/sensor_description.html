@@ -2,7 +2,13 @@
   <span class=close>&times;</span>
   <h1 class='sensor-description-title popup-title'></h1>
   <div class=inner-container>
-    <section class=sensor-header></section>
+    <section class=sensor-header>
+      <fieldset>
+        <legend>Export Data</legend>
+        <input class=sensor-export-init type=datetime-local> > <input class=sensor-export-end type=datetime-local>
+        <button class='button-normal sensor-export-btn'>Export</button>
+      </fieldset>
+    </section>
     <section class=sensor-data-container>
       <div class=outer-table>
         <table>

@@ -254,7 +254,7 @@ export class Device_Description_View{
       const sensor_type = instance.sensor_type_list.get_id(type),
             sensor = device.sensor_list.sensor(type, index);
 
-      this._sensor_description = new Sensor_Description_View(sensor_desc, instance, sensor);
+      this._sensor_description = new Sensor_Description_View(sensor_desc, instance, sensor, device);
       this._sensor_description.update();
       this._sensor_description.graph.set_brush_selection(20);
     });

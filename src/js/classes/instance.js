@@ -13,7 +13,8 @@ import {download} from '../helper/download.js'
 const binary_type = {
   JSON: 0,
   IMAGE: 1,
-  APP: 2
+  APP: 2,
+  FILE: 4
 };
 
 export class Instance

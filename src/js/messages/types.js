@@ -38,7 +38,8 @@ export const sensor_commands = {
   LIST: 'list',
   ADD: 'add',
   EDIT: 'edit',
-  REMOVE: 'remove'
+  REMOVE: 'remove',
+  EXPORT: 'export'
 }
 Object.freeze(sensor_commands);
 

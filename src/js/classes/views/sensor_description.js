@@ -1,13 +1,15 @@
 import sensor_description_html from '../../containers/sensor/sensor_description.html'
 import {make_sensor_name, calc_sensor_value} from './sensor_helper.js'
 import {make_sensor_graph} from './sensor_graph.js'
+import {message_types, sensor_commands} from '../../messages/types.js'
 import * as d3 from 'd3'
 
 const template = document.createElement('template');
 template.innerHTML = sensor_description_html;
 
-export class Sensor_Description_View{
-  constructor(container, instance, sensor, graph_options = {})
+export class Sensor_Description_View
+{
+  constructor(container, instance, sensor, device, graph_options = {})
   {
     this._sensor = sensor;
     this._sensor_type = instance.sensor_type_list.get_id(sensor.type);
@@ -23,6 +25,20 @@ export class Sensor_Description_View{
 
     this._table_tbody = content.querySelector('.sensor-data-tbody');
     const graph_container = content.querySelector('.sensor-graph');
+
+    const init = content.querySelector('.sensor-export-init'),
+        end = content.querySelector('.sensor-export-end');
+    content.querySelector('.sensor-export-btn')
+      .addEventListener('click', ev => {
+        instance.send(message_types.SENSOR, sensor_commands.EXPORT, {
+          type: sensor.type,
+          index: sensor.index,
+          device_id: device.id,
+          output: 'csv',
+          init: Math.floor(init.value ? new Date(init.value).getTime() / 1000 : 0),
+          end: Math.floor(end.value ? new Date(end.value).getTime() / 1000 : Date.now() / 1000)
+        });
+    });
 
     container.appendChild(content);
 

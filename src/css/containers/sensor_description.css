@@ -4,6 +4,19 @@
   --inner-height: 90%;
 }
 
+#sensor-description-popup .sensor-header
+{
+  padding: 3px;
+}
+
+#sensor-description-popup .sensor-header fieldset
+{
+  padding: 5px;
+  border: 1px solid white;
+  border-radius: 5px;
+  width: fit-content;
+}
+
 #sensor-description-popup #sensor-description-content
 {
   height: 100%;
