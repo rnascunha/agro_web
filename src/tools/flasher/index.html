@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="theme-color" content="#0a1496">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400&display=swap" rel="stylesheet">
+  <title>Flasher - Agro Telemetry</title>
+</head>
+<body>
+  <div id=main>
+    <h1>Flasher</h1>
+    <div id=support-inform></div>
+    <div id=upload-container>
+      <label id=file-container>
+        <input type="file" id=file-input class=file-input accept=".bin">
+        <div id=file-name></div>
+      </label>
+      <!-- <i class="fas fa-folder-open"></i> -->
+      <span id=erase-file title='Remove file'>&times</span>
+      <span id=button-upload title='Flash file'><i class="fas fa-file-import"></i></span>
+    </div>
+    <fieldset id=serial-container class=fieldset-sector>
+      <legend>Serial</legend>
+      <div id=serial-options>
+        <select id=serial-ports-list class='hide-first-opiton input-common'>
+          <option>No ports</option>
+        </select>
+        <span id=serial-request-port title='Request ports'><i class="fas fa-upload"></i></span>
+        <span id=serial-get-ports title='Reload ports'><i class="fas fa-sync-alt"></i></span>
+        <select id=serial-ports-baudrate class='input-common'>
+          <option value=110>110 baud</option>
+          <option value=300>300 baud</option>
+          <option value=600>600 baud</option>
+          <option value=1200>1200 baud</option>
+          <option value=2400>2400 baud</option>
+          <option value=4800>4800 baud</option>
+          <option value=9600>9600 baud</option>
+          <option value=19200>19200 baud</option>
+          <option value=14400>14400 baud</option>
+          <option value=38400>38400 baud</option>
+          <option value=57600>57600 baud</option>
+          <option value=115200 selected>115200 baud</option>
+          <option value=128000>128000 baud</option>
+          <option value=256000>256000 baud</option>
+        </select>
+        <button id=serial-open-port class=button-normal>Open</button>
+        <button id=serial-reset-port class=button-normal>Reset</button>
+        <button id=serial-bootload-port class=button-normal>Bootloader</button>
+        <button id=serial-read-chip class=button-normal>Chip</button>
+        <button id=serial-erase-flash class=button-normal>Erase Flash</button>
+        <button id=clear-terminal class=button-normal>Clear</button>
+      </div>
+    </fieldset>
+    <div id=report class=report></div>
+    <fieldset id=file-info-container class=fieldset-sector>
+      <legend>Image information</legend>
+      <div id=file-info></div>
+    </fieldset>
+    <div id=terminal-container></div>
+  </div>
+</body>
+</html>

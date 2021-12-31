@@ -9,7 +9,8 @@ module.exports = {
                 test: /\.(css)$/,
                 include: [
                     path.resolve(__dirname, '..', './src/css'),
-                    path.resolve(__dirname, '..', './src/tools')
+                    path.resolve(__dirname, '..', './src/tools'),
+                    path.resolve(__dirname, '..', './node_modules/xterm/css/xterm.css')
                 ],
                 use: [
                     Mini_Css_Extract_Plugin.loader,

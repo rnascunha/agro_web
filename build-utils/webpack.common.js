@@ -10,6 +10,8 @@ module.exports = (public_path) => {
         entry: {
             //Main
             index: path.resolve(__dirname, '..', './src/index.js'),
+            //Tools
+            flasher: path.resolve(__dirname, '..', './src/tools/flasher/index.js')
         },
         module: {
             rules: [
@@ -20,8 +22,13 @@ module.exports = (public_path) => {
                 },
                 {
                     test: /\.(css)$/,
+                    /**
+                     * It will be include at specific prod/dev configuration
+                     */
                     exclude: [
                         path.resolve(__dirname, '..', './src/css'),
+                        path.resolve(__dirname, '..', './src/tools'),
+                        path.resolve(__dirname, '..', './node_modules/xterm/css/xterm.css')
                     ],
                     use: ['css-loader']
                 },
@@ -42,6 +49,14 @@ module.exports = (public_path) => {
                 favicon: path.resolve(__dirname, '..', './icons/favicon.ico'),
                 inject: true,
                 chunks: ['index'],
+            }),
+            new Html_Webpack_Plugin({
+              template: path.resolve(__dirname, '..', './src/tools/flasher/index.html'),
+              favicon: path.resolve(__dirname, '..', './icons/favicon.ico'),
+              filename: 'tools/flasher.html',
+              publicPath: "../",
+              inject: true,
+              chunks: ['flasher'],
             }),
             // new Workbox_Plugin.GenerateSW({
             //     clientsClaim: true,

@@ -31,6 +31,7 @@ input.remove-arrow[type=number] {
   border-radius: 5px;
 }
 
+.input-common,
 .input-text
 {
   color: var(--text-color);
