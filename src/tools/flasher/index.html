@@ -14,15 +14,11 @@
   <div id=main>
     <h1>Flasher</h1>
     <div id=support-inform></div>
-    <div id=upload-container>
-      <label id=file-container>
-        <input type="file" id=file-input class=file-input accept=".bin">
-        <div id=file-name></div>
-      </label>
-      <!-- <i class="fas fa-folder-open"></i> -->
-      <span id=erase-file title='Remove file'>&times</span>
-      <span id=button-upload title='Flash file'><i class="fas fa-file-import"></i></span>
-    </div>
+    <upload-manager id=upload-image></upload-manager>
+    <!-- <div id=upload-container>
+      <image-uploader id=upload-image><i slot=upload-button class="fas fa-file-import"></i></image-uploader>
+      <label><input type=checkbox> Reset after upload</label>
+    </div> -->
     <fieldset id=serial-container class=fieldset-sector>
       <legend>Serial</legend>
       <div id=serial-options>
@@ -56,7 +52,7 @@
       </div>
     </fieldset>
     <div id=report class=report></div>
-    <fieldset id=file-info-container class=fieldset-sector>
+    <fieldset id=file-info-container class=fieldset-sector style=display:none>
       <legend>Image information</legend>
       <div id=file-info></div>
     </fieldset>

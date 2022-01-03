@@ -1,11 +1,11 @@
 
 export const debug_level = {
-  all: 0,
-  debug: 1,
-  info: 2,
-  warn: 3,
-  error: 4,
-  none: 0
+  none: 0,
+  error: 1,
+  warn: 2,
+  info: 3,
+  debug: 4,
+  all: 5,
 };
 
 class Debug{
@@ -21,7 +21,7 @@ class Debug{
 
   set level(val)
   {
-    if(typeof val !== 'number' || val > debug_level.error)
+    if(typeof val !== 'number')
     {
       return;
     }
@@ -30,7 +30,7 @@ class Debug{
 
   to_log(level)
   {
-    return level >= this._level;
+    return level <= this._level;
   }
 
   error(log, break_line = true)
@@ -59,7 +59,9 @@ class Debug{
   }
 }
 
-export class ConsoleDebug extends Debug{
+export const No_Debug = Debug;
+
+export class Console_Debug extends Debug{
   constructor(d_level = debug_level.info)
   {
     super(d_level);
@@ -90,7 +92,7 @@ export class ConsoleDebug extends Debug{
   }
 }
 
-export class TerminalDebug extends Debug{
+export class Terminal_Debug extends Debug{
   constructor(terminal, d_level = debug_level.info)
   {
     super(d_level);
@@ -124,5 +126,50 @@ export class TerminalDebug extends Debug{
   {
     if(!this.to_log(debug_level.debug)) return;
     this._write('1;34', log, break_line);
+  }
+}
+
+export class Combined_Debug extends Debug{
+  constructor(...args)
+  {
+    super();
+    this._debugs = args;
+  }
+
+  get list()
+  {
+    return this._debugs;
+  }
+
+  error(log, break_line = true)
+  {
+    if(!this.to_log(debug_level.error)) return;
+    this._debugs.forEach(d => {
+      d.error(log, break_line);
+    });
+  }
+
+  warn(log, break_line = true)
+  {
+    if(!this.to_log(debug_level.warn)) return;
+    this._debugs.forEach(d => {
+      d.warn(log, break_line);
+    });
+  }
+
+  info(log, break_line = true)
+  {
+    if(!this.to_log(debug_level.info)) return;
+    this._debugs.forEach(d => {
+      d.info(log, break_line);
+    });
+  }
+
+  debug(log, break_line = true)
+  {
+    if(!this.to_log(debug_level.debug)) return;
+    this._debugs.forEach(d => {
+      d.debug(log, break_line);
+    });
   }
 }

@@ -1,5 +1,5 @@
 import {esp_image_parse, esp_hash, error_code} from './esp_image_parser.js';
-import {digest_support, read_file} from './utility.js';
+import {digest_support, is_hex_string} from './utility.js';
 import {Serial} from './serial.js';
 import {Serial_View} from './serial_view.js';
 import {ESPTool} from './esptool.js';
@@ -20,25 +20,24 @@ function make_info(name, data, title = null)
   return `<span class=info-content ${title ? `title=${title}` : ''}><span class=info-title>${name}</span><span class=info-data>${data}</span></span>`;
 }
 
-async function make_file_info(file)
+async function make_file_info(file, image)
 {
   const data = make_info('File', file.name) +
              make_info('Size', make_file_size(file.size), `${file.size} bytes`) +
              make_info('Date Modified', make_file_date(file.lastModifiedDate));
 
-  const image = await read_file(file);
-
   const parse = esp_image_parse(image);
   if(parse.error)
   {
     make_report('ERROR! ' + parse.error_message, 'error');
-    return data;
+    return {error: true, error_message: 'error parsing', data, image};
   }
 
   const header = parse.header;
   const header_data = make_info('Header magic', '0x' + header.magic.toString(16).padStart(2, '0')) +
+                    make_info('SPI', `${header.spi_mode.name} ${header.spi_speed.name} ${header.spi_size.name}`) +
                     make_info('Entry addr', '0x' + header.entry_addr.toString(16).padStart(2, '0')) +
-                    make_info('Chip ID', header.chid_id) +
+                    make_info('Chip ID', header.chip_id.name) +
                     make_info('Min chip rev', header.min_chip_rev) +
                     make_info('Hash appended', header.hash_appended);
 
@@ -60,19 +59,25 @@ async function make_file_info(file)
   if('error' in hashs && hashs.error && hashs.error_code == error_code.NOT_SUPPORTED)
   {
     make_report('WARN! Your browser does not support Crypto API', 'warning');
-    return data + header_data + segment_data + desc_data;
+    return {error: false, data: data + header_data + segment_data + desc_data, image};
   }
 
   if(hashs[1] != hashs[2])
   {
     make_report('ERROR! Hash image and calculated hash does not match', 'error');
+    return {error: true, error_message: 'hash not match', data: data +
+            make_info('File hash', hashs[0].slice(-10), hashs[0]) +
+            make_info('Caculated hash', hashs[1].slice(-10), hashs[1]) +
+            make_info('Image hash', hashs[2].slice(-10), hashs[2]) +
+            header_data + segment_data + desc_data, image};
   }
 
-  return data +
-        make_info('File hash', hashs[0].slice(-10), hashs[0]) +
-        make_info('Caculated hash', hashs[1].slice(-10), hashs[1]) +
-        make_info('Image hash', hashs[2].slice(-10), hashs[2]) +
-        header_data + segment_data + desc_data;
+  return {error: false,
+          data: data +
+          make_info('File hash', hashs[0].slice(-10), hashs[0]) +
+          make_info('Caculated hash', hashs[1].slice(-10), hashs[1]) +
+          make_info('Image hash', hashs[2].slice(-10), hashs[2]) +
+          header_data + segment_data + desc_data, image};
 }
 
 function check_support()
@@ -97,35 +102,30 @@ function check_support()
 
 check_support();
 
-let file = null;
-const file_name = document.querySelector('#file-name'),
-      file_input = document.querySelector('#file-input'),
-      upload_btn = document.querySelector('#button-upload'),
-      erase_input = document.querySelector('#erase-file'),
-      report  = document.querySelector('#report'),
+let file_error = true;
+const upload_image = document.querySelector('#upload-image');
+const report  = document.querySelector('#report'),
       file_info = document.querySelector('#file-info');
 
 if(!Serial.support())
 {
-  upload_btn.classList.add('disabled');
-  upload_btn.title = 'WebSerial API not supported';
+  upload_image.disabled = true;
 }
 
-erase_input.addEventListener('click', ev => {
-  file_name.textContent = '';
-  file = null;
-  file_info.textContent = '';
-  file_input.value = '';
+upload_image.addEventListener('file', ev => {
   make_report();
-});
-
-file_input.addEventListener('change', ev => {
-  if(!ev.target.files.length) return;
-
-  file = ev.target.files[0];
-  file_name.textContent = ev.target.files[0].name;
-  make_file_info(file).then(data => {
-      file_info.innerHTML = data;
+  if(!ev.detail.file)
+  {
+    file_info.textContent = '';
+    return;
+  }
+  make_file_info(ev.detail.file, ev.detail.image).then(data => {
+    if(data.error)
+    {
+      make_report(data.error_message, 'error');
+      return;
+    }
+    file_info.innerHTML = data.data;
   });
 });
 
@@ -159,6 +159,49 @@ function make_report(message, type)
  */
 if(Serial.support())
 {
-    const serial = new Serial(ESPTool, Serial_View, document.querySelector('#serial-container'),
-                              document.querySelector('#terminal-container'));
+  const serial = new Serial(ESPTool, Serial_View, document.querySelector('#serial-container'),
+                            document.querySelector('#terminal-container'));
+
+  upload_image.addEventListener('upload', ev => {
+    make_report();
+    const data = ev.detail;
+    if(!data.file)
+    {
+      make_report("Upload image FAIL: Missing file", 'error');
+      return;
+    }
+    if(!data.image)
+    {
+      make_report("Upload image FAIL: invalid image", 'error');
+      return;
+    }
+    if(!data.offset.length || !is_hex_string(data.offset))
+    {
+      make_report("Upload image FAIL: invalid offset [" + data.offset + "]", 'error');
+      return;
+    }
+
+    const esptool = serial.view.selected_device();
+    if(!esptool || !esptool.is_open())
+    {
+      make_report("Upload image FAIL: serial not found", 'warning');
+      return;
+    }
+
+    upload_image.disabled = true;
+    esptool.flash_image(data.image, parseInt(data.offset, 16), {
+      upload_progress: function({percent,seq, blocks, file_size, position, written}){
+        make_report(`Uploading '${data.file.name}'. Progress: ${percent}%`, 'success');
+      }
+    })
+      .then(() => {
+        make_report(`Upload image '${data.file.name}' succeced`, 'success');
+      })
+      .catch(e => {
+        make_report(`Upload image FAIL`, 'error');
+      })
+      .finally(() => {
+        upload_image.disabled = false;
+      });
+  });
 }

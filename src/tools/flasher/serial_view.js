@@ -2,7 +2,11 @@ import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import {SLIP} from './slip.js';
 import {mac_to_string} from './utility.js';
-// import {ConsoleDebug, TerminalDebug} from './debug.js';
+// import {No_Debug,
+//         Console_Debug,
+//         Terminal_Debug,
+//         Combined_Debug,
+//         debug_level} from './debug.js';
 
 export class Serial_View{
   constructor(model, container, terminal_container)
@@ -118,6 +122,16 @@ export class Serial_View{
                     return;
                   }
                   this._terminal.write(`MAC: ${mac_to_string(mac)}\r\n`);
+
+                  dev.upload_stub()
+                  .then(() => {
+                    this._terminal.write(`Stub uploaded succefully\r\n`);
+                    dev.register_cb(data => this._terminal.write(data))
+                  })
+                  .catch(e => {
+                    console.log('Error uploading stub', e);
+                    this._terminal.write(`Failed to uploaded stub\r\n`);
+                  });
                 })
                 .catch(e => {
                   this._terminal.write('Error reading efuse [' + e + ']\r\n');
@@ -129,24 +143,33 @@ export class Serial_View{
         }
       });
 
-      container.querySelector('#serial-erase-flash')
-        .addEventListener('click', ev => {
-          const dev = this._selected_device();
-          if(dev && dev.is_open())
-          {
-            this._terminal.write('Erasing flash...\r\n');
-            dev.erase_flash()
-              .then(() => this._terminal.write('Flash erased...\r\n'))
-              .catch(e => this._terminal.write(`Flash erase ERROR [${e}]\r\n`));
-          }
-        });
+    container.querySelector('#serial-erase-flash')
+      .addEventListener('click', ev => {
+        const dev = this._selected_device();
+        if(dev && dev.is_open())
+        {
+          this._terminal.write('Erasing flash...\r\n');
+          dev.erase_flash()
+            .then(() => this._terminal.write('Flash erased...\r\n'))
+            .catch(e => this._terminal.write(`Flash erase ERROR [${e}]\r\n`));
+        }
+      });
 
-      container.querySelector('#clear-terminal')
-        .addEventListener('click', ev => {
-          this._terminal.clear();
-        });
+    container.querySelector('#clear-terminal')
+      .addEventListener('click', ev => {
+        this._terminal.clear();
+      });
 
-      this._set_state(false);
+    this._set_state(false);
+
+    // const debug = new Combined_Debug(new Terminal_Debug(this._terminal, debug_level.all),
+    //                                   new Console_Debug(debug_level.info));
+    // debug.level = debug_level.all;
+    //
+    // debug.error('Error');
+    // debug.warn('Warn');
+    // debug.info('Info');
+    // debug.debug('Debug');
   }
 
   selected()
@@ -237,5 +260,10 @@ export class Serial_View{
       return false;
     }
     return this._model.by_index(index);
+  }
+
+  selected_device()
+  {
+    return this._selected_device();
   }
 }

@@ -1,11 +1,18 @@
 import {Serial_Device} from './serial.js';
 import {SLIP} from './slip.js';
 import {sleep, to_hex} from './utility.js';
+import {ESP32_stub} from './stubs.js';
 
 export const status_bytes = {
   success: 0,
   failure: 1
 };
+
+export const flash_end_flag = {
+  'reboot': 0,
+  'run_user_code': 1,
+  'ignore': 2
+}
 
 export const rom_load_error = {
   0x05: 'Received message is invalid',
@@ -71,10 +78,26 @@ const chips = {
   [ESP32S2]: {name: 'ESP32-S2', efuses_addr: 0x6001A000}
 }
 
+const USB_RAM_BLOCK = 0x800,
+      ESP_RAM_BLOCK = 0x1800;
+
+const FLASH_WRITE_SIZE = 0x400,
+      STUBLOADER_FLASH_WRITE_SIZE = 0x4000,
+      FLASH_SECTOR_SIZE = 0x1000;
+
+const ERASE_REGION_TIMEOUT_PER_MB = 30000;     // timeout (per megabyte) for erasing a region in ms
+
 function get_op_name(op)
 {
   const n = Object.entries(command).find(([key, value]) => value == op);
   return n ? n[0] : 'not found';
+}
+
+function get_status_error_name(status_error)
+{
+  if(status_error in rom_load_error) return rom_load_error[status_error];
+  if(status_error in software_load_error) return software_load_error[status_error];
+  return '<unrecognized>';
 }
 
 const default_timeout = 3000,
@@ -93,6 +116,7 @@ export class ESPTool extends Serial_Device{
 
     this._chip = null;
     this._efuses = null;
+    this._is_stub = false;
   }
 
   async signal_reset()
@@ -128,7 +152,7 @@ export class ESPTool extends Serial_Device{
 
   async erase_flash()
   {
-    await this.command(command.erase_flash, [], 0, erase_flash_timeout);
+    await this.command_until(command.erase_flash, [], 0, erase_flash_timeout);
   }
 
   async chip()
@@ -147,15 +171,23 @@ export class ESPTool extends Serial_Device{
     }
 
     this._efuses = new Array(4).fill(0)
-    for (let i = 0; i < 4; i++)
-    {
-      const packet = await this.read_register(chips[this._chip].efuses_addr + 4 * i);
-      if(packet.error)
+    try{
+      for (let i = 0; i < 4; i++)
       {
-        throw 'Error reading packet';
+        const packet = await this.read_register(chips[this._chip].efuses_addr + 4 * i);
+        if(packet.error)
+        {
+          throw 'Error reading packet';
+        }
+        this._efuses[i] = packet.value;
       }
-      this._efuses[i] = packet.value;
     }
+    catch(e)
+    {
+      this._efuses = null;
+      throw e;
+    }
+
     return this._efuses;
   }
 
@@ -170,12 +202,12 @@ export class ESPTool extends Serial_Device{
           mac1 = this._efuses[1],
           mac2 = this._efuses[2],
           mac3 = this._efuses[3];
-    let oui;
 
     switch(this._chip)
     {
       case ESP8266:
       {
+        let oui;
         if (mac3 != 0)
         {
           oui = [(mac3 >> 16) & 0xFF, (mac3 >> 8) & 0xFF, mac3 & 0xFF];
@@ -231,32 +263,54 @@ export class ESPTool extends Serial_Device{
   {
     try{
       let error = 'error', packet = null;
-      if(op == command.erase_flash)
-      {
-        console.log(1);
-        const data2 = SLIP.encoded_command(op, data, checksum);
-        console.log(data2);
-        await this.write(data2);
-      }
-      else
-        await this.write(SLIP.encoded_command(op, data, checksum));
+      await this.write(SLIP.encoded_command(op, data, checksum));
       const response = await this.read_timeout(timeout),
             packets = SLIP.split_packet(response),
             ret = packets.packets.some(p => {
-                    packet = SLIP.decode(p);
-                    if(!packet.error && packet.op == op)
-                    {
-                      return true;
-                    }
-                  });
+              packet = SLIP.decode(p, this._is_stub);
+              if(!packet.error && packet.op == op)
+              {
+                return true;
+              }
+            });
       if(ret)
       {
         return packet;
       }
       else
       {
-        console.log('error', packet);
-        throw 'packet error';
+        throw packet;
+      }
+    }
+    catch(e)
+    {
+      throw e;
+    }
+  }
+
+  async command_until(op, data, checksum, timeout = default_timeout)
+  {
+    try{
+      let error = 'error', packet = null, remain = null;
+      await this.write(SLIP.encoded_command(op, data, checksum));
+      let end = Date.now() + timeout;
+      let now = Date.now();
+      while(true)
+      {
+        const response = await this.read_timeout(end - Date.now());
+        const packets = SLIP.split_packet(response, remain),
+              ret = packets.packets.some(p => {
+                packet = SLIP.decode(p, this._is_stub);
+                if(!packet.error && packet.op == op)
+                {
+                  return true;
+                }
+              });
+        if(ret)
+        {
+          return packet;
+        }
+        remain = packets.remain;
       }
     }
     catch(e)
@@ -269,4 +323,223 @@ export class ESPTool extends Serial_Device{
   {
     return await this.command(command.read_reg, SLIP.uint32_to_arr(register), false, timeout);
   }
+
+  async upload_stub()
+  {
+    let ram_block = ESP_RAM_BLOCK;
+
+    console.log(ESP32_stub);
+
+    // Upload
+    console.log("Uploading stub...")
+    for (let field of ['text', 'data'])
+    {
+      if(field in ESP32_stub)
+      {
+        const offset = ESP32_stub[field + "_start"],
+              length = ESP32_stub[field].length,
+              blocks = Math.floor((length + ram_block - 1) / ram_block);
+
+        await this.mem_begin(length, blocks, ram_block, offset);
+        for(let i = 0; i < blocks; i++)
+        {
+          const from_offs = i * ram_block;
+          let to_offs = from_offs + ram_block;
+          if (to_offs > length)
+          {
+            to_offs = length;
+          }
+          await this.mem_data(ESP32_stub[field].slice(from_offs, to_offs), i);
+        }
+      }
+    }
+
+    console.log("Running stub...");
+    let end_packet;
+    try{
+      end_packet = await this.mem_end(0, ESP32_stub.entry, 50);
+    }
+    catch(e)
+    {
+      throw e;
+    }
+
+    try{
+      let p = await this.read_timeout(500);
+      if(String.fromCharCode(...SLIP.payload(SLIP.read_packet(p).packet)) != 'OHAI')
+      {
+        throw "Failed to start stub. Unexpected response: " + p;
+      }
+    }
+    catch(e)
+    {
+      throw e;
+    }
+    this._is_stub = true;
+
+    console.log("Stub is now running...");
+  }
+
+  mem_begin(total_size, block_num, block_size, offset)
+  {
+    return this.command(command.mem_begin,
+      [...SLIP.uint32_to_arr(total_size),
+        ...SLIP.uint32_to_arr(block_num),
+        ...SLIP.uint32_to_arr(block_size),
+        ...SLIP.uint32_to_arr(offset)],
+      0);
+  }
+
+  mem_data(data, block_seq)
+  {
+    return this.command(command.mem_data,
+          [...SLIP.uint32_to_arr(data.length),
+          ...SLIP.uint32_to_arr(block_seq),
+          ...SLIP.uint32_to_arr(0),
+          ...SLIP.uint32_to_arr(0),
+          ...data],
+        SLIP.checksum(data));
+  }
+
+  mem_end(exec_flag, entry_addr, timeout = 500)
+  {
+    return this.command(command.mem_end,
+          [...SLIP.uint32_to_arr(exec_flag),
+          ...SLIP.uint32_to_arr(entry_addr)],
+        0, timeout);
+  }
+
+  async flash_image(image, offset, options = {})
+  {
+    const ops = {...{end_flag: flash_end_flag.ignore, upload_progress: function(){}}, ...options};
+    const file_size = image.byteLength,
+          blocks = await this.flash_begin(file_size, offset),
+          flash_write_size = this.flash_write_size();
+    let block = [],
+        seq = 0,
+        written = 0,
+        position = 0;
+
+    while (file_size - position > 0)
+    {
+      ops.upload_progress({
+        percent: Math.floor(100 * (seq + 1) / blocks),
+        seq, blocks, file_size, position, written
+      });
+      if (file_size - position >= flash_write_size)
+      {
+        block = Array.from(new Uint8Array(image, position, flash_write_size));
+      }
+      else
+      {
+        // Pad the last block
+        block = Array.from(new Uint8Array(image, position, file_size - position));
+        block = block.concat(new Array(flash_write_size - block.length).fill(0xFF));
+      }
+      await this.flash_data(block, seq);
+      seq += 1;
+      written += block.length;
+      position += flash_write_size;
+    }
+
+    if(ops.end_flag == flash_end_flag.reboot || ops.end_flag == flash_end_flag.run_user_code)
+    {
+      await flash_end(end_flag);
+    }
+  }
+
+  async flash_begin(size = 0, offset = 0, encrypted = false)
+  {
+    const flash_write_size = this.flash_write_size();
+    if (!this._is_stub && [ESP32, ESP32S2].includes(this._chip))
+    {
+      await this.command(command.spi_attach, new Array(8).fill(0));
+    }
+    if (this._chip == ESP32)
+    {
+      // We are hardcoded for 4MB flash on ESP32
+      await this.command(command.spi_set_params,
+                [...SLIP.uint32_to_arr(0),
+                ...SLIP.uint32_to_arr(4 * 1024 * 1024),
+                ...SLIP.uint32_to_arr(0x10000),
+                ...SLIP.uint32_to_arr(4096),
+                ...SLIP.uint32_to_arr(256),
+                ...SLIP.uint32_to_arr(0xffff)]);
+    }
+    const num_blocks = Math.floor((size + flash_write_size - 1) / flash_write_size),
+          erase_size = this.erase_size(offset, size);
+
+    const timeout = this._is_stub ? default_timeout : ESPTool.timeout_per_mb(ERASE_REGION_TIMEOUT_PER_MB, size);
+
+    let buffer = [...SLIP.uint32_to_arr(erase_size),
+                  ...SLIP.uint32_to_arr(num_blocks),
+                  ...SLIP.uint32_to_arr(flash_write_size),
+                  ...SLIP.uint32_to_arr(offset)];
+
+    if (this._chip == ESP32S2 && !this._is_stub)
+    {
+      buffer.push(...SLIP.uint32_to_arr(encrypted ? 1 : 0));
+    }
+
+    await this.command(command.flash_begin, buffer, 0, timeout);
+
+    return num_blocks;
+  }
+
+  flash_data(data, seq, timeout = default_timeout)
+  {
+    return this.command_until(
+      command.flash_data,
+      [...SLIP.uint32_to_arr(data.length),
+        ...SLIP.uint32_to_arr(seq),
+        ...SLIP.uint32_to_arr(0),
+        ...SLIP.uint32_to_arr(0),
+        ...data],
+      SLIP.checksum(data),
+      timeout,
+    );
+  }
+
+  flash_end(flag)
+  {
+    return this.command(command.flash_end, SLIP.uint32_to_arr(flag), 0);
+  }
+
+  flash_write_size()
+  {
+      return this._is_stub ? STUBLOADER_FLASH_WRITE_SIZE : FLASH_WRITE_SIZE;
+  };
+
+  erase_size(offset, size)
+  {
+    if (this._chip != ESP8266 || this._is_stub)
+    {
+      return size;
+    }
+    const sectors_per_block = 16,
+          num_sectors = Math.floor((size + FLASH_SECTOR_SIZE - 1) / FLASH_SECTOR_SIZE),
+          start_sector = Math.floor(offset / FLASH_SECTOR_SIZE);
+
+    let head_sectors = sectors_per_block - (start_sector % sectors_per_block);
+    if (num_sectors < head_sectors)
+    {
+      head_sectors = num_sectors;
+    }
+
+    if (num_sectors < 2 * head_sectors) {
+      return Math.floor((num_sectors + 1) / 2 * FLASH_SECTOR_SIZE);
+    }
+
+    return (num_sectors - head_sectors) * FLASH_SECTOR_SIZE;
+  };
+
+  static timeout_per_mb(seconds_per_mb, size_bytes)
+  {
+      let result = Math.floor(seconds_per_mb * (size_bytes / 0x1e6));
+      if (result < default_timeout)
+      {
+        return default_timeout;
+      }
+      return result;
+  };
 }

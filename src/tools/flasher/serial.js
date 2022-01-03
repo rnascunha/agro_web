@@ -1,5 +1,4 @@
 export class Serial{
-  // constructor(container, terminal_container)
   constructor(serial_type, view_type, ...args)
   {
     this._devices = [];
@@ -13,7 +12,6 @@ export class Serial{
       this._remove(e.target, true);
     });
 
-    // this._view = new Serial_View(this, container, terminal_container);
     this._view = new view_type(this, ...args);
 
     this._serial_type = serial_type;
@@ -31,6 +29,11 @@ export class Serial{
     return this._devices;
   }
 
+  get view()
+  {
+    return this._view;
+  }
+
   by_index(index)
   {
     return this._devices.find(d => d.index == index);
@@ -44,7 +47,6 @@ export class Serial{
         const has = this._devices.find(p => p.device == d);
         if(!has)
         {
-          // n_devices.push(new Serial_Device(d, this._index++))
           n_devices.push(new this._serial_type(d, this._index++))
         }
         else
@@ -105,8 +107,6 @@ export class Serial_Device{
 
     this._output_stream = null;
     this._read_cb = function(){};
-
-    this._state = 'closed';
   }
 
   register_cb(callback)
@@ -162,8 +162,6 @@ export class Serial_Device{
     this._output_stream = this._device.writable;
 
     this._read();
-
-    this._state = 'opened';
   }
 
   async close()
@@ -182,7 +180,6 @@ export class Serial_Device{
     }
 
     await this._device.close();
-    this._state = 'closed';
   }
 
   async _read()
@@ -192,7 +189,6 @@ export class Serial_Device{
       const { value, done } = await this._reader.read();
       if (done)
       {
-        console.log('read done');
         this._reader.releaseLock();
         return;
       }

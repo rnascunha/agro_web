@@ -52,3 +52,33 @@ export function mac_to_string(mac)
 {
   return `${to_hex(mac[0], 2)}:${to_hex(mac[1], 2)}:${to_hex(mac[2], 2)}:${to_hex(mac[3], 2)}:${to_hex(mac[4], 2)}:${to_hex(mac[5], 2)}`;
 }
+
+export function to_byte_array(str)
+{
+  let byte_array = [];
+  for (let i = 0; i < str.length; i++)
+  {
+    let charcode = str.charCodeAt(i);
+    if (charcode <= 0xFF)
+    {
+      byte_array.push(charcode);
+    }
+  }
+  return byte_array;
+}
+
+export function read_c_string(string, char = '\x00')
+{
+  return string.substring(0, string.indexOf(char));
+}
+
+export function is_hex_string(str)
+{
+  return /^0?x?[0-9a-fA-F]{0,}$/.test(str);
+}
+
+export function is_hex_char(key)
+{
+  // if(key.length > 1) return 0;
+  return /[0-9a-fA-F]/.test(key);
+}
