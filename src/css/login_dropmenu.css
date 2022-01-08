@@ -1,0 +1,75 @@
+#login #options
+{
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  color: white;
+  z-index: 20;
+}
+
+#login #options .drop-menu{
+  position: relative;
+  outline: none;
+  cursor: pointer;
+}
+
+#login #options .drop-menu .drop-menu-content{
+  left: auto;
+  right: -5px;
+  transform: translateY(3px);
+}
+
+#login #options .drop-menu .drop-menu-content{
+  display: none;
+  position: absolute;
+  /* positining at center */
+  /* left: 50%;
+  right: auto;
+  text-align: center !important;
+  transform: translateY(3px) translate(-50%, 0); */
+  /* Styling */
+  background-color: var(--primary-color-light);
+  border-radius: 10px 10px 10px 10px;
+  border: 1px solid black;
+  overflow: hidden;
+  min-width: 200px;
+}
+
+#login .drop-menu-content p
+{
+  padding: 5px;
+  background-color: var(--primary-color-dark);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#login #options .drop-menu .drop-menu-content p:hover
+{
+  text-decoration: underline;
+}
+
+/**
+ * Using focus (with html:tabindex=0) just active the menu at clicling
+ */
+#login #options .drop-menu:focus .drop-menu-content
+{
+  display: block;
+}
+
+#login #options .icon-hover{
+  padding: 2px;
+}
+
+#login #options .icon-hover:hover{
+  background-color: var(--text-color);
+  color: var(--primary-color-dark);
+  border-radius: 15px;
+}
+
+#login #options .drop-menu-item-text
+{
+  width: 100%;
+  text-align: center;
+  user-select: none;
+}

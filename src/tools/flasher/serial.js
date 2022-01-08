@@ -142,9 +142,10 @@ export class Serial_Device{
     return this._device;
   }
 
-  get baudrate()
+  async set_baudrate(baud)
   {
-    return this._device.baudRate;
+    await this.close();
+    await this.open(baud  );
   }
 
   async open(baudrate, read_cb = null)

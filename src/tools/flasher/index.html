@@ -14,49 +14,60 @@
   <div id=main>
     <h1>Flasher</h1>
     <div id=support-inform></div>
-    <upload-manager id=upload-image></upload-manager>
-    <!-- <div id=upload-container>
-      <image-uploader id=upload-image><i slot=upload-button class="fas fa-file-import"></i></image-uploader>
-      <label><input type=checkbox> Reset after upload</label>
-    </div> -->
-    <fieldset id=serial-container class=fieldset-sector>
-      <legend>Serial</legend>
-      <div id=serial-options>
-        <select id=serial-ports-list class='hide-first-opiton input-common'>
-          <option>No ports</option>
-        </select>
-        <span id=serial-request-port title='Request ports'><i class="fas fa-upload"></i></span>
-        <span id=serial-get-ports title='Reload ports'><i class="fas fa-sync-alt"></i></span>
-        <select id=serial-ports-baudrate class='input-common'>
-          <option value=110>110 baud</option>
-          <option value=300>300 baud</option>
-          <option value=600>600 baud</option>
-          <option value=1200>1200 baud</option>
-          <option value=2400>2400 baud</option>
-          <option value=4800>4800 baud</option>
-          <option value=9600>9600 baud</option>
-          <option value=19200>19200 baud</option>
-          <option value=14400>14400 baud</option>
-          <option value=38400>38400 baud</option>
-          <option value=57600>57600 baud</option>
-          <option value=115200 selected>115200 baud</option>
-          <option value=128000>128000 baud</option>
-          <option value=256000>256000 baud</option>
-        </select>
-        <button id=serial-open-port class=button-normal>Open</button>
-        <button id=serial-reset-port class=button-normal>Reset</button>
-        <button id=serial-bootload-port class=button-normal>Bootloader</button>
-        <button id=serial-read-chip class=button-normal>Chip</button>
-        <button id=serial-erase-flash class=button-normal>Erase Flash</button>
-        <button id=clear-terminal class=button-normal>Clear</button>
-      </div>
-    </fieldset>
-    <div id=report class=report></div>
-    <fieldset id=file-info-container class=fieldset-sector style=display:none>
-      <legend>Image information</legend>
-      <div id=file-info></div>
-    </fieldset>
-    <div id=terminal-container></div>
-  </div>
+      <!-- <div id=uploader-outer-container> -->
+      <!-- <div id=main-container> -->
+        <div id=upload-container>
+          <upload-manager id=upload-image></upload-manager>
+          <div id=upload-options>
+            <div id=report class=report></div>
+            <label>
+              <input id=verify-upload type=checkbox checked> Verify
+            </label>
+            <label>
+              <input id=reset-after-check type=checkbox checked> Monitor
+            </label>
+            <button id=upload-all-btn class=button-normal>Upload all</button>
+          </div>
+        </div>
+        <progress-bar id=upload-progress text='[Upload image] 0/100'></progress-bar>
+      <!-- </div> -->
+      <fieldset id=serial-container class=fieldset-sector>
+        <legend>Serial</legend>
+        <div id=serial-options>
+          <select id=serial-ports-list class='hide-first-opiton input-common'>
+            <option>No ports</option>
+          </select>
+          <span id=serial-request-port title='Request ports'><i class="fas fa-upload"></i></span>
+          <span id=serial-get-ports title='Reload ports'><i class="fas fa-sync-alt" style=display:none></i></span>
+          <select id=serial-ports-baudrate class='input-common'>
+            <option value=110>110 baud</option>
+            <option value=300>300 baud</option>
+            <option value=600>600 baud</option>
+            <option value=1200>1200 baud</option>
+            <option value=2400>2400 baud</option>
+            <option value=4800>4800 baud</option>
+            <option value=9600>9600 baud</option>
+            <option value=19200>19200 baud</option>
+            <option value=14400>14400 baud</option>
+            <option value=38400>38400 baud</option>
+            <option value=57600>57600 baud</option>
+            <option value=115200>115200 baud</option>
+            <option value=128000>128000 baud</option>
+            <option value=256000>256000 baud</option>
+            <option value=460800 selected>460800 baud</option>
+          </select>
+          <button id=serial-open-port class=button-normal>Open</button>
+          <button id=serial-monitor-port class=button-normal>Monitor</button>
+          <button id=serial-erase-flash class=button-normal>Erase Flash</button>
+          <button id=clear-terminal class=button-normal>Clear</button>
+        </div>
+        <div id=terminal-container></div>
+      </fieldset>
+      <fieldset id=file-info-container class=fieldset-sector>
+        <legend>Image information</legend>
+        <div id=file-info></div>
+      </fieldset>
+    </div>
+  <!-- </div> -->
 </body>
 </html>

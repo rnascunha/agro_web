@@ -9,8 +9,9 @@ import '../../../node_modules/xterm/css/xterm.css'
 import "./index.css"
 
 //component
-import './image_uploader.js'
-import './upload_manager.js'
+import './components/image_uploader.js'
+import './components/upload_manager.js'
+import './components/progress_bar.js'
 
 //js
 import './main.js'

@@ -1,4 +1,4 @@
-import {is_hex_char, read_file} from './utility.js';
+import {is_hex_char, read_file} from '../utility.js';
 
 (function(){
 
@@ -17,7 +17,8 @@ template.innerHTML = `
     display: inline-flex;
     gap: 2px;
     align-items: stretch;
-    min-height: 40px;
+    /* min-height: 40px; */
+    /* flex-wrap: wrap; */
   }
 
   :host([disabled]) #button-upload
@@ -66,22 +67,24 @@ template.innerHTML = `
     display: inline-flex;
     max-width: 100%;
     align-items: stretch;
+    flex-grow: 1;
   }
 
   #file-input-container
   {
     width: 400px;
     cursor: pointer;
+    flex-grow: 1;
+    /* width: 100%; */
   }
 
   label{
     display: inline-flex;
     align-items: stretch;
+    /* flex: 1 1 0; */
   }
 
   .input-style{
-    /* padding: 10px 5px; */
-    /* border-radius: 5px; */
     background-color: var(--primary-color-dark);
     text-align: center;
     font-size: 18px;
@@ -96,8 +99,7 @@ template.innerHTML = `
     align-items: center;
     white-space: nowrap;
     overflow: hidden;
-    /* text-overflow: ellipsis; */
-    /* direction: ltr; */
+    /* flex: 1 1 0; */
   }
 
   #erase-file
@@ -134,6 +136,18 @@ template.innerHTML = `
     display: inline-flex;
     align-items: center;
     font-size: 22px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    :host{
+      display: flex;
+      width: 100%;
+    }
+
+    #file-input-container
+    {
+      width: 100%;
+    }
   }
 </style>
 <div id=file-container>

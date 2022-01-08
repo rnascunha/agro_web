@@ -148,6 +148,20 @@ function run_login({storage, registration}, auto_connect = true)
   });
 
   connect.addEventListener('click', login);
+
+  /**
+   * Options/Dropmenu
+   */
+   function blur_dropmenu()
+   {
+     document.querySelectorAll('.drop-menu').forEach(el => el.blur());
+   }
+   document.querySelector('#menu-tool-flasher').
+     addEventListener('click', ev => {
+       window.open("./tools/flasher.html");
+       blur_dropmenu();
+     });
+
 }
 
 (function()

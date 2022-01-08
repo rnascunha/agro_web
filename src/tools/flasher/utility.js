@@ -1,7 +1,12 @@
 
 export function digest_support()
 {
-  return 'crypto' in window;
+  return 'crypto' in window && 'subtle' in window.crypto;
+}
+
+export function compression_support()
+{
+  return 'CompressionStream' in window;
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/digest
@@ -48,6 +53,16 @@ export function to_hex(value, size = 2)
   return value.toString(16).padStart(size, '0');
 }
 
+export function to_hex_string(value)
+{
+  let hex = '';
+  for(let i = 0; i < value.length; i++)
+  {
+    hex += to_hex(value[i], 2);
+  }
+  return hex;
+}
+
 export function mac_to_string(mac)
 {
   return `${to_hex(mac[0], 2)}:${to_hex(mac[1], 2)}:${to_hex(mac[2], 2)}:${to_hex(mac[3], 2)}:${to_hex(mac[4], 2)}:${to_hex(mac[5], 2)}`;
@@ -81,4 +96,25 @@ export function is_hex_char(key)
 {
   // if(key.length > 1) return 0;
   return /[0-9a-fA-F]/.test(key);
+}
+
+export function pad_to(data, align, char = 0x00)
+{
+  const mod = data.length % align;
+  for(let i = 0; i < mod; i++)
+  {
+    data.push(char);
+  }
+  return data;
+}
+
+export function compress_buffer(input, type = 'gzip')
+{
+  return new Response(
+          new Response(input)
+            .body
+            .pipeThrough(
+              new CompressionStream(type)
+            )
+          ).arrayBuffer();
 }

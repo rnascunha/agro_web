@@ -168,7 +168,7 @@ export class SLIP{
 
   static command(op, buffer, checksum = 0)
   {
-    return [0x00, op, ...SLIP.uint16_to_arr(buffer.length), ...SLIP.uint32_to_arr(checksum), ...buffer];
+    return [0x00, op, ...SLIP.pack16(buffer.length), ...SLIP.pack32(checksum), ...buffer];
   }
 
   static checksum(data, seed = checksum_seed)
@@ -180,19 +180,13 @@ export class SLIP{
     return seed;
   }
 
-  static uint16_to_arr(value)
+  static pack16(...args)
   {
-    let value_arr = new DataView(new ArrayBuffer(2));
-    value_arr.setUint16(0, value, true /* little endian */);
-
-    return [value_arr.getUint8(0), value_arr.getUint8(1)];
+    return Array.from(new Uint8Array(new Uint16Array(args).buffer));
   }
 
-  static uint32_to_arr(value)
+  static pack32(...args)
   {
-    let value_arr = new DataView(new ArrayBuffer(4));
-    value_arr.setUint32(0, value, true /* little endian */);
-
-    return [value_arr.getUint8(0), value_arr.getUint8(1), value_arr.getUint8(2), value_arr.getUint8(3)];
+    return Array.from(new Uint8Array(new Uint32Array(args).buffer));
   }
 }

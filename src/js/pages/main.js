@@ -308,6 +308,15 @@ function run_main(data)
     });
 
   /**
+   * Tools
+   */
+  document.querySelector('#menu-tool-flasher').
+    addEventListener('click', ev => {
+      window.open("./tools/flasher.html");
+      blur_dropmenu();
+    });
+
+  /**
    * Title event (go to main container)
    */
   document.querySelector('#title').addEventListener('click', ev =>{

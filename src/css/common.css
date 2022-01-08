@@ -31,6 +31,13 @@ input.remove-arrow[type=number] {
   border-radius: 5px;
 }
 
+.button-normal[disabled]
+{
+  cursor: not-allowed;
+  pointer-events: none;
+  filter: brightness(90%);
+}
+
 .input-common,
 .input-text
 {
@@ -47,4 +54,11 @@ input.remove-arrow[type=number] {
 {
   color: white;
   opacity: 0.7;
+}
+
+@media only screen and (max-width: 600px) {
+  .button-normal[disabled]
+  {
+    color: #888;
+  }
 }
