@@ -1,11 +1,18 @@
-#main{
+#main-container
+{
+  width: 100%;
+  height: 100%;
   padding: 5px;
   color: var(--text-color);
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  height: 100%;
   position: relative;
+  gap: 4px;
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: min-content auto;
+  grid-template-areas:
+      "header header"
+      "uploader serial";
+  overflow: hidden;
 }
 
 h1{
@@ -14,30 +21,39 @@ h1{
   text-align: center;
   font-weight: bold;
   margin-bottom: 10px;
-}
-
-/* #main-container
-{
-  display: flex;
-  height: 100%;
-  gap: 4px;
-  justify-content: stretch;
-  width: 100%;
+  grid-area: header;
 }
 
 #uploader-outer-container
 {
-  flex: 1 0 50%;
-} */
+  display: inline-flex;
+  flex-direction: column;
+  grid-area: uploader;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 
 #serial-container{
   width: 100%;
-  overflow: auto;
-  min-height: 300px;
   height: 100%;
-  display: flex;
+  grid-area: serial;
+  overflow: hidden;
+  /* overflow: auto; */
+}
+
+#serial-fieldset
+{
+  width: 100%;
+  height: 100%;
   flex-direction: column;
-  /* flex: 1 0 50%; */
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: min-content min-content auto;
+  grid-template-areas:
+      "header"
+      "options"
+      "terminal";
 }
 
 #upload-container
@@ -45,7 +61,7 @@ h1{
   display: flex;
   flex-direction: column;
   gap: 2px;
-  width: fit-content;
+  width: 100%;
 }
 
 #upload-image{
@@ -64,7 +80,7 @@ h1{
 
 .fieldset-sector
 {
-  padding: 15px;
+  padding: 10px;
   border: 1px solid var(--text-color);
   border-radius: 10px;
   color: var(--text-color);
@@ -75,22 +91,15 @@ h1{
   padding: 0px 5px;
 }
 
-#file-info-container
+#file-info-container-outer
 {
-  position: absolute;
-  width: 50%;
-  right: -48%;
-  top: 10%;
-  background: var(--primary-color);
-  transition: 0.5s right ease;
-  border-width: 2px;
-  /* width: 100%; */
-  /* overflow: auto; */
+  overflow-y: auto;
+  height: 100%;
 }
 
-#file-info-container:hover
+#file-info-container
 {
-  right: 0;
+  width: 100%;
 }
 
 #file-info{
@@ -125,6 +134,7 @@ h1{
   background-color: var(--primary-color-light2);
   padding: 5px;
   border-radius: 0px 5px 5px 0px;
+  overflow-wrap: anywhere;
 }
 
 /**
@@ -202,11 +212,13 @@ h1{
 
 #serial-options{
   display: flex;
+  width: fit-content;
   gap: 5px;
   font-size: 18px;
   align-items: center;
   margin-bottom: 2px;
   flex-wrap: wrap;
+  grid-area: options;
 }
 
 #serial-options *
@@ -216,20 +228,20 @@ h1{
 
 #serial-options *:hover
 {
-  filter: brightness(90%);
+  background-color: var(--text-color);
+  color: var(--primary-color);
 }
 
 #terminal-container
 {
+  display: block;
   width: 100%;
-  /* width: fit-content; */
-  /* max-width: 60%; */
   height: 100%;
   overflow: auto;
   background-color: black;
   padding: 3px;
   border-radius: 3px;
-  /* position: relative; */
+  grid-area: terminal;
 }
 
 #upload-progress
@@ -239,22 +251,14 @@ h1{
 }
 
 @media only screen and (max-width: 600px) {
-  #upload-container
+  #main-container
   {
-    width: 100%;
-  }
-
-  #file-info-container
-  {
-    top: auto;
-    bottom: 10%;
-    height: auto;
-    right: -95%;
-    width: 100%;
-  }
-
-  #file-info-container:hover
-  {
-    width: 98%;
+    grid-template-columns: 100%;
+    grid-template-rows: min-content auto;
+    grid-template-areas:
+        "header"
+        "uploader"
+        "serial";
+    overflow: hidden;
   }
 }

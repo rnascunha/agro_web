@@ -17,8 +17,6 @@ template.innerHTML = `
     display: inline-flex;
     gap: 2px;
     align-items: stretch;
-    /* min-height: 40px; */
-    /* flex-wrap: wrap; */
   }
 
   :host([disabled]) #button-upload
@@ -67,21 +65,17 @@ template.innerHTML = `
     display: inline-flex;
     max-width: 100%;
     align-items: stretch;
-    flex-grow: 1;
+    overflow: hidden;
+    flex: 1 1 auto;
   }
 
   #file-input-container
   {
-    width: 400px;
     cursor: pointer;
-    flex-grow: 1;
-    /* width: 100%; */
-  }
-
-  label{
+    flex: 1 1 auto;
     display: inline-flex;
     align-items: stretch;
-    /* flex: 1 1 0; */
+    overflow: hidden;
   }
 
   .input-style{
@@ -93,13 +87,13 @@ template.innerHTML = `
   }
 
   #file-name{
-    width: 100%;
+    /* width: 100%; */
     display: inline-flex;
     justify-content: center;
     align-items: center;
     white-space: nowrap;
     overflow: hidden;
-    /* flex: 1 1 0; */
+    flex: 1 10 auto;
   }
 
   #erase-file
@@ -109,11 +103,16 @@ template.innerHTML = `
     cursor: pointer;
     display: inline-flex;
     align-items: center;
+    flex: 0 0 auto;
   }
 
   #erase-file:hover
   {
-    font-weight: bold;
+    background-color: var(--text-color);
+    color: var(--primary-color-dark);
+    /* font-weight: bold; */
+    /* box-shadow: var(--hover-effect); */
+    /* filter: brightness(90%); */
   }
 
   #image-offset
@@ -136,6 +135,10 @@ template.innerHTML = `
     display: inline-flex;
     align-items: center;
     font-size: 22px;
+  }
+
+  input::-webkit-calendar-picker-indicator {
+    opacity: 100;
   }
 
   @media only screen and (max-width: 600px) {

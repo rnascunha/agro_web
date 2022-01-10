@@ -94,7 +94,6 @@ export function is_hex_string(str)
 
 export function is_hex_char(key)
 {
-  // if(key.length > 1) return 0;
   return /[0-9a-fA-F]/.test(key);
 }
 

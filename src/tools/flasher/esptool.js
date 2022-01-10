@@ -458,10 +458,6 @@ export class ESPTool extends Serial_Device{
 
     while (file_size - position > 0)
     {
-      ops.upload_progress({
-        percent: Math.floor(100 * (seq + 1) / blocks),
-        seq, blocks, file_size, position, written
-      });
       if (file_size - position >= flash_write_size)
       {
         block = Array.from(new Uint8Array(image, position, flash_write_size));
@@ -476,6 +472,11 @@ export class ESPTool extends Serial_Device{
       seq += 1;
       written += block.length;
       position += flash_write_size;
+
+      ops.upload_progress({
+        percent: Math.floor(100 * (seq + 1) / blocks),
+        seq, blocks, file_size, position, written
+      });
     }
 
     if(ops.end_flag == flash_end_flag.reboot || ops.end_flag == flash_end_flag.run_user_code)

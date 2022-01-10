@@ -9,7 +9,6 @@ import {digest_support,
 import {Serial} from './serial.js';
 import {Serial_View} from './serial_view.js';
 import {ESPTool, flash_end_flag} from './esptool.js';
-// import * as SparkMD5 from 'spark-md5';
 import {ArrayBuffer as md5_digest} from 'spark-md5';
 
 function make_file_size(size)
@@ -300,6 +299,7 @@ function serial_container()
       make_report(`Upload image FAIL`, 'error');
       serial.view.write("Images upload FAIL");
     }
+    upload_image.disabled = false;
   });
 }
 
@@ -366,12 +366,11 @@ async function write_image(esptool, image, offset, options, serial)
   {
     const md5 = await esptool.flash_md5_calc(offset, image.image.image.byteLength);
     serial.view.write(`\r\n[${image.image.file.name}] hash flashed: ` + md5);
-    // const md5i = SparkMD5.ArrayBuffer.hash(image.image.image);
     const md5i = md5_digest.hash(image.image.image);
     serial.view.write(`[${image.image.file.name}] hash image:   ` + md5i);
     if(md5 != md5i)
     {
-      serial.view.write(`Verification FAIL! Image and flashed hash does not match.` + md5);
+      serial.view.write(`Verification FAIL! Image and flashed hash does not match. [${md5}]`);
       return false;
     }
     serial.view.write("Verification succeced!");

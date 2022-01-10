@@ -11,7 +11,7 @@ module.exports = (public_path) => {
             //Main
             index: path.resolve(__dirname, '..', './src/index.js'),
             //Tools
-            flasher: path.resolve(__dirname, '..', './src/tools/flasher/index.js')
+            flasher: path.resolve(__dirname, '..', './src/tools/flasher/index.js'),
         },
         module: {
             rules: [

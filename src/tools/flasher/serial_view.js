@@ -18,6 +18,9 @@ export class Serial_View{
     this._reset = container.querySelector('#serial-monitor-port');
     this._erase_flash = container.querySelector('#serial-erase-flash');
 
+    // this._terminal = {
+    //   write: function(){}
+    // }
     this._terminal = new Terminal({cursorBlink: true, termName: 'Serial Data'});
     const fitAddon = new FitAddon();
     this._terminal.loadAddon(fitAddon);
@@ -25,7 +28,7 @@ export class Serial_View{
     this._terminal.open(container.querySelector('#terminal-container'));
 
     // setTimeout(() => fitAddon.fit(), 1000);
-    fitAddon.fit()
+    fitAddon.fit();
 
     this._terminal.write('Welcome to \x1B[1;3;31mESPTool Monitor Flasher\x1B[0m\r\n\r\n');
 
