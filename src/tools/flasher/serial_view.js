@@ -15,19 +15,14 @@ export class Serial_View{
     this._baudrate = container.querySelector('#serial-ports-baudrate');
 
     this._open = container.querySelector('#serial-open-port');
-    this._reset = container.querySelector('#serial-monitor-port');
+    this._monitor = container.querySelector('#serial-monitor-port');
     this._erase_flash = container.querySelector('#serial-erase-flash');
 
-    // this._terminal = {
-    //   write: function(){}
-    // }
     this._terminal = new Terminal({cursorBlink: true, termName: 'Serial Data'});
     const fitAddon = new FitAddon();
     this._terminal.loadAddon(fitAddon);
 
     this._terminal.open(container.querySelector('#terminal-container'));
-
-    // setTimeout(() => fitAddon.fit(), 1000);
     fitAddon.fit();
 
     this._terminal.write('Welcome to \x1B[1;3;31mESPTool Monitor Flasher\x1B[0m\r\n\r\n');
@@ -68,7 +63,7 @@ export class Serial_View{
         this._open_bootloader(dev);
       });
 
-      this._reset.addEventListener('click', ev => {
+      this._monitor.addEventListener('click', ev => {
         this.reset();
       });
 
@@ -102,15 +97,28 @@ export class Serial_View{
     return +this._baudrate.selectedOptions[0].value;
   }
 
-  reset()
+  async reset()
   {
     const dev = this._selected_device();
-    if(dev && dev.is_open())
+    if(dev)
     {
-      dev.set_port_baudrate(MONITOR_BAUDRATE)
-      .then(() => dev.signal_reset())
-      .then(() => dev.register_cb(value => this._terminal.write(value)))
-      .catch(e => console.log('reset fail', e));
+      try
+      {
+        if(!dev.is_open())
+        {
+          await dev.open(MONITOR_BAUDRATE, value => this._terminal.write(value));
+        }
+        else
+          await dev.set_port_baudrate(MONITOR_BAUDRATE)
+
+        await dev.signal_reset();
+        dev.register_cb(value => this._terminal.write(value));
+        this._set_state(false);
+      }
+      catch(e)
+      {
+        console.log('reset fail', e);
+      }
     }
   }
 
@@ -172,7 +180,7 @@ export class Serial_View{
       this._open.textContent = 'Close';
       this._ports.disabled = true;
       this._baudrate.disabled = true;
-      this._reset.disabled = false;
+      // this._monitor.disabled = false;
       this._erase_flash.disabled = false;
     }
     else
@@ -180,7 +188,7 @@ export class Serial_View{
       this._open.textContent = 'Open';
       this._ports.disabled = false;
       this._baudrate.disabled = false;
-      this._reset.disabled = true;
+      // this._monitor.disabled = true;
       this._erase_flash.disabled = true;
     }
   }
@@ -216,7 +224,7 @@ export class Serial_View{
   async _open_bootloader(device)
   {
     try{
-      await device.open(SYNC_BAUDRATE, value => this._terminal.write(value))
+      await device.open(SYNC_BAUDRATE, value => this._terminal.write(value));
 
       this._terminal.write(`Bootloading ${device.name}...\r\n`);
       await device.signal_bootloader()

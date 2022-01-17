@@ -80,9 +80,6 @@ export const command = {
   erase_region: 0xd1,
   read_flash: 0xd2,
   run_user_code: 0xd3,
-
-  //
-  // SPIFLASH_RDID = 0x9F
 };
 
 const register = {
@@ -234,8 +231,21 @@ export class ESPTool extends Serial_Device{
 
   async signal_bootloader()
   {
+    // await this.signals({ dataTerminalReady: false, requestToSend: true });
+    // await this.signals({ dataTerminalReady: true, requestToSend: false });
+    // await sleep(1000);
+
     await this.signals({ dataTerminalReady: false, requestToSend: true });
+    await sleep(100);
+    //if esp32r0_delay
+    //await sleep(1200);
+
     await this.signals({ dataTerminalReady: true, requestToSend: false });
+    await sleep(50);
+    //if esp32r0_delay
+    //await sleep(400);
+    await this.signals({ dataTerminalReady: false});
+
     await sleep(1000);
   }
 
