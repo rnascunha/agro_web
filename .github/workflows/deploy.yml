@@ -21,5 +21,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          external_repository: rnascunha/rnascunha.github.io
+          publish_branch: master
           publish_dir: ./dist
           destination_dir: agro2
