@@ -1,3 +1,4 @@
+import {array_to_hex_string} from '../helper/convert.js'
 import {Sensor_List} from './sensor.js'
 import {Devices_Table_Line_View} from './views/device_table.js'
 
@@ -37,6 +38,9 @@ class Device{
 
     //Ota
     this._ota_version = null;
+
+    //Apps
+    this._apps = [];
 
     //system
     this._uptime = null;
@@ -79,6 +83,8 @@ class Device{
 
   get ota_version(){ return this._ota_version; }
 
+  get apps(){ return this._apps; }
+
   get uptime(){ return this._uptime; }
   get reset_reason(){ return this._reset_reason; }
 
@@ -96,6 +102,17 @@ class Device{
 
   process(data, update_view = false)
   {
+    /**
+     * As we are going to exetensivile use hash string (instead of a array of hash),
+     * convert.
+     */
+    if('apps' in data)
+    {
+      data.apps.forEach(d => {
+        d.hash_str = array_to_hex_string(d.hash);
+      });
+    }
+
     ['name', 'version_fw', 'version_hw',
       'endpoint', 'connected',
       //Network
@@ -107,6 +124,8 @@ class Device{
       'rtc', 'fuse',
       //ota
       'ota_version',
+      //app
+      'apps',
       //system
       'uptime', 'reset_reason'].forEach(attr => {
       if(attr in data)

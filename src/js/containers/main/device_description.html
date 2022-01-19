@@ -180,6 +180,25 @@
             </div>
           </array-command>
         </detail-command>
+        <detail-command id=detail-app>
+          <i class="fas fa-ghost" slot=icon></i>
+          <div slot=title>App</div>
+          <div class=detail-app-content>
+            <table>
+              <thead>
+                <tr>
+                  <th>App</th><th>Exec</th><th>#</th>
+                </tr>
+              </thead>
+              <tbody class=detail-app-table-list></tbody>
+            </table>
+            <array-command class=detail-command data-type=app>
+              <button data-index=get_app>Get</button>
+              <select class='device-app-select-send hide-first-opiton'></select>
+              <button data-index=send_app>Send</button>
+            </array-command>
+          </div>
+        </detail-command>
         <detail-command id=detail-custom>
           <i class="fas fa-hat-wizard" slot=icon></i>
           <div slot=title>Custom</div>

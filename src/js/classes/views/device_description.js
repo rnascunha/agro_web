@@ -19,6 +19,110 @@ import {notify_device} from './notify_device.js'
 const template_description = document.createElement('template');
 template_description.innerHTML = device_description;
 
+function make_image_select(device, instance, select)
+{
+  const images = Object.values(instance.image_list.list)
+                    .filter(image => image.version != device.firmware_version);
+
+  let op = document.createElement('option');
+  op.textContent = images.length ? 'Select image' : 'No image';
+  op.value = '';
+  select.appendChild(op);
+
+  if(!images.length) return;
+
+  images.forEach(image => {
+    op = document.createElement('option');
+    op.value = image.name;
+    op.textContent = `${image.version} (${image.name})`;
+
+    select.appendChild(op);
+  });
+}
+
+function make_app_select(device, instance, select)
+{
+  const app = Object.values(instance.app_list.list)
+                  .filter(ap => !device.apps.find(a => a.name == ap.name));
+
+  select.innerHTML = '';
+
+  let op = document.createElement('option');
+  op.value = '';
+  op.textContent = app.length ? 'Select app' : 'No app';
+  select.appendChild(op);
+
+  if(!app.length) return;
+
+  app.forEach(a => {
+    op = document.createElement('option');
+    op.value = a.name;
+    op.textContent = `${a.name} [${a.hash.slice(-6)}] (${a.size} bytes)`;
+
+    select.appendChild(op);
+  });
+}
+
+function update_app_list(device, table)
+{
+  if(!device.apps.length)
+  {
+    table.innerHTML = '<tr data-hash=""><td colspan=3>No app</td></tr>';
+    return;
+  }
+
+  let lines = Array.from(table.querySelectorAll('tr[data-hash]')),
+      to_include = [];
+
+  //Making sure to remove any line of type 'No app'
+  if(lines.length && !lines[0].dataset.hash)
+  {
+    lines.shift().outerHTML = '';
+  }
+
+  //Removing lines
+  let new_lines = [];
+  lines.forEach(line => {
+    if(!device.apps.some(app => app.hash_str == line.dataset.hash))
+    {
+      line.outerHTML = '';
+      return;
+    }
+    new_lines.push(line);
+  });
+
+  //Checking app lines to bo included
+  device.apps.forEach(app => {
+    if(!new_lines.some(line => line.dataset.hash == app.hash_str))
+    {
+      to_include.push(app);
+    }
+  });
+
+  to_include.forEach(app => {
+    const line = document.createElement('tr');
+    line.dataset.hash = app.hash_str;
+
+    const name = document.createElement('td');
+    name.textContent = `${app.name} [${app.hash_str.slice(-6)}]`;
+    line.appendChild(name);
+
+    const exec = document.createElement('td');
+    exec.innerHTML = `<div class=app-exec-container>
+                        <input type=number class='remove-arrow input-common argument' value=0 title='App exec argument'>
+                        <span title='Execute app' data-exec='${app.name}'><i class="fas fa-terminal"></i></span>
+                      </div>`;
+    line.appendChild(exec);
+
+    const close = document.createElement('td');
+    close.innerHTML = '&times;'
+    close.dataset.close = app.name;
+    line.appendChild(close);
+
+    table.appendChild(line);
+  });
+}
+
 export class Device_Description_View{
   constructor(container, device, instance)
   {
@@ -56,6 +160,8 @@ export class Device_Description_View{
     this._time = this._commands.querySelector('.detail-time-value');
     this._ota_version = this._commands.querySelector('.detail-ota-version');
     this._ota_select_image = this._commands.querySelector('.detail-select-ota-image');
+    this._app_select = this._commands.querySelector('.device-app-select-send');
+    this._app_list = this._commands.querySelector('.detail-app-table-list');
     this._uptime = this._commands.querySelector('.detail-uptime');
     this._reset_reason = this._commands.querySelector('.detail-reset-reason');
     this._custom_request = new Custom_Request(this._commands.querySelector('#detail-custom'));
@@ -73,7 +179,7 @@ export class Device_Description_View{
     this._name.addEventListener('blur', ev => {
       this._name.contentEditable = false;
       instance.send(message_types.DEVICE, device_commands.EDIT, {
-        device: this._title.textContent,
+        device: device.mac,
         name: this._name.textContent
       })
     });
@@ -92,30 +198,25 @@ export class Device_Description_View{
               device_commands.REQUEST,
               {
                 request: `ac${ev.detail.index}_${ev.detail.on == 'true' ? 'on' : 'off'}`,
-                device: this._title.textContent
+                device: device.mac
               });
             break;
             case 'packet':
+            case 'time':
+            case 'system':
               instance.send(message_types.DEVICE,
                 device_commands.REQUEST,
                 {
                   request: ev.detail.index,
-                  device: this._title.textContent
+                  device: device.mac
                 });
             break;
-            case 'time':
-              instance.send(message_types.DEVICE,
-                device_commands.REQUEST,
-                {
-                  request: ev.detail.index,
-                  device: this._title.textContent
-                });
             case 'fuse':
               instance.send(message_types.DEVICE,
                 device_commands.REQUEST,
                 {
                   request: ev.detail.index,
-                  device: this._title.textContent,
+                  device: device.mac,
                   payload: - new Date().getTimezoneOffset() * 60
                 });
             break;
@@ -125,7 +226,7 @@ export class Device_Description_View{
               {
                 instance.report(report_commands.DEVICE,
                   report_types.warning,
-                  this._title.textContent,
+                  device.mac,
                   'Image not selected'
                 )
                 return;
@@ -135,16 +236,28 @@ export class Device_Description_View{
                 device_commands.REQUEST,
                 {
                   request: ev.detail.index,
-                  device: this._title.textContent,
+                  device: device.mac,
                   image: this._ota_select_image.selectedOptions[0].value
                 });
             break;
-            case 'system':
+            case 'app':
+              if(ev.detail.index == 'send_app')
+              {
+                if(!this._app_select.selectedOptions[0].value) return;
+                instance.send(message_types.DEVICE,
+                  device_commands.REQUEST,
+                  {
+                    request: ev.detail.index,
+                    device: device.mac,
+                    app: this._app_select.selectedOptions[0].value
+                  });
+                return;
+              }
               instance.send(message_types.DEVICE,
                 device_commands.REQUEST,
                 {
                   request: ev.detail.index,
-                  device: this._title.textContent,
+                  device: device.mac
                 });
               break;
             case 'custom':
@@ -152,7 +265,7 @@ export class Device_Description_View{
                 device_commands.REQUEST,
                 {...{
                   request: 'custom',
-                  device: this._title.textContent,
+                  device: device.mac,
                 }, ...ev.detail});
             break;
           default:
@@ -203,24 +316,43 @@ export class Device_Description_View{
     /**
      * Images
      */
-    let op = document.createElement('option');
-    op.textContent = instance.image_list.size ? 'select image' : 'no image';
-    op.value = '';
-    this._ota_select_image.appendChild(op);
+    make_image_select(device, instance, this._ota_select_image);
 
-    Object.values(instance.image_list.list).forEach(image => {
-      /**
-       * Check to just show different version images
-       */
-      if(image.version == device.firmware_version)
+    /**
+     * Apps
+     */
+    make_app_select(device, instance, this._app_select);
+    update_app_list(device, this._app_list);
+    this._app_list.addEventListener('click', ev => {
+      let el = ev.target;
+      while(el != this._app_list)
       {
-        return;
+        if('close' in el.dataset)
+        {
+          instance.send(message_types.DEVICE,
+            device_commands.REQUEST,
+            {
+              request: 'delete_app',
+              device: device.mac,
+              app: el.dataset.close
+            });
+          return;
+        }
+        if('exec' in el.dataset)
+        {
+          const input = el.parentNode.querySelector('input.argument');
+          instance.send(message_types.DEVICE,
+            device_commands.REQUEST,
+            {
+              request: 'execute_app',
+              device: device.mac,
+              app: el.dataset.exec,
+              arg: input.value ? +input.value : 0
+            });
+          break;
+        }
+        el = el.parentNode;
       }
-      op = document.createElement('option');
-      op.value = image.name;
-      op.textContent = `${image.version} (${image.name})`;
-
-      this._ota_select_image.appendChild(op);
     });
 
     /**
@@ -333,6 +465,7 @@ export class Device_Description_View{
               this[`_${attr}`].textContent = device[attr];
           }
           break;
+        break;
         default:
           if(shine(attr, data, this[`_${attr}`]) || force)
             this[`_${attr}`].textContent = device[attr];
@@ -355,6 +488,11 @@ export class Device_Description_View{
                                       '<reset_reason>';
     shine('reset_reason', data, this._reset_reason);
 
+    if(data && 'apps' in data)
+    {
+      update_app_list(device, this._app_list);
+    }
+
     if((data && 'sensor' in data)  || force)
     {
       make_sensors(this._sensors, device, this._instance, data.sensor);
@@ -375,5 +513,11 @@ export class Device_Description_View{
         {zoom: false},
         -20);
     }
+  }
+
+  update_other(device, instance)
+  {
+    make_image_select(device, instance, this._ota_select_image);
+    make_app_select(device, instance, this._app_list);
   }
 }

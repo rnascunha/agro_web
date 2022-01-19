@@ -1,0 +1,105 @@
+#detail-app
+{
+  width: 300px;
+}
+
+#detail-app .detail-app-content
+{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#detail-app table
+{
+  width: 100%;
+}
+
+#detail-app table td,
+#detail-app table th
+{
+  width: fit-content;
+  padding: 0px 3px;
+}
+
+#detail-app table td:first-child,
+#detail-app table th:first-child
+{
+  width: 100%;
+  padding: 3px;
+}
+
+#detail-app tbody .app-exec-container
+{
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+#detail-app tbody .argument
+{
+  width: 5ch;
+  background-color: var(--primary-color);
+  text-align: center;
+  padding: 3px;
+}
+
+#detail-app tbody tr td
+{
+  cursor: none;
+  text-shadow: none;
+}
+
+#detail-app tbody tr td[data-close]
+{
+  font-size: 30px;
+}
+
+#detail-app tbody tr td:first-child:hover
+{
+  text-shadow: var(--hover-effect);
+}
+
+#detail-app tbody tr td[data-close]:hover
+{
+  text-shadow: var(--hover-effect);
+}
+
+#detail-app tbody tr td span[data-exec]:hover
+{
+  transform: translateY(2px);
+}
+
+#detail-app tbody tr:hover
+{
+  font-weight: normal;
+}
+
+#detail-app array-command
+{
+  /* width: 100%; */
+  font-size: 15px;
+}
+
+#detail-app button
+{
+  width: fit-content;
+  padding: 6px 6px;
+}
+
+#detail-app array-command select
+{
+  width: 100%;
+  /* border: none; */
+  border-radius: 0;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  font-family: var(--font-family-light);
+  cursor: pointer;
+  outline: none;
+}
+
+#detail-app array-command select:empty:after
+{
+
+}
