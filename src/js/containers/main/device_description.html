@@ -199,6 +199,29 @@
             </array-command>
           </div>
         </detail-command>
+        <detail-command id=detail-job>
+          <i class="fas fa-tasks" slot=icon></i>
+          <div slot=title>Jobs</div>
+          <div class=detail-job-content>
+            <table class=detail-job-table>
+              <thead>
+                <tr>
+                  <!-- <th>Name</th> -->
+                  <th>Time</th>
+                  <th>DoW</th>
+                  <th>Pri</th>
+                  <th>App</th>
+                  <th>X</th>
+                </tr>
+              </thead>
+              <tbody class=detail-job-table-list></tbody>
+            </table>
+            <array-command class=detail-command data-type=job>
+              <button data-index=send_job>Add</button>
+              <button data-index=get_job>Get</button>
+            </array-command>
+          </div>
+        </detail-command>
         <detail-command id=detail-custom>
           <i class="fas fa-hat-wizard" slot=icon></i>
           <div slot=title>Custom</div>

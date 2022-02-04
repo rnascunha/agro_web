@@ -169,6 +169,7 @@ function run_main(data)
    main_net.install(instance);
    main_image.install(instance);
    main_app.install(instance);
+   main_job.install(instance);
 
   /**
    * Adding instance handlers (websocket handlers)

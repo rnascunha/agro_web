@@ -76,7 +76,9 @@ module.exports = (public_path) => {
                     path.resolve(__dirname, '..', 'icons', 'icon-128x128.png'),
                     path.resolve(__dirname, '..', 'icons', "icon-192x192.png"),
                     path.resolve(__dirname, '..', 'icons', 'icon-256x256.png'),
-                    path.resolve(__dirname, '..', 'icons', 'icon-512x512.png')
+                    path.resolve(__dirname, '..', 'icons', 'icon-512x512.png'),
+                    path.resolve(__dirname, '..', 'fonts', 'jura-variablefont_wght-webfont.woff'),
+                    path.resolve(__dirname, '..', 'fonts', 'jura-variablefont_wght-webfont.woff2'),
                 ]
             })
         ],

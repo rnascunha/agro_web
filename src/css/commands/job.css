@@ -1,0 +1,40 @@
+#detail-job{
+
+}
+
+#detail-job .detail-job-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+#detail-job .detail-job-content .detail-job-table{
+  width: 100%;
+}
+
+#detail-job .detail-job-content .detail-job-table-list td
+{
+  padding: 0px 3px;
+}
+
+#detail-job .detail-job-content .detail-job-table-list td.no-data
+{
+  padding: 3px;
+  font-style: italic;
+}
+
+#detail-job .detail-job-content .detail-job-table-list tr td[data-close]
+{
+  font-size: 30px;
+}
+
+#detail-job .detail-job-content .detail-job-table-list tr:hover td
+{
+  text-shadow: 0 0 black;
+}
+
+#detail-job .detail-job-content .detail-job-table-list tr td[data-close]:hover
+{
+  text-shadow: var(--hover-effect);
+}

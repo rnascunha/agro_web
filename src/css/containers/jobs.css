@@ -1,0 +1,157 @@
+#job-container
+{
+
+}
+
+#job-container #job-add-btn
+{
+  cursor: pointer;
+}
+
+/**
+ * Popup
+ */
+.add-job-modal
+{
+  min-width: 350px;
+}
+
+.add-job-modal h1
+{
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  font-weight: bold;
+}
+
+/* icon */
+.add-job-modal h1 span:first-child
+{
+  flex-grow: 0;
+}
+
+/* title */
+.add-job-modal h1 span:last-child
+{
+  flex-grow: 1;
+  text-align: center;
+}
+
+.add-job-modal .add-job-content
+{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.add-job-modal .add-job-content label:hover
+{
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.add-job-modal .add-job-content fieldset
+{
+  border: 1px solid white;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.add-job-modal .add-job-content fieldset input[type="text"]
+{
+  width: 100%;
+  text-align: center;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler
+{
+  display: flex;
+  gap: 2px;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-time-priority-container
+{
+  flex-grow: 1;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-time-container
+{
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  /* flex-grow: 1; */
+  width: 100%;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-priority-container
+{
+  width: 100%;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-priority-container input
+{
+  width: 100%;
+  text-align: center;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-time-container span
+{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-time-container label
+{
+  flex-grow: 1;
+  text-align: center;
+}
+
+.add-job-modal .add-job-content .add-job-scheduler .add-job-dow
+{
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.add-job-modal .add-job-content .job-exec-container
+{
+  display: flex;
+  gap: 2px;
+}
+
+.add-job-modal .add-job-content .job-exec-container .job-exec-app
+{
+  width: 100%;
+}
+
+.add-job-modal .add-job-content .job-exec-container .job-exec-app-arg
+{
+  width: 5ch;
+  text-align: center;
+}
+
+.add-job-modal .add-job-button-container
+{
+  display: flex;
+  justify-content: flex-end;
+  gap: 2px;
+  align-items: center;
+}
+
+.add-job-modal .add-job-error
+{
+  color: white;
+  font-weight: bold;
+  background-color: rgb(200, 0, 0);
+  border-radius: 3px;
+  padding: 3px;
+  width: 100%;
+  text-align: center;
+}
+
+.add-job-modal .add-job-error:empty
+{
+  display: none;
+}

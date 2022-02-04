@@ -42,6 +42,9 @@ class Device{
     //Apps
     this._apps = [];
 
+    //Jobs
+    this._jobs = [];
+
     //system
     this._uptime = null;
     this._reset_reason = null;
@@ -85,6 +88,8 @@ class Device{
 
   get apps(){ return this._apps; }
 
+  get jobs(){ return this._jobs; }
+
   get uptime(){ return this._uptime; }
   get reset_reason(){ return this._reset_reason; }
 
@@ -126,6 +131,8 @@ class Device{
       'ota_version',
       //app
       'apps',
+      //jobs,
+      'jobs',
       //system
       'uptime', 'reset_reason'].forEach(attr => {
       if(attr in data)

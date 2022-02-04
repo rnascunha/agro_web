@@ -15,6 +15,7 @@ import {make_sensors_graph} from './sensor_graph.js'
 import {Sensor_Description_View} from './sensor_description.js'
 import {Custom_Request} from '../../libs/custom_request.js'
 import {notify_device} from './notify_device.js'
+import jobs_template from '../../containers/main/jobs_template.html'
 
 const template_description = document.createElement('template');
 template_description.innerHTML = device_description;
@@ -123,6 +124,185 @@ function update_app_list(device, table)
   });
 }
 
+const template_add_job = document.createElement('template');
+template_add_job.innerHTML = jobs_template;
+
+function get_check_add_job(container)
+{
+  const //name = container.querySelector('.add-job-name').value,
+        time_before = container.querySelector('.add-job-init').value,
+        time_after = container.querySelector('.add-job-finish').value,
+        priority = +container.querySelector('.job-priority').value,
+        dow = Array.from(container.querySelectorAll('.add-job-dow input')).reduce((acc, val) => acc | (val.checked ? +val.value : 0), 0),
+        exec = container.querySelector('.job-exec-app').selectedOptions[0].value,
+        arg = +container.querySelector('.job-exec-app-arg').value;
+
+  const error = container.querySelector('.add-job-error');
+
+  // if(!name)
+  // {
+  //   error.textContent = 'Missing name';
+  //   return false;
+  // }
+
+  if(!time_before)
+  {
+    error.textContent = 'Time begin not set';
+    return false;
+  }
+
+  if(!time_after)
+  {
+    error.textContent = 'Time end not set';
+    return false;
+  }
+
+  if(priority < 1 || priority > 255)
+  {
+    error.textContent = 'Invalid priority';
+    return false;
+  }
+
+  if(dow == 0)
+  {
+    error.textContent = 'Select at least 1 day of week';
+    return false;
+  }
+
+  if(!exec)
+  {
+    error.textContent = 'No app selected';
+    return false;
+  }
+
+  const time_b = time_before.split(':'),
+        time_a = time_after.split(':');
+
+  return {
+    // name,
+    begin: {
+      hour: +time_b[0], minute: +time_b[1]
+    },
+    end: {
+      hour: +time_a[0], minute: +time_a[1]
+    },
+    priority,
+    dow,
+    exec,
+    arg
+  };
+}
+
+function add_job_modal(device, instance)
+{
+  const modal = document.createElement('pop-modal');
+
+  modal.appendChild(template_add_job.content.cloneNode(true));
+
+  modal.addEventListener('cancel', ev => {
+    modal.delete();
+  });
+
+  const sel = modal.querySelector('.job-exec-app');
+  if(!device.apps.length)
+  {
+    sel.innerHTML = '<option value="">No app</option>';
+  }
+  else
+  {
+    sel.innerHTML = '<option value="">Select app</option>';
+    device.apps.forEach(app => {
+      const op = document.createElement('option');
+      op.textContent = app.name;
+      op.value = app.name;
+      sel.appendChild(op);
+    });
+  }
+
+  modal.querySelector('.add-job-button-container')
+    .addEventListener('click', ev => {
+      if(ev.target.value == 'cancel')
+      {
+        modal.delete();
+      }
+      else if(ev.target.value == 'add')
+      {
+        const job = get_check_add_job(modal);
+        if(job)
+        {
+          modal.delete();
+          const jobs = device.jobs.slice(0);
+          jobs.push(job);
+
+          instance.send(message_types.DEVICE,
+            device_commands.REQUEST,
+            {
+              request: 'send_job',
+              device: device.mac,
+              jobs
+            });
+        }
+      }
+    });
+
+  modal.show();
+
+  return modal;
+}
+
+function update_view_jobs(device, container)
+{
+  if(!device.jobs.length)
+  {
+    container.innerHTML = '<tr><td colspan=20 class=no-data>No jobs</td></tr>';
+    return;
+  }
+
+  function pad(time)
+  {
+    return String(time).padStart(2, '0');
+  }
+
+  function dow_view(dow)
+  {
+    const dow_l = 'MTWTFSS';
+    let dow_r = '';
+    for(let i = 0; i < 7; i++)
+    {
+      dow_r += ((dow & (1 << i)) ? dow_l[i] : '-');
+    }
+    return dow_r;
+  }
+
+  container.innerHTML = '';
+  device.jobs.forEach((job, idx) => {
+    const line = document.createElement('tr');
+
+    const time = document.createElement('td');
+    time.textContent = `${pad(job.begin.hour)}:${pad(job.begin.minute)}-${pad(job.end.hour)}:${pad(job.end.minute)}`;
+    line.appendChild(time);
+
+    const dow = document.createElement('td');
+    dow.textContent = dow_view(job.dow);
+    line.appendChild(dow);
+
+    const priority = document.createElement('td');
+    priority.textContent = job.priority;
+    line.appendChild(priority);
+
+    const app = document.querySelector('td');
+    app.innerHTML = `${job.exec} [${job.arg}]`;
+    line.appendChild(app);
+
+    const close = document.querySelector('td');
+    close.innerHTML = '&times';
+    close.dataset.close = idx;
+    line.appendChild(close);
+
+    container.appendChild(line);
+  });
+}
+
 export class Device_Description_View{
   constructor(container, device, instance)
   {
@@ -162,6 +342,7 @@ export class Device_Description_View{
     this._ota_select_image = this._commands.querySelector('.detail-select-ota-image');
     this._app_select = this._commands.querySelector('.device-app-select-send');
     this._app_list = this._commands.querySelector('.detail-app-table-list');
+    this._job_list = this._commands.querySelector('.detail-job-table-list');
     this._uptime = this._commands.querySelector('.detail-uptime');
     this._reset_reason = this._commands.querySelector('.detail-reset-reason');
     this._custom_request = new Custom_Request(this._commands.querySelector('#detail-custom'));
@@ -260,6 +441,21 @@ export class Device_Description_View{
                   device: device.mac
                 });
               break;
+            case 'job':
+              if(ev.detail.index == 'send_job')
+              {
+                document.body.appendChild(add_job_modal(device, instance));
+              }
+              else if(ev.detail.index == 'get_job')
+              {
+                instance.send(message_types.DEVICE,
+                  device_commands.REQUEST,
+                  {
+                    request: ev.detail.index,
+                    device: device.mac
+                  });
+              }
+            break;
             case 'custom':
               instance.send(message_types.DEVICE,
                 device_commands.REQUEST,
@@ -353,6 +549,25 @@ export class Device_Description_View{
         }
         el = el.parentNode;
       }
+    });
+
+    /**
+     * Jobs
+     */
+    update_view_jobs(device, this._job_list);
+    this._job_list.addEventListener('click', ev => {
+      if(!('close' in ev.target.dataset)) return;
+
+      const index = +ev.target.dataset.close;
+      const jobs = device.jobs.filter((job, idx) => index != idx);
+
+      instance.send(message_types.DEVICE,
+        device_commands.REQUEST,
+        {
+          request: 'send_job',
+          device: device.mac,
+          jobs
+        });
     });
 
     /**
@@ -491,6 +706,11 @@ export class Device_Description_View{
     if(data && 'apps' in data)
     {
       update_app_list(device, this._app_list);
+    }
+
+    if(data && 'jobs' in data)
+    {
+      update_view_jobs(device, this._job_list);
     }
 
     if((data && 'sensor' in data)  || force)

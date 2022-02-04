@@ -1,0 +1,49 @@
+<div class='add-job-modal popup-container'>
+  <h1>
+    <span><i class="fas fa-calendar-alt"></i></span>
+    <span>Add Job</span>
+  </h1>
+  <div class='add-job-content'>
+    <!-- <fieldset>
+      <legend>Name</legend>
+      <input type=text class='add-job-name input-common' placeholder='Job name'>
+    </fieldset> -->
+    <div class=add-job-scheduler>
+      <div class=add-job-time-priority-container>
+        <fieldset class=add-job-time-container>
+          <legend>Time</legend>
+          <span><label>Initiate</label><input type=time class='add-job-init input-common'></span>
+          <span><label>Finish</label><input type=time class='add-job-finish input-common'></span>
+        </fieldset>
+        <fieldset class='add-job-priority-container'>
+          <legend>Priority</legend>
+          <input type=number class='job-priority remove-arrow input-common' min=1 max=255 placeholder="Priority" value=5>
+        </fieldset>
+      </div>
+      <fieldset class=add-job-dow>
+        <legend>Day of Week</legend>
+          <label><input type=checkbox value=1>Monday</label>
+          <label><input type=checkbox value=2>Tuesday</label>
+          <label><input type=checkbox value=4>Wednesday</label>
+          <label><input type=checkbox value=8>Thursday</label>
+          <label><input type=checkbox value=16>Friday</label>
+          <label><input type=checkbox value=32>Saturday</label>
+          <label><input type=checkbox value=64>Sunday</label>
+      </fieldset>
+    </div>
+    <fieldset>
+      <legend>Execute</legend>
+      <div class=job-exec-container>
+        <select class='job-exec-app input-common hide-first-opiton'>
+          <option value=''>No app</option>
+        </select>
+        <input type=number class='job-exec-app-arg input-common remove-arrow' value=0>
+      </div>
+    </fieldset>
+  </div>
+  <div class=add-job-button-container>
+    <div class=add-job-error></div>
+    <button class='button-normal' value=cancel>Cancel</button>
+    <button class='button-normal' value=add>Add</button>
+  </div>
+</div>
