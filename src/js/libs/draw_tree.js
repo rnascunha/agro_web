@@ -1,16 +1,33 @@
 import * as d3 from 'd3';
 
 const node_type = {
+  UNDEFINED: -2,
   DAEMON: -1,
   ROUTER: 0,
   ROOT: 1,
-  NODE: 2
 }
 
 const outer_height = 300;
 
+function clear_empty_children(data)
+{
+  if(!('children' in data)) return;
+  if(data.children.length == 0)
+  {
+    delete data.children;
+    return;
+  }
+
+  data.children.forEach(child => {
+    clear_empty_children(child);
+  });
+}
+
 export function draw_device_tree(data, container, instance, show_name)
 {
+  // console.log('data1', data);
+  // clear_empty_children(data);
+  // console.log('data2', data);
   container.innerHTML = '';
 
   // set the dimensions and margins of the diagram
@@ -70,6 +87,7 @@ export function draw_device_tree(data, container, instance, show_name)
     .attr("dy", ".35em")
     .attr("text-anchor", "middle")
     .text(function(d) {
+        // console.log('get_rssi', d.data.device);
         const rssi = get_rssi(d.data.device, instance);
         return rssi ? rssi : '';
     });
@@ -88,13 +106,16 @@ export function draw_device_tree(data, container, instance, show_name)
    node.append("circle")
      .attr("r", 10)
      .attr("class", function(d){
+       if(!d.data.device) return '';
        switch(d.data.device.layer)
        {
-         case -1:
+         case node_type.UNDEFINED:
+          return '';
+         case node_type.DAEMON:
           return 'node--daemon';
-         case 0:
+         case node_type.ROUTER:
           return 'node--router';
-         case 1:
+         case node_type.ROOT:
           return 'node--root';
          default:
           return 'node--non-root';
@@ -112,14 +133,18 @@ export function draw_device_tree(data, container, instance, show_name)
 
         text
           .style("text-anchor", "middle");
+
+        if(!device) return;
         switch(device.layer)
         {
-          case -1:
+          case node_type.UNDEFINED:
+            break;
+          case node_type.DAEMON:
             text
               .attr("dy", -13)
               .text("daemon");
             break;
-          case 0:
+          case node_type.ROUTER:
             text
             .text(null)
             .append("tspan")
@@ -130,7 +155,7 @@ export function draw_device_tree(data, container, instance, show_name)
               .attr("x", 0)
               .text("router");
             break;
-          case 1:
+          case node_type.ROOT:
             text
               .text(null)
               .append("tspan")
@@ -143,6 +168,7 @@ export function draw_device_tree(data, container, instance, show_name)
             break;
           default:
             text
+              .text(null)
               .attr("dy", -13)
               .text(get_name(device, show_name));
             break;
@@ -161,9 +187,12 @@ function get_endpoint(device)
 
 function get_rssi(device, instance)
 {
+  if(!device) return null;
   const rssi_type = instance.sensor_type_list.get_name('rssi');
 
-  if(!rssi_type || device.layer == -1 || device.layer == 0) return null;
+  if(!rssi_type
+    || !('layer' in device)
+    || device.layer < 1) return null;
 
   const rssi = device.sensor_list.last_data(rssi_type.id, 0);
   return rssi ? rssi.value : null;

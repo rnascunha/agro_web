@@ -364,6 +364,7 @@ export class Device_Description_View{
         name: this._name.textContent
       })
     });
+    this._name.textContent = device.name;
 
     this._commands
       .addEventListener('command', ev => {
@@ -674,7 +675,7 @@ export class Device_Description_View{
         break;
         case 'name':
           //Do not update while updating... ;-P
-          if(this._name.contentEditable == false)
+          if(this._name.contentEditable == 'false')
           {
             if(shine(attr, data, this[`_${attr}`]) || force)
               this[`_${attr}`].textContent = device[attr];

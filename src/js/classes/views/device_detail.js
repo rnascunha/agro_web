@@ -114,8 +114,12 @@ export class Device_Detail_View{
     this._id.textContent = device.id;
     shine('id', data, this._id);
 
-    this._name.textContent = device.name;
-    shine('name', data, this._name);
+    //Don't update when editing...
+    if(this._name.contentEditable == 'false')
+    {
+      this._name.textContent = device.name;
+      shine('name', data, this._name);
+    }
 
     this._fw.textContent = device.firmware_version;
     shine('version_fw', data, this._fw);

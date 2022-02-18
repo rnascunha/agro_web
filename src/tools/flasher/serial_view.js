@@ -100,6 +100,7 @@ export class Serial_View{
   async reset()
   {
     const dev = this._selected_device();
+    console.log('reset dev', dev);
     if(dev)
     {
       try

@@ -88,6 +88,8 @@ template.innerHTML =`
 <span class=close>&times</span>`;
 
 customElements.define('x-input-icon', class extends HTMLElement {
+    static formAssociated = true;
+
     constructor()
     {
         super();
@@ -108,7 +110,6 @@ customElements.define('x-input-icon', class extends HTMLElement {
           if(ev.key == 'Escape')
           {
             ev.target.value = '';
-            return;
           }
         });
 
@@ -155,6 +156,11 @@ customElements.define('x-input-icon', class extends HTMLElement {
         {
           this._input.placeholder = this.getAttribute('placeholder');
         }
+
+        // if(this.hasAttribute('autocomplete'))
+        // {
+        //   this._input.setAttribute('autocomplete' ,this.getAttribute('autocomplete'));
+        // }
     }
 });
 

@@ -53,23 +53,23 @@ function notify_handler(data, instance)
     });
 }
 
-function update_endpoints(instance, data)
-{
-    data.data.tree.forEach(d => {
-      const ep = instance.tree.get_endpoint(d.device);
-      if(ep)
-      {
-        instance.device_list.process({
-          type: message_types.DEVICE,
-          command: device_commands.DATA,
-          data: {
-            device: d.device,
-            endpoint: ep
-          }
-        }, true);
-      }
-    })
-}
+// function update_endpoints(instance, data)
+// {
+//     data.data.tree.forEach(d => {
+//       const ep = instance.tree.get_endpoint(d.device);
+//       if(ep)
+//       {
+//         instance.device_list.process({
+//           type: message_types.DEVICE,
+//           command: device_commands.DATA,
+//           data: {
+//             device: d.device,
+//             endpoint: ep
+//           }
+//         }, true);
+//       }
+//     })
+// }
 
 function update_push_subscribe_status(status, container_manager, instance)
 {
@@ -204,7 +204,7 @@ function run_main(data)
                       data => {
                         instance.tree.process(data, instance, true);
                         instance.device_list.set_connected(data.data.unconnected, true);
-                        update_endpoints(instance, data);
+                        // update_endpoints(instance, data);
                       });
   instance.add_handler(message_types.DEVICE,
                       device_commands.CUSTOM_RESPONSE,

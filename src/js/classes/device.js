@@ -21,7 +21,7 @@ class Device{
     this._ch_conn = null;
     this._children = []; //direct children
     this._children_table = [];
-    this._layer = -1;
+    this._layer = -2;
     this._mac_ap = null;
     this._net_id = null;
     this._parent = null;
@@ -95,10 +95,10 @@ class Device{
 
   get custom_responses(){ return this._custom_responses; }
 
-  set children(chs)
-  {
-    this._children = chs;
-  }
+  set children(chs){ this._children = chs; }
+  set layer(lr){ this._layer = lr; }
+  set parent(parent){ this._parent = parent; }
+  set endpoint(ep){ this._endpoint = ep; }
 
   set_connected(val, update_view = false)
   {
@@ -118,7 +118,7 @@ class Device{
       });
     }
 
-    ['name', 'version_fw', 'version_hw',
+    [ 'id', 'name', 'version_fw', 'version_hw',
       'endpoint', 'connected',
       //Network
       'ch_config', 'ch_conn', 'children_table',
@@ -147,7 +147,9 @@ class Device{
     }
 
     if(update_view)
+    {
       this.update_view(data);
+    }
   }
 
   add_custom_response(response)
@@ -169,7 +171,7 @@ class Device{
     delete this._views[name];
   }
 
-  update_view(data = null)
+  update_view(data = {})
   {
     Object.values(this._views).forEach(view => view.update(this, data))
   }
@@ -220,7 +222,7 @@ export class Device_List{
     {
       data.data.forEach(d => {
         this._add_device(d, data.command);
-      })
+      });
     }
     else
     {
@@ -261,6 +263,31 @@ export class Device_List{
         device.process(data, true);
         break;
     }
+  }
+
+  add_tree_device(data, update_view = false)
+  {
+    let device = this._list[data.device];
+    if(!device)
+    {
+      if(!this.size)
+      {
+        this._clear_view();
+      }
+
+      device = new Device(-1, data.device,
+                                {device_table: new Devices_Table_Line_View(this._make_line(data.device))});
+      this._list[data.device] = device;
+    }
+
+    device.children = data.children;
+    device.layer = data.layer;
+    device.parent = data.parent;
+
+    if(update_view)
+      device.update_view({children: data.children, layer: data.layer, parent: data.parent});
+
+    return device;
   }
 
   /**
