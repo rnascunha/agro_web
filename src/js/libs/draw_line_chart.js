@@ -31,22 +31,19 @@ const default_options = {
 
 const radius = 5;
 
-export class Time_Line_Chart{
+export class Time_Line_Chart
+{
   constructor(container, options = {})
   {
     this._options = {...default_options, ...options};
     this._width = container.offsetWidth - this._options.margin.left - this._options.margin.right;
     this._height = this._options.height - this._options.margin.top - this._options.margin.bottom;
 
-    // if(this._width < 0)
-    // {
-      console.log('width',
-        this._width,
-        container.offsetWidth,
-        this._options.margin.left,
-        this._options.margin.right);
-        // return;
-    // }
+    if(this._width < 0)
+    {
+      // console.log('width[constructor]', this._width);
+      return false;
+    }
 
     if(this._options.tooltip)
     {
@@ -198,7 +195,12 @@ export class Time_Line_Chart{
 
   update(data)
   {
-    console.log('data', data);
+    if(this._width < 0)
+    {
+      // console.log('width[update]', this._width);
+      return false;
+    }
+
     // Scale the range of the data
     if(this._options.zoom || this._options.brush || this._options.old_brush)
     {

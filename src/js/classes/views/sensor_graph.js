@@ -58,7 +58,6 @@ export function make_sensors_graph(graphs, container, device, instance, data, op
     else if(data && sensor.has_data(data))
     {
       graphs[index].update(get_data(device, sensor, data_size));
-      // graphs[index].update(device.sensor_list.sensor(sensor.type, sensor.index).data);
     }
   });
 }
