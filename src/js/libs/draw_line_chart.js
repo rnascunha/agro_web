@@ -39,6 +39,11 @@ export class Time_Line_Chart
     this._width = container.offsetWidth - this._options.margin.left - this._options.margin.right;
     this._height = this._options.height - this._options.margin.top - this._options.margin.bottom;
 
+    /**
+     * container.offsetWidth is just set (not zero) when the container is at DOM.
+     * So when you try to draw a new graph and the container is not at DOM, this._width
+     * will be negative. How to fix?
+     */
     if(this._width < 0)
     {
       // console.log('width[constructor]', this._width);

@@ -53,24 +53,6 @@ function notify_handler(data, instance)
     });
 }
 
-// function update_endpoints(instance, data)
-// {
-//     data.data.tree.forEach(d => {
-//       const ep = instance.tree.get_endpoint(d.device);
-//       if(ep)
-//       {
-//         instance.device_list.process({
-//           type: message_types.DEVICE,
-//           command: device_commands.DATA,
-//           data: {
-//             device: d.device,
-//             endpoint: ep
-//           }
-//         }, true);
-//       }
-//     })
-// }
-
 function update_push_subscribe_status(status, container_manager, instance)
 {
   instance.is_subscribed = status;

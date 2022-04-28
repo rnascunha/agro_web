@@ -2,10 +2,7 @@ import admin_portal_html from './admin_portal.html'
 import {message_types, user_commands, notify_commands} from '../../messages/types.js'
 import {make_message} from '../../messages/make.js'
 import {user_list, add_new_user} from './admin_user.js'
-import {group_list,
-  // add_new_group
-        } from './admin_group.js'
-// import {policy_list, add_new_policy} from './admin_portal/admin_policy.js'
+import {group_list} from './admin_group.js'
 import {User_Info_List} from '../../classes/user.js'
 import {Group_List} from '../../classes/groups.js'
 import {Container} from '../../libs/container.js'
@@ -86,7 +83,7 @@ function admin_container_init(container, instance)
       user_commands.EDIT_USER,
       data => {
           instance.users.update(
-            data.data.id, data.data.username, data.data.name, data.data.email, true);
+            data.data.id, data.data.username, data.data.name, data.data.email, data.data.telegram_chat_id, true);
           instance.groups.set_user_group(data.data.id, data.data.groups, true);
       });
   instance.add_handler(message_types.NOTIFY,
