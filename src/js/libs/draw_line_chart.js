@@ -31,12 +31,24 @@ const default_options = {
 
 const radius = 5;
 
-export class Time_Line_Chart{
+export class Time_Line_Chart
+{
   constructor(container, options = {})
   {
     this._options = {...default_options, ...options};
     this._width = container.offsetWidth - this._options.margin.left - this._options.margin.right;
     this._height = this._options.height - this._options.margin.top - this._options.margin.bottom;
+
+    /**
+     * container.offsetWidth is just set (not zero) when the container is at DOM.
+     * So when you try to draw a new graph and the container is not at DOM, this._width
+     * will be negative. How to fix?
+     */
+    if(this._width < 0)
+    {
+      // console.log('width[constructor]', this._width);
+      return false;
+    }
 
     if(this._options.tooltip)
     {
@@ -188,6 +200,12 @@ export class Time_Line_Chart{
 
   update(data)
   {
+    if(this._width < 0)
+    {
+      // console.log('width[update]', this._width);
+      return false;
+    }
+
     // Scale the range of the data
     if(this._options.zoom || this._options.brush || this._options.old_brush)
     {

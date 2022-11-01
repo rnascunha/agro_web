@@ -5,10 +5,12 @@ export class Serial{
     this._index = 0;
 
     navigator.serial.addEventListener('connect', (e) => {
+      console.log('connect', e.target);
       this._add(e.target, true);
     });
 
     navigator.serial.addEventListener('disconnect', (e) => {
+      console.log('disconnect', e.target);
       this._remove(e.target, true);
     });
 

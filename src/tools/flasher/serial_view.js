@@ -100,6 +100,7 @@ export class Serial_View{
   async reset()
   {
     const dev = this._selected_device();
+    console.log('reset dev', dev);
     if(dev)
     {
       try
@@ -223,7 +224,8 @@ export class Serial_View{
 
   async _open_bootloader(device)
   {
-    try{
+    try
+    {
       await device.open(SYNC_BAUDRATE, value => this._terminal.write(value));
 
       this._terminal.write(`Bootloading ${device.name}...\r\n`);

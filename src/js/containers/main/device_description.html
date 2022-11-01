@@ -20,7 +20,7 @@
         <i class="fas fa-signature" slot=icon></i>
         <div slot=name>Name</div>
         <span class='detail-name-container detail-value shine'>
-          <span class=detail-name></span>
+          <span class=detail-name contenteditable=false></span>
           <span class=detail-edit-name><i class="fas fa-edit"></i></span>
         </span>
       </detail-line>
@@ -179,6 +179,48 @@
               <button data-index=waive_root>Waive root</button>
             </div>
           </array-command>
+        </detail-command>
+        <detail-command id=detail-app>
+          <i class="fas fa-ghost" slot=icon></i>
+          <div slot=title>App</div>
+          <div class=detail-app-content>
+            <table>
+              <thead>
+                <tr>
+                  <th>App</th><th>Exec</th><th>#</th>
+                </tr>
+              </thead>
+              <tbody class=detail-app-table-list></tbody>
+            </table>
+            <array-command class=detail-command data-type=app>
+              <button data-index=get_app>Get</button>
+              <select class='device-app-select-send hide-first-opiton'></select>
+              <button data-index=send_app>Send</button>
+            </array-command>
+          </div>
+        </detail-command>
+        <detail-command id=detail-job>
+          <i class="fas fa-tasks" slot=icon></i>
+          <div slot=title>Jobs</div>
+          <div class=detail-job-content>
+            <table class=detail-job-table>
+              <thead>
+                <tr>
+                  <!-- <th>Name</th> -->
+                  <th>Time</th>
+                  <th>DoW</th>
+                  <th>Pri</th>
+                  <th>App</th>
+                  <th>X</th>
+                </tr>
+              </thead>
+              <tbody class=detail-job-table-list></tbody>
+            </table>
+            <array-command class=detail-command data-type=job>
+              <button data-index=send_job>Add</button>
+              <button data-index=get_job>Get</button>
+            </array-command>
+          </div>
         </detail-command>
         <detail-command id=detail-custom>
           <i class="fas fa-hat-wizard" slot=icon></i>

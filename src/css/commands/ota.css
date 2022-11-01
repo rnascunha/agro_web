@@ -32,7 +32,7 @@
 
 #detail-ota .detail-select-ota-image option
 {
-  font-size: 20px;
+  /* font-size: 15px; */
 }
 
 #detail-ota .detail-select-ota-image option:first-child

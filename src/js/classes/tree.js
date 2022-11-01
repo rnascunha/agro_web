@@ -21,17 +21,17 @@ export class Device_Tree{
     let dev = this._unconnected.find(a => a == addr);
     if(dev) return false;
 
-    dev = this._tree.find(a => a.device == addr);
+    dev = this._tree.find(a => a.mac == addr);
     if(!dev) return false;
     if(dev.layer <= 0) return false;
 
     while(dev.layer != 1)
     {
-      dev = this._tree.find(a => a.device == dev.parent);
+      dev = this._tree.find(a => a.mac == dev.parent);
       if(!dev) return false;
     }
 
-    let ep = this._endpoints.find(a => a.device);
+    let ep = this._endpoints.find(a => a.mac == dev.mac);
     if(!ep) return false;
 
     return ep.endpoint;
@@ -39,6 +39,9 @@ export class Device_Tree{
 
   process(data, instance, update_view = false)
   {
+    /**
+     * Updating unconnected devices
+     */
     this._unconnected = []
     data.data.unconnected.forEach(d => {
       if(d in instance.device_list.list)
@@ -46,22 +49,47 @@ export class Device_Tree{
         instance.device_list.list[d].children = [];
     });
 
+    /**
+     * Updating root endpoint list
+     */
     this._endpoints = [];
     data.data.endpoints.forEach(d => {
       if(d.device in instance.device_list.list)
-        this._endpoints.push(instance.device_list.list[d.device]);
+      {
+        const device = instance.device_list.list[d.device];
+        device.endpoint = d.endpoint;
+        this._endpoints.push(device);
+      }
     });
 
+    /**
+     * Updating tree
+     */
     this._tree = [];
     data.data.tree.forEach(d => {
-      if(d.device in instance.device_list.list)
-      {
-        this._tree.push(instance.device_list.list[d.device]);
-        instance.device_list.list[d.device].children = d.children;
-      }
-      else if(d.layer == -1 || d.layer == 0)
+      if(d.layer == -1 || d.layer == 0)
       {
         this._tree.push({mac: d.device, layer: d.layer, children: d.children});
+      }
+      else
+      {
+        this._tree.push(instance.device_list.add_tree_device(d, true));
+      }
+    });
+
+    /**
+     * Updating endpoint of devices
+     */
+    data.data.tree.forEach(d => {
+      if(!(d.layer == -1 || d.layer == 0))
+      {
+        const device = instance.device_list.list[d.device];
+        const ep = this.get_endpoint(d.device);
+        if(ep)
+        {
+          device.endpoint = ep;
+          device.update_view({endpoint: ep});
+        }
       }
     });
 

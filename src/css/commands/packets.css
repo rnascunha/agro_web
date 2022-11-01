@@ -4,12 +4,12 @@
 detail-command#detail-packet
 {
   min-width: 120px;
-  width: 120px;
+  /* width: 120px; */
 }
 
 #detail-packet array-command.detail-command
 {
-  flex-direction: column;
+  flex-direction: row;
 }
 
 @media only screen and (max-width: 600px) {
